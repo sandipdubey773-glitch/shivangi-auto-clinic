@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Shivangi Auto Clinic – Full System Test</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Noto+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f0eb;--card:#fff;--dark:#1a1a2e;--accent:#e85d04;--accent2:#0077b6;--green:#2d6a4f;--greenl:#d8f3dc;--red:#c1121f;--redl:#ffe5e5;--yellow:#e9c46a;--yellowl:#fff8e1;--border:#e2ddd8;--muted:#8a8a8a;--text:#1a1a2e;--gold:#f59e0b;--goldl:#fef3c7;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;min-height:100vh;}
+
+/* TOP NAV */
+.top-nav{background:linear-gradient(135deg,#1a1a2e,#2d3561);padding:12px 16px 0;position:sticky;top:0;z-index:200;}
+.nav-title{font-family:'Baloo 2',cursive;font-size:16px;font-weight:800;color:#fff;margin-bottom:10px;text-align:center;}
+.nav-title span{color:var(--accent);}
+.nav-tabs{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px;}
+.nav-tab{padding:8px 4px;border-radius:12px 12px 0 0;border:none;font-family:'Noto Sans',sans-serif;font-size:10px;font-weight:700;cursor:pointer;transition:all 0.2s;text-align:center;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);}
+.nav-tab.active{background:#fff;color:var(--dark);}
+
+/* PANELS */
+.panel{display:none;padding:14px;max-width:520px;margin:0 auto;}
+.panel.active{display:block;}
+
+/* ═══ SHARED STYLES ═══ */
+.page-header{margin-bottom:14px;padding:14px 16px;background:var(--card);border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,0.07);}
+.page-header h2{font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;}
+.page-header p{font-size:11px;color:var(--muted);margin-top:3px;}
+
+/* PIN BOX */
+.pin-box{background:var(--card);border-radius:18px;padding:24px 20px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.1);margin-bottom:14px;}
+.pin-box .lock-icon{font-size:40px;margin-bottom:8px;}
+.pin-box h3{font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;margin-bottom:4px;}
+.pin-box p{font-size:12px;color:var(--muted);margin-bottom:14px;}
+.pin-dots{display:flex;justify-content:center;gap:10px;margin-bottom:14px;}
+.pin-dot{width:13px;height:13px;border-radius:50%;background:var(--border);transition:background 0.2s;}
+.pin-dot.filled{background:var(--accent);}
+.pin-dot.filled-gold{background:var(--gold);}
+.pin-keypad{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;max-width:240px;margin:0 auto;}
+.pin-key{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:12px;font-family:'Baloo 2',cursive;font-size:18px;font-weight:700;color:var(--dark);cursor:pointer;transition:all 0.15s;}
+.pin-key:active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.pin-error{font-size:12px;color:var(--red);margin-top:8px;min-height:16px;font-weight:600;}
+
+/* CARDS */
+.card{background:var(--card);border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,0.07);margin-bottom:11px;}
+.card h3{font-family:'Baloo 2',cursive;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid var(--border);}
+
+/* FIELDS */
+.field{margin-bottom:10px;}
+.field:last-child{margin-bottom:0;}
+.field label{display:block;font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.field input,.field select{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:9px;padding:10px 12px;font-size:14px;font-family:'Noto Sans',sans-serif;color:var(--text);outline:none;transition:border-color 0.2s;appearance:none;}
+.field input:focus,.field select:focus{border-color:var(--accent);background:#fff;}
+.field-hint{font-size:11px;color:var(--muted);margin-top:3px;}
+.field-hint.green{color:var(--green);}
+.field-hint.red{color:var(--red);}
+
+/* BUTTONS */
+.btn-primary{width:100%;background:var(--accent);color:#fff;border:none;border-radius:11px;padding:13px;font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;cursor:pointer;transition:transform 0.15s;margin-top:4px;}
+.btn-primary:active{transform:scale(0.98);}
+.btn-primary:disabled{opacity:0.6;cursor:not-allowed;}
+.btn-green{background:var(--green);}
+.btn-dark{background:var(--dark);}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#d97706);}
+.btn-blue{background:var(--accent2);}
+.btn-sm{border:1.5px solid var(--border);background:var(--bg);color:var(--muted);border-radius:7px;padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Noto Sans',sans-serif;}
+
+/* STATUS BADGES */
+.badge{display:inline-flex;align-items:center;gap:4px;border-radius:99px;padding:3px 10px;font-size:11px;font-weight:700;border:1px solid;}
+.badge.green{background:var(--greenl);color:var(--green);border-color:#b7e4c7;}
+.badge.red{background:var(--redl);color:var(--red);border-color:#ffb3b3;}
+.badge.yellow{background:var(--yellowl);color:#856400;border-color:#ffe08a;}
+.badge.gold{background:var(--goldl);color:#92400e;border-color:#fcd34d;}
+.badge.blue{background:#e0f0ff;color:var(--accent2);border-color:#a8d5f5;}
+.badge.orange{background:#fff0e6;color:var(--accent);border-color:#ffc9a3;}
+
+/* TAGS */
+.tag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:99px;background:var(--bg);color:var(--muted);border:1px solid var(--border);}
+.tag.green{background:var(--greenl);color:var(--green);border-color:#b7e4c7;}
+.tag.red{background:var(--redl);color:var(--red);border-color:#ffb3b3;}
+.tag.yellow{background:var(--yellowl);color:#856400;border-color:#ffe08a;}
+.tag.orange{background:#fff0e6;color:var(--accent);border-color:#ffc9a3;}
+.tag.blue{background:#e0f0ff;color:var(--accent2);border-color:#a8d5f5;}
+.tag.google{background:#e8f0fe;color:#1a73e8;border-color:#c5d8fc;}
+
+/* ═══ LAUNCHER / INDEX ═══ */
+.status-strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;}
+.ss-item{background:var(--card);border-radius:11px;padding:10px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.06);}
+.ss-label{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:4px;font-weight:600;}
+.ss-val{font-family:'Baloo 2',cursive;font-size:16px;font-weight:800;color:var(--dark);}
+.branch-item{background:var(--bg);border-radius:11px;padding:12px;margin-bottom:9px;border:1.5px solid var(--border);}
+.bi-name{font-family:'Baloo 2',cursive;font-size:14px;font-weight:800;margin-bottom:6px;}
+.bi-pin{font-size:11px;color:var(--muted);margin-bottom:8px;}
+.bi-pin strong{color:var(--accent);}
+.bi-btns{display:flex;gap:7px;}
+.bi-btn{flex:1;padding:9px;border:none;border-radius:9px;font-family:'Baloo 2',cursive;font-size:12px;font-weight:700;cursor:pointer;color:#fff;text-align:center;}
+.bi-btn.orange{background:var(--accent);}
+.bi-btn.blue{background:var(--accent2);}
+
+/* ═══ SUPER ADMIN ═══ */
+.global-strip{background:linear-gradient(135deg,#1a1a2e,#2d3561);border-radius:13px;padding:13px;margin-bottom:12px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;}
+.gs-item .gs-label{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.4);margin-bottom:2px;}
+.gs-item .gs-val{font-family:'Baloo 2',cursive;font-size:16px;font-weight:800;color:#fff;}
+.gs-item .gs-val.gold{color:var(--gold);}
+.gs-item .gs-val.accent{color:var(--accent);}
+.gs-item .gs-val.green{color:#52b788;}
+
+.branch-card{background:var(--card);border-radius:13px;overflow:hidden;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.07);border-left:4px solid var(--accent);}
+.bc-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;cursor:pointer;}
+.bc-info .bc-name{font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;}
+.bc-info .bc-meta{font-size:11px;color:var(--muted);margin-top:2px;}
+.bc-labour{font-family:'Baloo 2',cursive;font-size:14px;font-weight:800;text-align:right;}
+.bc-body{display:none;padding:0 13px 13px;border-top:1px solid var(--border);}
+.bc-body.open{display:block;}
+.bc-stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:11px 0;}
+.bc-stat{background:var(--bg);border-radius:8px;padding:8px;text-align:center;}
+.bc-stat-label{font-size:9px;text-transform:uppercase;letter-spacing:0.7px;color:var(--muted);margin-bottom:2px;font-weight:600;}
+.bc-stat-val{font-family:'Baloo 2',cursive;font-size:14px;font-weight:800;}
+.bc-actions{display:flex;gap:6px;flex-wrap:wrap;}
+.bc-btn{border:1.5px solid var(--border);background:var(--bg);color:var(--text);border-radius:7px;padding:7px 11px;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.15s;}
+.bc-btn.blue{background:#e0f0ff;color:var(--accent2);border-color:#a8d5f5;}
+.bc-btn.red{background:var(--redl);color:var(--red);border-color:#ffb3b3;}
+
+.add-form{background:linear-gradient(135deg,var(--goldl),#fffbeb);border:2px solid #fcd34d;border-radius:14px;padding:14px;margin-bottom:12px;}
+.add-form h4{font-family:'Baloo 2',cursive;font-size:14px;font-weight:800;margin-bottom:11px;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+
+/* ═══ BRANCH ADMIN ═══ */
+.sub-tabs{display:flex;gap:5px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px;}
+.sub-tab{padding:7px 13px;border-radius:20px;border:1.5px solid var(--border);background:var(--bg);color:var(--muted);font-size:11px;font-weight:600;cursor:pointer;transition:all 0.2s;white-space:nowrap;font-family:'Noto Sans',sans-serif;}
+.sub-tab.active{background:var(--dark);color:#fff;border-color:var(--dark);}
+.sub-panel{display:none;}
+.sub-panel.active{display:block;}
+
+.monthly-prog{background:linear-gradient(135deg,#1a1a2e,#2d3561);border-radius:12px;padding:13px;margin-bottom:11px;}
+.monthly-prog h4{font-family:'Baloo 2',cursive;font-size:11px;font-weight:700;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:1px;margin-bottom:9px;}
+.mp-row{display:flex;justify-content:space-between;margin-bottom:7px;}
+.mp-item .mp-label{font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;}
+.mp-item .mp-val{font-family:'Baloo 2',cursive;font-size:16px;font-weight:800;color:#fff;}
+.mp-item .mp-val.accent{color:var(--accent);}
+.mp-item .mp-val.green{color:#52b788;}
+.mp-bar{background:rgba(255,255,255,0.1);border-radius:99px;height:9px;overflow:hidden;}
+.mp-fill{height:100%;border-radius:99px;background:var(--accent);transition:width 0.9s;}
+.mp-pct{font-size:10px;color:rgba(255,255,255,0.35);margin-top:4px;text-align:right;}
+
+.sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:11px;}
+.sum-card{background:var(--card);border-radius:11px;padding:11px;box-shadow:0 2px 6px rgba(0,0,0,0.06);border-top:3px solid var(--border);}
+.sum-card.orange{border-top-color:var(--accent);}
+.sum-card.blue{border-top-color:var(--accent2);}
+.sum-card.green{border-top-color:#52b788;}
+.sum-card.yellow{border-top-color:var(--yellow);}
+.sum-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:3px;}
+.sum-val{font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;}
+.sum-sub{font-size:10px;color:var(--muted);margin-top:2px;}
+
+.entries-wrap{background:var(--card);border-radius:12px;overflow:hidden;margin-bottom:11px;box-shadow:0 2px 6px rgba(0,0,0,0.06);}
+.entries-head{display:flex;justify-content:space-between;align-items:center;padding:10px 13px;border-bottom:1px solid var(--border);}
+.entries-head h4{font-family:'Baloo 2',cursive;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+.dg-header{background:var(--bg);padding:6px 13px;font-family:'Baloo 2',cursive;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.dg-count{background:var(--dark);color:#fff;border-radius:99px;padding:1px 7px;font-size:10px;}
+.entry-row{padding:10px 13px;border-bottom:1px solid var(--border);}
+.entry-row:last-child{border-bottom:none;}
+.er1{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.er-name{font-weight:700;font-size:13px;}
+.er-time{font-size:10px;color:var(--muted);}
+.er-tags{display:flex;gap:4px;flex-wrap:wrap;}
+
+.vi-item{padding:12px 13px;border-bottom:1px solid var(--border);}
+.vi-item:last-child{border-bottom:none;}
+.vi-row1{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.vi-name{font-weight:700;font-size:14px;}
+.vi-date{font-size:10px;color:var(--muted);}
+.vi-tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:9px;}
+.vi-tag{font-size:11px;font-weight:600;padding:3px 8px;border-radius:99px;background:var(--bg);color:var(--muted);border:1px solid var(--border);}
+.vi-tag.g{background:var(--greenl);color:var(--green);border-color:#b7e4c7;}
+.vi-tag.r{background:var(--redl);color:var(--red);border-color:#ffb3b3;}
+.vi-tag.o{background:#fff0e6;color:var(--accent);border-color:#ffc9a3;}
+.vi-tag.y{background:var(--yellowl);color:#856400;border-color:#ffe08a;}
+.vi-tag.gl{background:#e8f0fe;color:#1a73e8;border-color:#c5d8fc;}
+.vi-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;background:var(--bg);border-radius:10px;padding:9px;margin-bottom:8px;border:1px solid var(--border);}
+.vi-cell{background:#fff;border-radius:7px;padding:7px;text-align:center;border:1px solid var(--border);}
+.vi-cell-label{font-size:9px;text-transform:uppercase;color:var(--muted);margin-bottom:2px;font-weight:600;}
+.vi-cell-val{font-family:'Baloo 2',cursive;font-size:13px;font-weight:800;}
+.vi-actions{display:flex;gap:7px;}
+.vi-approve{flex:1;background:var(--greenl);color:var(--green);border:1.5px solid #b7e4c7;border-radius:8px;padding:9px;font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;cursor:pointer;}
+.vi-approve:active{background:var(--green);color:#fff;}
+.vi-reject{flex:1;background:var(--redl);color:var(--red);border:1.5px solid #ffb3b3;border-radius:8px;padding:9px;font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;cursor:pointer;}
+.vi-reject:active{background:var(--red);color:#fff;}
+
+.mech-row{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;border-bottom:1px solid var(--border);}
+.mech-row:last-child{border-bottom:none;}
+.mech-name{font-weight:700;font-size:13px;}
+.mech-meta{font-size:11px;color:var(--muted);margin-top:2px;}
+.mech-actions{display:flex;gap:6px;align-items:center;}
+.badge-sm{font-size:10px;padding:2px 7px;border-radius:99px;font-weight:700;}
+.badge-sm.active{background:var(--greenl);color:var(--green);}
+.badge-sm.inactive{background:var(--redl);color:var(--red);}
+
+/* ═══ MECHANIC FORM ═══ */
+.target-strip{background:linear-gradient(135deg,#1a1a2e,#2d3561);border-radius:13px;padding:13px 16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
+.ts-item .ts-label{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,0.4);margin-bottom:2px;}
+.ts-item .ts-val{font-family:'Baloo 2',cursive;font-size:17px;font-weight:800;color:#fff;}
+.ts-item .ts-val.accent{color:var(--accent);}
+.ts-div{width:1px;height:32px;background:rgba(255,255,255,0.15);}
+.date-row{display:flex;align-items:center;gap:9px;background:var(--bg);border:1.5px solid var(--border);border-radius:9px;padding:10px 12px;}
+.date-row input[type="date"]{flex:1;background:transparent;border:none;padding:0;font-size:14px;color:var(--text);outline:none;}
+.today-btn{background:var(--accent);color:#fff;border:none;border-radius:6px;padding:5px 11px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Baloo 2',cursive;}
+.counter-row{display:flex;align-items:center;gap:12px;background:var(--bg);border:1.5px solid var(--border);border-radius:9px;padding:10px 12px;}
+.c-info{flex:1;}
+.c-info .ci-main{font-size:13px;font-weight:600;}
+.c-info .ci-sub{font-size:10px;color:var(--muted);margin-top:1px;}
+.c-btns{display:flex;align-items:center;gap:10px;}
+.c-btn{width:34px;height:34px;border-radius:50%;border:2px solid var(--border);background:var(--bg);font-size:19px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.c-btn.plus{background:var(--accent2);color:#fff;border-color:var(--accent2);}
+.c-btn:active{transform:scale(0.9);}
+.c-num{font-family:'Baloo 2',cursive;font-size:26px;font-weight:800;color:var(--accent2);min-width:32px;text-align:center;}
+.star-row{display:flex;gap:9px;margin-top:6px;}
+.star-btn{font-size:28px;background:none;border:none;cursor:pointer;transition:transform 0.15s;filter:grayscale(1);opacity:0.3;}
+.star-btn.active{filter:none;opacity:1;transform:scale(1.12);}
+.google-card{background:linear-gradient(135deg,#e8f0fe,#f0f7ff);border:1.5px solid #c5d8fc;border-radius:14px;padding:14px;margin-bottom:11px;}
+.google-card h4{font-family:'Baloo 2',cursive;font-size:12px;font-weight:700;color:#1a73e8;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid #c5d8fc;display:flex;align-items:center;gap:7px;}
+.g-logo{width:13px;height:13px;border-radius:50%;background:conic-gradient(#4285F4 0deg 90deg,#34A853 90deg 180deg,#FBBC05 180deg 270deg,#EA4335 270deg 360deg);flex-shrink:0;}
+.qr-btn{width:100%;background:linear-gradient(135deg,#1a73e8,#0d47a1);color:#fff;border:none;border-radius:10px;padding:12px;font-family:'Baloo 2',cursive;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 12px rgba(26,115,232,0.3);}
+.g-counter{display:flex;align-items:center;gap:10px;background:#fff;border-radius:10px;padding:11px 13px;border:1.5px solid #c5d8fc;margin-top:9px;}
+.g-counter-label{flex:1;font-size:12px;color:#444;font-weight:600;}
+.g-btns{display:flex;align-items:center;gap:9px;}
+.g-btn{width:30px;height:30px;border-radius:50%;border:2px solid #c5d8fc;background:#e8f0fe;color:#1a73e8;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.g-btn.plus{background:#1a73e8;color:#fff;border-color:#1a73e8;}
+.g-btn:active{transform:scale(0.9);}
+.g-num{font-family:'Baloo 2',cursive;font-size:24px;font-weight:800;color:#1a73e8;min-width:28px;text-align:center;}
+.amc-entry{background:#e8f4fd;border:2px solid #a8d5f5;border-radius:11px;padding:12px;margin-bottom:9px;animation:fadeUp 0.3s ease both;}
+.ace-num{font-family:'Baloo 2',cursive;font-size:12px;font-weight:800;color:var(--accent2);margin-bottom:9px;}
+.ace-fields{display:flex;flex-direction:column;gap:7px;}
+.ace-fields input{background:#fff;border:1.5px solid #a8d5f5;border-radius:7px;padding:10px 12px;font-size:14px;font-family:'Noto Sans',sans-serif;color:var(--text);outline:none;}
+.ace-fields input:focus{border-color:var(--accent2);}
+.ace-fields input::placeholder{color:#aaa;}
+/* Success */
+.success-screen{display:none;text-align:center;padding:28px 14px;}
+.success-screen.show{display:block;}
+.s-emoji{font-size:56px;display:block;margin-bottom:8px;animation:pop 0.5s cubic-bezier(.4,0,.2,1);}
+.s-title{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;margin-bottom:6px;}
+.s-msg{font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6;}
+.chip-wrap{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:18px;}
+.chip{font-size:11px;font-weight:600;padding:5px 12px;border-radius:99px;background:var(--bg);border:1.5px solid var(--border);animation:fadeUp 0.4s ease both;}
+.chip.green{background:var(--greenl);border-color:#b7e4c7;color:var(--green);}
+.chip.red{background:var(--redl);border-color:#ffb3b3;color:var(--red);}
+.chip.yellow{background:var(--yellowl);border-color:#ffe08a;color:#856400;}
+.chip.orange{background:#fff0e6;border-color:#ffc9a3;color:var(--accent);}
+.chip.blue{background:#e0f0ff;border-color:#a8d5f5;color:var(--accent2);}
+.chip.google{background:#e8f0fe;border-color:#c5d8fc;color:#1a73e8;}
+.chip.pending{background:var(--yellowl);border-color:#ffe08a;color:#856400;}
+/* QR overlay */
+.qr-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:9999;align-items:center;justify-content:center;padding:20px;}
+.qr-overlay.show{display:flex;}
+.qr-popup{background:#fff;border-radius:22px;width:100%;max-width:290px;overflow:hidden;animation:popIn 0.25s cubic-bezier(.4,0,.2,1);}
+.qp-top{background:linear-gradient(135deg,#e85d04,#f4a261);padding:18px 16px;text-align:center;}
+.qp-name{font-family:'Baloo 2',cursive;font-size:16px;font-weight:800;color:#fff;margin-bottom:4px;}
+.qp-ask{font-size:12px;color:rgba(255,255,255,0.9);}
+.qp-stars{font-size:20px;margin-top:7px;letter-spacing:4px;animation:shine 1s ease-in-out infinite alternate;}
+.qp-box{padding:16px;display:flex;align-items:center;justify-content:center;background:#f8f8f8;}
+.qp-hint{text-align:center;font-size:11px;color:#888;padding:0 14px 4px;}
+.qp-link{text-align:center;font-size:9px;color:#bbb;padding:0 14px 10px;word-break:break-all;}
+.qp-close{width:calc(100% - 24px);margin:0 12px 12px;background:#1a1a2e;color:#fff;border:none;border-radius:9px;padding:11px;font-family:'Baloo 2',cursive;font-size:14px;font-weight:700;cursor:pointer;}
+/* LINK MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9001;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.show{display:flex;}
+.modal{background:#fff;border-radius:18px;padding:20px;width:100%;max-width:340px;animation:popIn 0.25s cubic-bezier(.4,0,.2,1);}
+.modal h3{font-family:'Baloo 2',cursive;font-size:17px;font-weight:800;margin-bottom:13px;}
+.link-box{background:var(--bg);border-radius:9px;padding:10px;margin-bottom:9px;border:1.5px solid var(--border);}
+.link-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.link-url{font-size:11px;color:var(--accent2);word-break:break-all;margin-bottom:6px;line-height:1.4;}
+.copy-btn{background:var(--accent2);color:#fff;border:none;border-radius:6px;padding:5px 12px;font-family:'Baloo 2',cursive;font-size:11px;font-weight:700;cursor:pointer;}
+.modal-close-btn{width:100%;background:var(--dark);color:#fff;border:none;border-radius:9px;padding:11px;font-family:'Baloo 2',cursive;font-size:14px;font-weight:700;cursor:pointer;margin-top:4px;}
+
+/* UTILS */
+.empty-state{padding:24px;text-align:center;color:var(--muted);font-size:12px;}
+.empty-state .ei{font-size:28px;margin-bottom:6px;}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a2e;color:#fff;padding:11px 20px;border-radius:99px;font-size:13px;font-weight:600;font-family:'Baloo 2',cursive;opacity:0;transition:all 0.3s;z-index:9999;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.ok{background:var(--green);}
+.toast.err{background:var(--red);}
+.spinner{display:inline-block;width:15px;height:15px;border:3px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;}
+.spacer{height:24px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+@keyframes popIn{from{transform:scale(0.85);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shine{from{opacity:0.7}to{opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<div class="top-nav">
+  <div class="nav-title">⚙️ <span>Shivangi</span> Auto Clinic — Test Panel</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchPanel('launcher',this)">🏠 Home</button>
+    <button class="nav-tab" onclick="switchPanel('super',this)">👑 Super</button>
+    <button class="nav-tab" onclick="switchPanel('branch',this)">🏢 Branch</button>
+    <button class="nav-tab" onclick="switchPanel('mechanic',this)">🔧 Mechanic</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PANEL 1: LAUNCHER / HOME
+═══════════════════════════════════════ -->
+<div class="panel active" id="panel-launcher">
+  <div class="page-header">
+    <h2>🏠 System Status</h2>
+    <p>Firebase connection aur branch overview</p>
+  </div>
+  <div class="status-strip">
+    <div class="ss-item"><div class="ss-label">Firebase</div><div class="ss-val" id="laFb" style="font-size:20px;">⏳</div></div>
+    <div class="ss-item"><div class="ss-label">Branches</div><div class="ss-val" id="laBr">—</div></div>
+    <div class="ss-item"><div class="ss-label">Entries</div><div class="ss-val" id="laEnt">—</div></div>
+  </div>
+
+  <div class="card">
+    <h3>📌 Kaise Test Karein</h3>
+    <div style="font-size:12px;line-height:1.8;color:var(--text);">
+      <div style="margin-bottom:6px;">1️⃣ <b>Super Admin</b> tab → PIN <b>9999</b> → Branch banao</div>
+      <div style="margin-bottom:6px;">2️⃣ Branch ban jaane ke baad <b>yahan links</b> neeche milenge</div>
+      <div style="margin-bottom:6px;">3️⃣ <b>Branch tab</b> → branch chunlo → test karo</div>
+      <div>4️⃣ <b>Mechanic tab</b> → branch chunlo → form bharo</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏢 Branches & Links</h3>
+    <div id="launchBranchList"><div class="empty-state"><div class="ei">⏳</div>Loading…</div></div>
+  </div>
+  <div class="spacer"></div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PANEL 2: SUPER ADMIN
+═══════════════════════════════════════ -->
+<div class="panel" id="panel-super">
+
+  <!-- PIN -->
+  <div id="superPinWrap">
+    <div class="pin-box" style="margin-top:14px;">
+      <div class="lock-icon">👑</div>
+      <h3>Super Admin</h3>
+      <p>PIN daalo — Default: <strong>9999</strong></p>
+      <div class="pin-dots">
+        <div class="pin-dot" id="sp0"></div><div class="pin-dot" id="sp1"></div><div class="pin-dot" id="sp2"></div><div class="pin-dot" id="sp3"></div>
+      </div>
+      <div class="pin-keypad">
+        <button class="pin-key" onclick="superPinKey('1')">1</button><button class="pin-key" onclick="superPinKey('2')">2</button><button class="pin-key" onclick="superPinKey('3')">3</button>
+        <button class="pin-key" onclick="superPinKey('4')">4</button><button class="pin-key" onclick="superPinKey('5')">5</button><button class="pin-key" onclick="superPinKey('6')">6</button>
+        <button class="pin-key" onclick="superPinKey('7')">7</button><button class="pin-key" onclick="superPinKey('8')">8</button><button class="pin-key" onclick="superPinKey('9')">9</button>
+        <button class="pin-key" onclick="superPinClear()">C</button><button class="pin-key" onclick="superPinKey('0')">0</button><button class="pin-key" onclick="superPinDel()">⌫</button>
+      </div>
+      <div class="pin-error" id="superPinErr"></div>
+    </div>
+  </div>
+
+  <!-- CONTENT (after login) -->
+  <div id="superContent" style="display:none;">
+    <div class="global-strip" id="superGlobalStrip">
+      <div class="gs-item"><div class="gs-label">Branches</div><div class="gs-val gold" id="sgBranches">0</div></div>
+      <div class="gs-item"><div class="gs-label">Mahina</div><div class="gs-val accent" id="sgMonthly">₹0</div></div>
+      <div class="gs-item"><div class="gs-label">AMC</div><div class="gs-val green" id="sgAmc">0</div></div>
+      <div class="gs-item"><div class="gs-label">Reviews</div><div class="gs-val" style="color:#74b9ff;" id="sgReviews">0</div></div>
+    </div>
+
+    <div class="add-form">
+      <h4>➕ Nayi Branch Banao</h4>
+      <div class="two-col">
+        <div class="field"><label>Branch Naam *</label><input type="text" id="nbName" placeholder="Andheri Branch"></div>
+        <div class="field"><label>Sheher</label><input type="text" id="nbCity" placeholder="Mumbai"></div>
+        <div class="field"><label>Admin PIN * (4 digit)</label><input type="password" id="nbPin" maxlength="4" placeholder="••••" inputmode="numeric"></div>
+        <div class="field"><label>Monthly Target</label><input type="number" id="nbMonthly" placeholder="120000" inputmode="numeric"></div>
+        <div class="field"><label>Daily Target</label><input type="number" id="nbDaily" placeholder="4000" inputmode="numeric"></div>
+        <div class="field"><label>Review Target</label><input type="number" id="nbReview" placeholder="250" inputmode="numeric"></div>
+      </div>
+      <button class="btn-primary btn-gold" onclick="createBranch()">🏢 Branch Banao</button>
+    </div>
+
+    <div id="superBranchesList"><div class="empty-state"><div class="ei">⏳</div>Loading…</div></div>
+    <div class="spacer"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PANEL 3: BRANCH ADMIN
+═══════════════════════════════════════ -->
+<div class="panel" id="panel-branch">
+  <!-- Branch selector -->
+  <div id="branchSelectWrap" style="margin-top:14px;">
+    <div class="card">
+      <h3>🏢 Branch Chuno</h3>
+      <div class="field">
+        <label>Branch Select Karo</label>
+        <select id="bSelectBranch" onchange="onBranchSelect()">
+          <option value="">— Branch chunein —</option>
+        </select>
+      </div>
+      <div id="bSelectHint" style="font-size:12px;color:var(--muted);margin-top:8px;">Pehle Super Admin mein ek branch banao</div>
+    </div>
+  </div>
+  <!-- PIN for selected branch -->
+  <div id="branchPinWrap" style="display:none;">
+    <div class="pin-box">
+      <div class="lock-icon">🏢</div>
+      <h3 id="branchPinTitle">Branch Admin</h3>
+      <p>Branch ka PIN daalo</p>
+      <div class="pin-dots">
+        <div class="pin-dot" id="bp0"></div><div class="pin-dot" id="bp1"></div><div class="pin-dot" id="bp2"></div><div class="pin-dot" id="bp3"></div>
+      </div>
+      <div class="pin-keypad">
+        <button class="pin-key" onclick="branchPinKey('1')">1</button><button class="pin-key" onclick="branchPinKey('2')">2</button><button class="pin-key" onclick="branchPinKey('3')">3</button>
+        <button class="pin-key" onclick="branchPinKey('4')">4</button><button class="pin-key" onclick="branchPinKey('5')">5</button><button class="pin-key" onclick="branchPinKey('6')">6</button>
+        <button class="pin-key" onclick="branchPinKey('7')">7</button><button class="pin-key" onclick="branchPinKey('8')">8</button><button class="pin-key" onclick="branchPinKey('9')">9</button>
+        <button class="pin-key" onclick="branchPinClear()">C</button><button class="pin-key" onclick="branchPinKey('0')">0</button><button class="pin-key" onclick="branchPinDel()">⌫</button>
+      </div>
+      <div class="pin-error" id="branchPinErr"></div>
+    </div>
+  </div>
+  <!-- Branch content -->
+  <div id="branchContent" style="display:none;">
+    <div class="sub-tabs">
+      <button class="sub-tab active" onclick="switchSubTab('b','report',this)">📊 Report</button>
+      <button class="sub-tab" onclick="switchSubTab('b','verify',this)">✅ Verify</button>
+      <button class="sub-tab" onclick="switchSubTab('b','mechanics',this)">👨‍🔧 Mechanics</button>
+      <button class="sub-tab" onclick="switchSubTab('b','settings',this)">⚙️ Settings</button>
+    </div>
+    <!-- Report sub-panel -->
+    <div class="sub-panel active" id="bsub-report">
+      <div class="monthly-prog">
+        <h4>🏆 Mahine ka Progress</h4>
+        <div class="mp-row">
+          <div class="mp-item"><div class="mp-label">Kamaya</div><div class="mp-val accent" id="bMpEarned">₹0</div></div>
+          <div class="mp-item"><div class="mp-label">Target</div><div class="mp-val" id="bMpTarget">₹0</div></div>
+          <div class="mp-item"><div class="mp-label">Baaki</div><div class="mp-val green" id="bMpRem">₹0</div></div>
+        </div>
+        <div class="mp-bar"><div class="mp-fill" id="bMpFill" style="width:0%"></div></div>
+        <div class="mp-pct" id="bMpPct">0%</div>
+      </div>
+      <div class="sum-grid">
+        <div class="sum-card orange"><div class="sum-label">Labour</div><div class="sum-val" id="bSumL">₹0</div><div class="sum-sub" id="bSumLE">0 entries</div></div>
+        <div class="sum-card blue"><div class="sum-label">Avg/Day</div><div class="sum-val" id="bSumA">₹0</div><div class="sum-sub" id="bSumAD">0 days</div></div>
+        <div class="sum-card yellow"><div class="sum-label">AMC</div><div class="sum-val" id="bSumAmc">0</div><div class="sum-sub" id="bSumAmcC">₹0 comm</div></div>
+        <div class="sum-card green"><div class="sum-label">Reviews</div><div class="sum-val" id="bSumGR">0</div><div class="sum-sub">Google</div></div>
+      </div>
+      <div class="entries-wrap">
+        <div class="entries-head"><h4>📄 Entries</h4><button class="btn-sm" onclick="bExportCSV()">⬇️ CSV</button></div>
+        <div id="bEntriesList"><div class="empty-state"><div class="ei">📭</div>Koi approved entry nahi</div></div>
+      </div>
+    </div>
+    <!-- Verify sub-panel -->
+    <div class="sub-panel" id="bsub-verify">
+      <div class="entries-wrap">
+        <div class="entries-head"><h4>⏳ Pending Entries</h4><span class="badge yellow" id="bPendingBadge">0</span></div>
+        <div id="bPendingList"><div class="empty-state"><div class="ei">✅</div>Sab verify ho gaya!</div></div>
+      </div>
+    </div>
+    <!-- Mechanics sub-panel -->
+    <div class="sub-panel" id="bsub-mechanics">
+      <div style="background:var(--bg);border:1.5px dashed var(--border);border-radius:12px;padding:13px;margin-bottom:11px;">
+        <div style="font-family:'Baloo 2',cursive;font-size:13px;font-weight:800;margin-bottom:10px;">➕ Mechanic Add Karo</div>
+        <div class="two-col" style="margin-bottom:9px;">
+          <div class="field"><label>Naam</label><input type="text" id="mNewName" placeholder="Mechanic naam"></div>
+          <div class="field"><label>Mobile</label><input type="tel" id="mNewPhone" placeholder="10 digit" maxlength="10" inputmode="numeric"></div>
+        </div>
+        <button class="btn-primary btn-blue" style="margin-top:0;" onclick="addMechanic()">➕ Add</button>
+      </div>
+      <div class="entries-wrap" id="mechListWrap">
+        <div class="entries-head"><h4>👨‍🔧 Mechanics</h4></div>
+        <div id="bMechList"><div class="empty-state"><div class="ei">👷</div>Koi mechanic nahi</div></div>
+      </div>
+    </div>
+    <!-- Settings sub-panel -->
+    <div class="sub-panel" id="bsub-settings">
+      <div class="card">
+        <h3>🎯 Targets</h3>
+        <div class="field"><label>Monthly (₹)</label><input type="number" id="bsMonthly" inputmode="numeric"></div>
+        <div class="field"><label>Daily (₹)</label><input type="number" id="bsDaily" inputmode="numeric"></div>
+        <div class="field"><label>Review Target</label><input type="number" id="bsReview" inputmode="numeric"></div>
+        <button class="btn-primary btn-green" onclick="bSaveSettings()">💾 Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PANEL 4: MECHANIC FORM
+═══════════════════════════════════════ -->
+<div class="panel" id="panel-mechanic">
+  <!-- Branch selector for mechanic -->
+  <div id="mechSelectWrap" style="margin-top:14px;">
+    <div class="card">
+      <h3>🏢 Branch Chuno</h3>
+      <div class="field">
+        <label>Apni Branch</label>
+        <select id="mSelectBranch" onchange="onMechBranchSelect()">
+          <option value="">— Branch chunein —</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <!-- Mechanic form -->
+  <div id="mechFormWrap" style="display:none;">
+    <div id="mechFormSection">
+      <div style="text-align:center;margin-bottom:14px;">
+        <span style="font-size:36px;display:block;margin-bottom:5px;">🔧</span>
+        <div style="font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;">Aaj ka Report</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:3px;" id="mechBranchLabel">—</div>
+      </div>
+      <div class="target-strip">
+        <div class="ts-item"><div class="ts-label">Baaki</div><div class="ts-val">₹<span id="mStripMonthly">—</span></div></div>
+        <div class="ts-div"></div>
+        <div class="ts-item"><div class="ts-label">Daily</div><div class="ts-val accent">₹<span id="mStripDaily">—</span></div></div>
+        <div class="ts-div"></div>
+        <div class="ts-item" style="text-align:right"><div class="ts-label">Reviews</div><div class="ts-val" style="color:#74b9ff;font-size:14px;">🔵<span id="mStripReview">—</span></div></div>
+      </div>
+      <div class="card">
+        <h3>📅 Date</h3>
+        <div class="date-row">
+          <input type="date" id="mfDate">
+          <button class="today-btn" onclick="mSetToday()">Aaj</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3>👤 Naam</h3>
+        <div class="field" id="mfNameWrap"></div>
+      </div>
+      <div class="card">
+        <h3>💰 Labour</h3>
+        <div class="field">
+          <label>Target (₹)</label>
+          <input type="number" id="mfTarget" inputmode="numeric">
+          <div class="field-hint">Owner ne set kiya: ₹<span id="mfDailyHint">—</span></div>
+        </div>
+        <div class="field">
+          <label>Kitna Kamaya (₹)</label>
+          <input type="number" id="mfAchieved" placeholder="Jaise: 3500" inputmode="numeric">
+          <div class="field-hint" id="mfAchHint"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>📋 AMC</h3>
+        <div class="counter-row">
+          <div class="c-info"><div class="ci-main">AMC Count</div><div class="ci-sub">₹125 comm each</div></div>
+          <div class="c-btns"><button class="c-btn" onclick="mChangeAmc(-1)">−</button><div class="c-num" id="mAmcNum">0</div><button class="c-btn plus" onclick="mChangeAmc(1)">+</button></div>
+        </div>
+        <div id="mAmcList" style="margin-top:10px;display:none;">
+          <div style="font-size:11px;color:var(--accent2);font-weight:700;margin-bottom:7px;">Customer details daalo ⬇️</div>
+          <div id="mAmcEntries"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>⭐ Customer Stars</h3>
+        <div class="star-row">
+          <button class="star-btn" data-v="1" onclick="mSetStar(1)">⭐</button>
+          <button class="star-btn" data-v="2" onclick="mSetStar(2)">⭐</button>
+          <button class="star-btn" data-v="3" onclick="mSetStar(3)">⭐</button>
+          <button class="star-btn" data-v="4" onclick="mSetStar(4)">⭐</button>
+          <button class="star-btn" data-v="5" onclick="mSetStar(5)">⭐</button>
+        </div>
+        <div id="mStarLabel" style="font-size:11px;color:var(--muted);margin-top:6px;">Koi rating nahi</div>
+      </div>
+      <div class="google-card">
+        <h4><div class="g-logo"></div> Google Review</h4>
+        <button class="qr-btn" onclick="openQR()">📱 QR Dikhao</button>
+        <div class="g-counter">
+          <div class="g-counter-label">Kitne ne review diya?</div>
+          <div class="g-btns"><button class="g-btn" onclick="mChangeGR(-1)">−</button><div class="g-num" id="mGrNum">0</div><button class="g-btn plus" onclick="mChangeGR(1)">+</button></div>
+        </div>
+      </div>
+      <button class="btn-primary" id="mSubmitBtn" onclick="mSubmitForm()">✅ REPORT SUBMIT KARO</button>
+      <div class="spacer"></div>
+    </div>
+    <!-- Success -->
+    <div class="success-screen" id="mechSuccessSection">
+      <span class="s-emoji" id="mSEmoji">🎉</span>
+      <div class="s-title" id="mSTitle">Submit Ho Gayi!</div>
+      <div class="s-msg" id="mSMsg">Branch owner verify karega.</div>
+      <div class="chip-wrap" id="mSChips"></div>
+      <button class="btn-primary btn-dark" onclick="mResetForm()">+ Nayi Entry</button>
+      <div class="spacer"></div>
+    </div>
+  </div>
+</div>
+
+<!-- QR OVERLAY -->
+<div class="qr-overlay" id="qrOverlay" onclick="closeQR()">
+  <div class="qr-popup" onclick="event.stopPropagation()">
+    <div class="qp-top">
+      <div class="qp-name">⚙️ Shivangi Auto Clinic</div>
+      <div class="qp-ask">Hamari service kaisi lagi?<br><strong>Google Review dijiye! 🙏</strong></div>
+      <div class="qp-stars">⭐⭐⭐⭐⭐</div>
+    </div>
+    <div class="qp-box"><div id="qrDiv"></div></div>
+    <div class="qp-hint">📷 Camera se scan karein</div>
+    <div class="qp-link">g.page/r/CSg2Z2OSYNVcEBM/review</div>
+    <button class="qp-close" onclick="closeQR()">✕ Band Karo</button>
+  </div>
+</div>
+
+<!-- LINK MODAL (Super Admin) -->
+<div class="modal-overlay" id="saLinksModal" onclick="$('saLinksModal').classList.remove('show')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3>🔗 Branch Links</h3>
+    <div class="link-box"><div class="link-label">Branch ID (BID)</div><div class="link-url" id="saLkBid">—</div><button class="copy-btn" onclick="copyText($('saLkBid').textContent)">Copy</button></div>
+    <div class="link-box"><div class="link-label">🏢 Branch Admin PIN</div><div class="link-url" id="saLkPin" style="color:var(--accent);font-weight:700;font-size:16px;">—</div></div>
+    <div class="link-box"><div class="link-label">🔗 Branch Admin URL</div><div class="link-url" id="saLkAdmin">—</div><button class="copy-btn" onclick="copyText($('saLkAdmin').textContent)">Copy</button></div>
+    <div class="link-box"><div class="link-label">👨‍🔧 Mechanic Form URL</div><div class="link-url" id="saLkMech">—</div><button class="copy-btn" onclick="copyText($('saLkMech').textContent)">Copy</button></div>
+    <button class="modal-close-btn" onclick="$('saLinksModal').classList.remove('show')">✕ Band Karo</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+<script>
+firebase.initializeApp({apiKey:"AIzaSyAH83DKzJ15zAE_o6Lof4qRDq3IAjxa1ok",authDomain:"shivangi-auto-clinic-99030.firebaseapp.com",databaseURL:"https://shivangi-auto-clinic-99030-default-rtdb.firebaseio.com",projectId:"shivangi-auto-clinic-99030",storageBucket:"shivangi-auto-clinic-99030.firebasestorage.app",messagingSenderId:"306166692836",appId:"1:306166692836:web:b87bb7a3444d3b7e3ba5f1"});
+const db=firebase.database();
+const $=id=>document.getElementById(id);
+const fmt=n=>Number(n).toLocaleString('en-IN');
+const toInputDate=d=>d.toISOString().split('T')[0];
+
+function showToast(msg,type='',dur=2600){const t=$('toast');t.textContent=msg;t.className='toast '+type+' show';clearTimeout(t._t);t._t=setTimeout(()=>t.className='toast',dur);}
+function copyText(txt){navigator.clipboard.writeText(txt).then(()=>showToast('📋 Copy ho gaya!','ok')).catch(()=>showToast(txt));}
+function timeStr(iso){if(!iso)return '';return new Date(iso).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true});}
+function dispDate(s){if(!s)return s;const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d).toLocaleDateString('en-IN',{weekday:'short',day:'2-digit',month:'short'});}
+
+/* ═════════ GLOBAL DATA ═════════ */
+let allBranches={}, allEntriesMap={};
+let currentPanel='launcher';
+let superLoggedIn=false, branchLoggedIn=false;
+let selectedBid=null, selectedBranch=null;
+let branchEntries={};
+let superConfig={super_pin:'9999'};
+
+/* ═════════ PANEL SWITCH ═════════ */
+function switchPanel(panel,btn){
+  currentPanel=panel;
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
+  $('panel-'+panel).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(panel==='launcher') refreshLauncher();
+  if(panel==='branch'&&selectedBid&&branchLoggedIn) refreshBranchData();
+}
+
+function switchSubTab(prefix,tab,btn){
+  const parent=btn.closest('.sub-tabs').parentElement;
+  parent.querySelectorAll('.sub-panel').forEach(p=>p.classList.remove('active'));
+  btn.closest('.sub-tabs').querySelectorAll('.sub-tab').forEach(b=>b.classList.remove('active'));
+  $(prefix+'sub-'+tab).classList.add('active');
+  btn.classList.add('active');
+  if(prefix==='b'&&tab==='verify') renderBranchVerify();
+  if(prefix==='b'&&tab==='mechanics') renderBranchMechanics();
+  if(prefix==='b'&&tab==='report') renderBranchReport();
+}
+
+/* ═════════ FIREBASE INIT ═════════ */
+async function init(){
+  try{
+    const s=await db.ref('sac_config').get();
+    if(s.exists()) superConfig={...superConfig,...s.val()};
+  }catch(e){}
+  db.ref('sac_branches').on('value',snap=>{
+    allBranches=snap.exists()?snap.val():{};
+    updateAllSelects();
+    if(currentPanel==='launcher') refreshLauncher();
+    if(currentPanel==='super'&&superLoggedIn) renderSuperBranches();
+  });
+  db.ref('sac_entries').on('value',snap=>{
+    allEntriesMap={};
+    if(snap.exists()){
+      snap.forEach(bSnap=>{
+        const bid=bSnap.key;
+        bSnap.forEach(eSnap=>{
+          allEntriesMap[bid+'__'+eSnap.key]={...eSnap.val(),_bid:bid,_key:eSnap.key};
+        });
+      });
+    }
+    if(currentPanel==='super'&&superLoggedIn) renderSuperBranches();
+    if(currentPanel==='launcher') refreshLauncher();
+    if(currentPanel==='branch'&&branchLoggedIn) refreshBranchData();
+  });
+  // Check firebase
+  try{
+    await db.ref('.info/connected').get();
+    $('laFb').textContent='✅';
+  }catch(e){$('laFb').textContent='❌';}
+}
+init();
+
+/* ═════════ SELECTS ═════════ */
+function updateAllSelects(){
+  const selects=['bSelectBranch','mSelectBranch'];
+  selects.forEach(sid=>{
+    const sel=$(sid);if(!sel)return;
+    const cur=sel.value;
+    sel.innerHTML='<option value="">— Branch chunein —</option>';
+    Object.entries(allBranches).forEach(([bid,b])=>{sel.innerHTML+=`<option value="${bid}">${b.name||bid}</option>`;});
+    if(cur) sel.value=cur;
+  });
+  // also branchFilter in reports
+  const bf=$('bFilterBranch');
+  if(bf){bf.innerHTML='<option value="all">Sabhi</option>';Object.entries(allBranches).forEach(([bid,b])=>{bf.innerHTML+=`<option value="${bid}">${b.name||bid}</option>`;});}
+}
+
+/* ═════════ LAUNCHER ═════════ */
+function refreshLauncher(){
+  const bCount=Object.keys(allBranches).length;
+  $('laBr').textContent=bCount;
+  let eCount=0;Object.values(allEntriesMap).forEach(()=>eCount++);
+  $('laEnt').textContent=eCount;
+  const c=$('launchBranchList');
+  if(!bCount){c.innerHTML='<div class="empty-state"><div class="ei">🏢</div>Koi branch nahi. Super Admin tab mein branch banao.</div>';return;}
+  const base=window.location.href.split('?')[0];
+  let html='';
+  Object.entries(allBranches).forEach(([bid,b])=>{
+    const pending=Object.values(allEntriesMap).filter(e=>e._bid===bid&&e.status==='pending').length;
+    const adminUrl=base+'?bid='+bid+'#branch-admin';
+    const mechUrl=base+'?bid='+bid+'#mechanic';
+    html+=`<div class="branch-item">
+      <div class="bi-name">🏢 ${b.name||bid} ${b.city?'— '+b.city:''}</div>
+      <div class="bi-pin">🔐 Admin PIN: <strong>${b.pin||'—'}</strong> ${pending>0?`&nbsp;|&nbsp; ⏳ <strong style="color:var(--red)">${pending} pending</strong>`:''}</div>
+      <div class="bi-btns">
+        <button class="bi-btn orange" onclick="quickOpenBranch('${bid}')">🏢 Branch Admin</button>
+        <button class="bi-btn blue" onclick="quickOpenMechanic('${bid}')">👨‍🔧 Mechanic Form</button>
+      </div>
+    </div>`;
+  });
+  c.innerHTML=html;
+}
+
+function quickOpenBranch(bid){
+  $('bSelectBranch').value=bid;
+  onBranchSelect();
+  // Switch to branch panel
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
+  $('panel-branch').classList.add('active');
+  document.querySelectorAll('.nav-tab')[2].classList.add('active');
+  currentPanel='branch';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function quickOpenMechanic(bid){
+  $('mSelectBranch').value=bid;
+  onMechBranchSelect();
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
+  $('panel-mechanic').classList.add('active');
+  document.querySelectorAll('.nav-tab')[3].classList.add('active');
+  currentPanel='mechanic';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ═════════ SUPER ADMIN PIN ═════════ */
+let sPinBuf='';
+function superPinKey(d){if(sPinBuf.length>=4)return;sPinBuf+=d;sUpdateDots();if(sPinBuf.length===4)setTimeout(sSuperCheckPin,180);}
+function superPinDel(){sPinBuf=sPinBuf.slice(0,-1);sUpdateDots();}
+function superPinClear(){sPinBuf='';sUpdateDots();$('superPinErr').textContent='';}
+function sUpdateDots(){for(let i=0;i<4;i++)$('sp'+i).className='pin-dot'+(i<sPinBuf.length?' filled-gold':'');}
+function sSuperCheckPin(){
+  if(sPinBuf===(superConfig.super_pin||'9999')){
+    $('superPinWrap').style.display='none';$('superContent').style.display='block';
+    superLoggedIn=true;renderSuperBranches();
+  } else {
+    $('superPinErr').textContent='❌ Galat PIN! Default: 9999';sPinBuf='';sUpdateDots();
+    const b=$('superPinWrap').querySelector('.pin-box');b.style.animation='shake 0.4s';setTimeout(()=>b.style.animation='',400);
+  }
+}
+
+/* ═════════ SUPER ADMIN CONTENT ═════════ */
+function renderSuperBranches(){
+  const now=new Date();const ms=toInputDate(new Date(now.getFullYear(),now.getMonth(),1));
+  const mApproved=Object.values(allEntriesMap).filter(e=>e.status==='approved'&&e.date>=ms);
+  $('sgBranches').textContent=Object.keys(allBranches).length;
+  $('sgMonthly').textContent='₹'+fmt(mApproved.reduce((s,e)=>s+(e.achieved||0),0));
+  $('sgAmc').textContent=mApproved.reduce((s,e)=>s+(e.amcCount||0),0);
+  $('sgReviews').textContent=mApproved.reduce((s,e)=>s+(e.googleReviews||0),0);
+  const c=$('superBranchesList');
+  if(!Object.keys(allBranches).length){c.innerHTML='<div class="empty-state"><div class="ei">🏢</div>Koi branch nahi. Upar se banao.</div>';return;}
+  let html='';
+  Object.entries(allBranches).forEach(([bid,b])=>{
+    const bm=mApproved.filter(e=>e._bid===bid);
+    const labour=bm.reduce((s,e)=>s+(e.achieved||0),0);
+    const target=b.settings?.monthlyTarget||120000;
+    const pct=Math.min(100,Math.round((labour/target)*100));
+    const pending=Object.values(allEntriesMap).filter(e=>e._bid===bid&&e.status==='pending').length;
+    html+=`<div class="branch-card"><div class="bc-head" onclick="toggleBC('${bid}')">
+      <div class="bc-info"><div class="bc-name">🏢 ${b.name||bid}</div><div class="bc-meta">📍 ${b.city||'—'} · 🔐 PIN: ${b.pin||'—'} · ${pending>0?`⏳${pending} pending`:'✅ Clear'}</div></div>
+      <div><div class="bc-labour">₹${fmt(labour)}</div><div style="font-size:10px;color:var(--muted);text-align:right;">${pct}%</div></div>
+    </div>
+    <div class="bc-body" id="bcb_${bid}">
+      <div class="bc-stats-grid">
+        <div class="bc-stat"><div class="bc-stat-label">Labour</div><div class="bc-stat-val">₹${fmt(labour)}</div></div>
+        <div class="bc-stat"><div class="bc-stat-label">AMC</div><div class="bc-stat-val">${bm.reduce((s,e)=>s+(e.amcCount||0),0)}</div></div>
+        <div class="bc-stat"><div class="bc-stat-label">Reviews</div><div class="bc-stat-val">${bm.reduce((s,e)=>s+(e.googleReviews||0),0)}</div></div>
+        <div class="bc-stat"><div class="bc-stat-label">Target</div><div class="bc-stat-val">₹${fmt(target)}</div></div>
+        <div class="bc-stat"><div class="bc-stat-label">Progress</div><div class="bc-stat-val" style="color:${pct>=80?'var(--green)':'var(--red)'}">${pct}%</div></div>
+        <div class="bc-stat"><div class="bc-stat-label">Pending</div><div class="bc-stat-val" style="color:${pending>0?'var(--red)':'var(--green)'}">${pending}</div></div>
+      </div>
+      <div class="bc-actions">
+        <button class="bc-btn blue" onclick="showSaLinks('${bid}')">🔗 Links & PIN</button>
+        <button class="bc-btn red" onclick="saDeleteBranch('${bid}','${(b.name||'').replace(/'/g,'')}')">🗑️ Delete</button>
+      </div>
+    </div></div>`;
+  });
+  c.innerHTML=html;
+}
+function toggleBC(bid){const el=$('bcb_'+bid);el.classList.toggle('open');}
+function showSaLinks(bid){
+  const b=allBranches[bid];if(!b)return;
+  const base=window.location.origin+window.location.pathname.replace(/[^/]*$/,'');
+  $('saLkBid').textContent=bid;
+  $('saLkPin').textContent=b.pin||'—';
+  $('saLkAdmin').textContent=base+'branch-admin.html?bid='+bid;
+  $('saLkMech').textContent=base+'mechanic-form.html?bid='+bid;
+  $('saLinksModal').classList.add('show');
+}
+async function createBranch(){
+  const name=($('nbName')?.value||'').trim();const city=($('nbCity')?.value||'').trim();const pin=($('nbPin')?.value||'').trim();
+  const monthly=parseInt($('nbMonthly').value)||120000;const daily=parseInt($('nbDaily').value)||4000;const review=parseInt($('nbReview').value)||250;
+  if(!name){showToast('⚠️ Branch naam daalo!','err');return;}
+  if(!pin||pin.length!==4||!/^\d{4}$/.test(pin)){showToast('⚠️ 4 digit PIN chahiye!','err');return;}
+  const bid='b_'+Date.now();
+  try{
+    await db.ref('sac_branches/'+bid).set({name,city,pin,settings:{monthlyTarget:monthly,dailyTarget:daily,reviewTarget:review},createdAt:new Date().toISOString()});
+    $('nbName').value='';$('nbCity').value='';$('nbPin').value='';$('nbMonthly').value='';$('nbDaily').value='';$('nbReview').value='';
+    showToast('✅ '+name+' branch ban gayi!','ok');
+    showSaLinks(bid);
+  }catch(e){showToast('❌ Error: '+e.message,'err');}
+}
+async function saDeleteBranch(bid,name){
+  if(!confirm(`"${name}" delete karo? Sab entries bhi jayengi!`))return;
+  try{
+    await db.ref('sac_branches/'+bid).remove();
+    await db.ref('sac_entries/'+bid).remove();
+    await db.ref('sac_mechanics/'+bid).remove();
+    showToast('🗑️ Deleted!','ok');
+  }catch(e){showToast('❌ Error!','err');}
+}
+
+/* ═════════ BRANCH ADMIN ═════════ */
+let bPinBuf='';
+function onBranchSelect(){
+  const bid=$('bSelectBranch').value;
+  if(!bid){$('branchPinWrap').style.display='none';$('branchContent').style.display='none';return;}
+  selectedBid=bid;selectedBranch=allBranches[bid]||{};
+  branchLoggedIn=false;bPinBuf='';
+  $('branchPinTitle').textContent='🏢 '+(selectedBranch.name||'Branch');
+  $('branchPinErr').textContent='';
+  for(let i=0;i<4;i++) $('bp'+i).className='pin-dot';
+  $('branchPinWrap').style.display='block';
+  $('branchContent').style.display='none';
+}
+function branchPinKey(d){if(bPinBuf.length>=4)return;bPinBuf+=d;bUpdateDots();if(bPinBuf.length===4)setTimeout(bCheckPin,180);}
+function branchPinDel(){bPinBuf=bPinBuf.slice(0,-1);bUpdateDots();}
+function branchPinClear(){bPinBuf='';bUpdateDots();$('branchPinErr').textContent='';}
+function bUpdateDots(){for(let i=0;i<4;i++)$('bp'+i).className='pin-dot'+(i<bPinBuf.length?' filled':'');}
+function bCheckPin(){
+  const correctPin=selectedBranch.pin||'1234';
+  if(bPinBuf===correctPin){
+    $('branchPinWrap').style.display='none';$('branchContent').style.display='block';
+    branchLoggedIn=true;
+    $('bsMonthly').value=selectedBranch.settings?.monthlyTarget||120000;
+    $('bsDaily').value=selectedBranch.settings?.dailyTarget||4000;
+    $('bsReview').value=selectedBranch.settings?.reviewTarget||250;
+    refreshBranchData();
+  } else {
+    $('branchPinErr').textContent='❌ Galat PIN!';bPinBuf='';bUpdateDots();
+    const b=$('branchPinWrap').querySelector('.pin-box');b.style.animation='shake 0.4s';setTimeout(()=>b.style.animation='',400);
+  }
+}
+
+function refreshBranchData(){
+  branchEntries=Object.values(allEntriesMap).filter(e=>e._bid===selectedBid);
+  renderBranchReport();
+}
+
+function renderBranchReport(){
+  if(!selectedBid||!branchLoggedIn)return;
+  const bs=selectedBranch.settings||{};
+  const now=new Date();const ms=toInputDate(new Date(now.getFullYear(),now.getMonth(),1));
+  const mApproved=branchEntries.filter(e=>e.status==='approved'&&e.date>=ms);
+  const mEarned=mApproved.reduce((s,e)=>s+(e.achieved||0),0);
+  const mTarget=bs.monthlyTarget||120000;
+  const mPct=Math.min(100,Math.round((mEarned/mTarget)*100));
+  $('bMpEarned').textContent='₹'+fmt(mEarned);$('bMpTarget').textContent='₹'+fmt(mTarget);$('bMpRem').textContent='₹'+fmt(Math.max(0,mTarget-mEarned));
+  $('bMpFill').style.width=mPct+'%';$('bMpFill').style.background=mPct>=100?'#52b788':'var(--accent)';$('bMpPct').textContent=mPct+'% complete';
+  const approved=branchEntries.filter(e=>e.status==='approved');
+  const tL=approved.reduce((s,e)=>s+(e.achieved||0),0);
+  const uD=[...new Set(approved.map(e=>e.date))].length;
+  const tA=approved.reduce((s,e)=>s+(e.amcCount||0),0);
+  const tGR=mApproved.reduce((s,e)=>s+(e.googleReviews||0),0);
+  $('bSumL').textContent='₹'+fmt(tL);$('bSumLE').textContent=approved.length+' entries';
+  $('bSumA').textContent='₹'+fmt(uD>0?Math.round(tL/uD):0);$('bSumAD').textContent=uD+' days';
+  $('bSumAmc').textContent=tA;$('bSumAmcC').textContent='₹'+fmt(tA*125);
+  $('bSumGR').textContent=tGR;
+  renderBranchEntries(approved);
+}
+
+function renderBranchEntries(entries){
+  const c=$('bEntriesList');
+  if(!entries.length){c.innerHTML='<div class="empty-state"><div class="ei">📭</div>Koi approved entry nahi</div>';return;}
+  const groups={};entries.sort((a,b)=>b.date.localeCompare(a.date)).forEach(e=>{(groups[e.date]=groups[e.date]||[]).push(e);});
+  let html='';
+  Object.keys(groups).sort((a,b)=>b.localeCompare(a)).forEach(date=>{
+    const list=groups[date];const dt=list.reduce((s,e)=>s+(e.achieved||0),0);
+    html+=`<div class="dg-header">${dispDate(date)} — ₹${fmt(dt)}<span class="dg-count">${list.length}</span></div>`;
+    list.forEach(e=>{
+      const pct=e.pct||Math.round(((e.achieved||0)/(e.target||1))*100);
+      html+=`<div class="entry-row"><div class="er1"><span class="er-name">👤 ${e.mechanic}</span><span class="er-time">${timeStr(e.submittedAt)}</span></div>
+      <div class="er-tags"><span class="tag ${pct>=80?'green':'red'}">₹${fmt(e.achieved||0)}</span><span class="tag ${pct>=80?'green':'red'}">${pct}%</span>${e.amcCount>0?`<span class="tag orange">AMC×${e.amcCount}</span>`:''}${e.starRating>0?`<span class="tag yellow">${'⭐'.repeat(e.starRating)}</span>`:''}${e.googleReviews>0?`<span class="tag google">🔵${e.googleReviews}</span>`:''}</div></div>`;
+    });
+  });
+  c.innerHTML=html;
+}
+
+function renderBranchVerify(){
+  if(!branchLoggedIn)return;
+  const pending=branchEntries.filter(e=>e.status==='pending').sort((a,b)=>a.submittedTs-b.submittedTs);
+  $('bPendingBadge').textContent=pending.length+' pending';
+  const c=$('bPendingList');
+  if(!pending.length){c.innerHTML='<div class="empty-state"><div class="ei">✅</div>Sab clear!</div>';return;}
+  let html='';
+  pending.forEach(e=>{
+    const pct=e.pct||Math.round(((e.achieved||0)/(e.target||1))*100);const pc=pct>=80?'g':'r';
+    html+=`<div class="vi-item" id="vi_${e._key}">
+      <div class="vi-row1"><span class="vi-name">👤 ${e.mechanic}</span><span class="vi-date">${e.date} · ${timeStr(e.submittedAt)}</span></div>
+      <div class="vi-tags"><span class="vi-tag ${pc}">₹${fmt(e.achieved||0)}</span><span class="vi-tag ${pc}">${pct}%</span>${e.amcCount>0?`<span class="vi-tag o">AMC×${e.amcCount}</span>`:''}${e.starRating>0?`<span class="vi-tag y">${'⭐'.repeat(e.starRating)}</span>`:''}${e.googleReviews>0?`<span class="vi-tag gl">🔵${e.googleReviews}</span>`:''}</div>
+      <div class="vi-grid">
+        <div class="vi-cell"><div class="vi-cell-label">Target</div><div class="vi-cell-val">₹${fmt(e.target||0)}</div></div>
+        <div class="vi-cell"><div class="vi-cell-label">Kamaya</div><div class="vi-cell-val" style="color:${pct>=80?'var(--green)':'var(--red)'}">₹${fmt(e.achieved||0)}</div></div>
+        <div class="vi-cell"><div class="vi-cell-label">%</div><div class="vi-cell-val" style="color:${pct>=80?'var(--green)':'var(--red)'}">${pct}%</div></div>
+        <div class="vi-cell"><div class="vi-cell-label">AMC</div><div class="vi-cell-val" style="color:var(--accent)">${e.amcCount||0}</div></div>
+        <div class="vi-cell"><div class="vi-cell-label">Comm</div><div class="vi-cell-val" style="color:var(--accent)">₹${fmt((e.amcCount||0)*125)}</div></div>
+        <div class="vi-cell"><div class="vi-cell-label">Reviews</div><div class="vi-cell-val" style="color:#1a73e8">${e.googleReviews||0}</div></div>
+      </div>
+      <div class="vi-actions">
+        <button class="vi-approve" onclick="bVerify('${e._bid}','${e._key}','approved')">✅ Approve</button>
+        <button class="vi-reject" onclick="bVerify('${e._bid}','${e._key}','rejected')">❌ Reject</button>
+      </div></div>`;
+  });
+  c.innerHTML=html;
+}
+async function bVerify(bid,key,status){
+  const el=$('vi_'+key);if(el){el.style.opacity='0.5';el.style.pointerEvents='none';}
+  try{await db.ref('sac_entries/'+bid+'/'+key).update({status,verifiedAt:new Date().toISOString()});showToast(status==='approved'?'✅ Approved!':'❌ Rejected',status==='approved'?'ok':'err');}
+  catch(e){showToast('❌ Error!','err');if(el){el.style.opacity='1';el.style.pointerEvents='';}}
+}
+
+function renderBranchMechanics(){
+  if(!selectedBid)return;
+  db.ref('sac_mechanics/'+selectedBid).get().then(snap=>{
+    const mechanics=snap.exists()?Object.entries(snap.val()).map(([id,v])=>({id,...v})):[];
+    const c=$('bMechList');
+    if(!mechanics.length){c.innerHTML='<div class="empty-state"><div class="ei">👷</div>Koi mechanic nahi</div>';return;}
+    let html='';
+    mechanics.sort((a,b)=>(a.name||'').localeCompare(b.name||'')).forEach(m=>{
+      html+=`<div class="mech-row"><div><div class="mech-name">👤 ${m.name}</div><div class="mech-meta">📱 ${m.phone||'—'}</div></div>
+      <div class="mech-actions">
+        <span class="badge-sm ${m.active===false?'inactive':'active'}">${m.active===false?'Off':'On'}</span>
+        <button class="btn-sm" onclick="bToggleMech('${m.id}',${m.active===false})">${m.active===false?'Activate':'Deactivate'}</button>
+        <button class="btn-sm" style="color:var(--red);border-color:#ffb3b3;" onclick="bDelMech('${m.id}','${m.name}')">🗑️</button>
+      </div></div>`;
+    });
+    c.innerHTML=html;
+  });
+}
+async function addMechanic(){
+  const name=($('mNewName')?.value||'').trim();const phone=($('mNewPhone')?.value||'').trim();
+  if(!name){showToast('⚠️ Naam daalo!','err');return;}
+  try{
+    await db.ref('sac_mechanics/'+selectedBid+'/m_'+Date.now()).set({name,phone,active:true,addedAt:new Date().toISOString()});
+    $('mNewName').value='';$('mNewPhone').value='';
+    showToast('✅ '+name+' add ho gaya!','ok');renderBranchMechanics();
+  }catch(e){showToast('❌ Error!','err');}
+}
+async function bToggleMech(mid,makeActive){
+  try{await db.ref('sac_mechanics/'+selectedBid+'/'+mid).update({active:makeActive});showToast(makeActive?'✅ Active!':'⛔ Inactive!','ok');renderBranchMechanics();}
+  catch(e){showToast('❌ Error!','err');}
+}
+async function bDelMech(mid,name){
+  if(!confirm(name+' delete karo?'))return;
+  try{await db.ref('sac_mechanics/'+selectedBid+'/'+mid).remove();showToast('🗑️ Deleted','ok');renderBranchMechanics();}
+  catch(e){showToast('❌ Error!','err');}
+}
+async function bSaveSettings(){
+  const m=parseInt($('bsMonthly').value),d=parseInt($('bsDaily').value),r=parseInt($('bsReview').value);
+  if(isNaN(m)||isNaN(d)||isNaN(r)){showToast('⚠️ Sab bharo!','err');return;}
+  try{
+    await db.ref('sac_branches/'+selectedBid+'/settings').set({monthlyTarget:m,dailyTarget:d,reviewTarget:r});
+    selectedBranch.settings={monthlyTarget:m,dailyTarget:d,reviewTarget:r};
+    showToast('✅ Save ho gaya!','ok');renderBranchReport();
+  }catch(e){showToast('❌ Error!','err');}
+}
+function bExportCSV(){
+  const approved=branchEntries.filter(e=>e.status==='approved');
+  if(!approved.length){showToast('Koi entry nahi!');return;}
+  const rows=[['Date','Mechanic','Target','Achieved','Pct','AMC','Commission','Stars','Reviews']];
+  approved.forEach(e=>rows.push([e.date,e.mechanic,e.target||0,e.achieved||0,(e.pct||0)+'%',e.amcCount||0,(e.amcCount||0)*125,e.starRating||0,e.googleReviews||0]));
+  const csv=rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download=(selectedBranch.name||'branch')+'_report.csv';a.click();showToast('⬇️ CSV!','ok');
+}
+
+/* ═════════ MECHANIC FORM ═════════ */
+let mBid=null, mBranch=null, mBranchSettings={monthlyTarget:120000,dailyTarget:4000,reviewTarget:250};
+let mAmcCount=0, mGrCount=0, mSelStar=0, mQrDone=false;
+
+function onMechBranchSelect(){
+  mBid=$('mSelectBranch').value;
+  if(!mBid){$('mechFormWrap').style.display='none';return;}
+  mBranch=allBranches[mBid]||{};
+  mBranchSettings={...mBranchSettings,...(mBranch.settings||{})};
+  $('mechSelectWrap').style.display='none';
+  $('mechFormWrap').style.display='block';
+  $('mechBranchLabel').textContent='📍 '+(mBranch.name||'Branch');
+  $('mfDailyHint').textContent=fmt(mBranchSettings.dailyTarget);
+  $('mfTarget').placeholder='₹'+fmt(mBranchSettings.dailyTarget);
+  mSetToday();mBuildNameField();mRefreshTargets();
+  // input listener
+  $('mfAchieved').oninput=function(){
+    const t=parseFloat($('mfTarget').value)||mBranchSettings.dailyTarget;
+    const a=parseFloat(this.value);const h=$('mfAchHint');
+    if(!isNaN(a)&&t>0){const p=Math.round((a/t)*100);h.textContent=p+'% '+(p>=100?'🎯':p>=80?'💪':'📉');h.className='field-hint '+(p>=80?'green':'red');}
+    else h.textContent='';
+  };
+}
+
+async function mRefreshTargets(){
+  try{
+    const snap=await db.ref('sac_entries/'+mBid).get();
+    const entries=snap.exists()?Object.values(snap.val()):[];
+    const now=new Date();const ms=toInputDate(new Date(now.getFullYear(),now.getMonth(),1));
+    const approved=entries.filter(e=>e.status==='approved'&&e.date>=ms);
+    const earned=approved.reduce((s,e)=>s+(e.achieved||0),0);
+    const reviews=approved.reduce((s,e)=>s+(e.googleReviews||0),0);
+    $('mStripMonthly').textContent=fmt(Math.max(0,mBranchSettings.monthlyTarget-earned));
+    $('mStripDaily').textContent=fmt(mBranchSettings.dailyTarget);
+    $('mStripReview').textContent=Math.max(0,(mBranchSettings.reviewTarget||250)-reviews);
+  }catch(e){}
+}
+
+async function mBuildNameField(){
+  const wrap=$('mfNameWrap');
+  try{
+    const snap=await db.ref('sac_mechanics/'+mBid).get();
+    const mechanics=snap.exists()?Object.entries(snap.val()).filter(([,v])=>v.active!==false).map(([id,v])=>({id,...v})):[];
+    if(mechanics.length>0){
+      wrap.innerHTML=`<label>Apna Naam Chuno</label><select id="mfName"><option value="">— Naam chunein —</option>${mechanics.map(m=>`<option value="${m.name}">${m.name}</option>`).join('')}</select>`;
+    } else {
+      wrap.innerHTML=`<label>Naam Likho</label><input type="text" id="mfName" placeholder="Aapka naam">`;
+      const saved=localStorage.getItem('sac_mname_'+mBid);if(saved) $('mfName').value=saved;
+    }
+  }catch(e){wrap.innerHTML=`<label>Naam</label><input type="text" id="mfName" placeholder="Aapka naam">`;}
+}
+
+function mSetToday(){$('mfDate').value=toInputDate(new Date());}
+function mSetStar(v){mSelStar=v;document.querySelectorAll('.star-btn').forEach(b=>b.classList.toggle('active',parseInt(b.dataset.v)<=v));const ls=['','Bahut Bura 😞','Theek Nahi 😐','Theek Hai 🙂','Acha Tha 😊','5 Star! 🌟'];$('mStarLabel').textContent=ls[v];}
+function mChangeAmc(d){mAmcCount=Math.max(0,mAmcCount+d);$('mAmcNum').textContent=mAmcCount;mRenderAmc();}
+function mChangeGR(d){mGrCount=Math.max(0,mGrCount+d);$('mGrNum').textContent=mGrCount;}
+function mRenderAmc(){
+  const list=$('mAmcList');const container=$('mAmcEntries');
+  if(mAmcCount===0){list.style.display='none';container.innerHTML='';return;}
+  list.style.display='block';
+  const cur=container.querySelectorAll('.amc-entry').length;
+  for(let i=cur;i<mAmcCount;i++){
+    const div=document.createElement('div');div.className='amc-entry';div.dataset.index=i;div.style.animationDelay=(i*0.06)+'s';
+    div.innerHTML=`<div class="ace-num">🚗 Customer ${i+1}</div><div class="ace-fields"><input type="text" id="maN${i}" placeholder="Naam"><input type="tel" id="maM${i}" placeholder="Mobile (10 digit)" maxlength="10" inputmode="numeric"><input type="text" id="maV${i}" placeholder="Gaadi number (optional)" style="text-transform:uppercase"></div>`;
+    container.appendChild(div);
+  }
+  for(let i=cur-1;i>=mAmcCount;i--){const el=container.querySelector(`[data-index="${i}"]`);if(el)el.remove();}
+}
+function mGetAmc(){const c=[];for(let i=0;i<mAmcCount;i++)c.push({name:($(`maN${i}`)?.value||'').trim(),mobile:($(`maM${i}`)?.value||'').trim(),vehicle:($(`maV${i}`)?.value||'').trim().toUpperCase()});return c;}
+
+const REVIEW_URL='https://g.page/r/CSg2Z2OSYNVcEBM/review';
+function openQR(){$('qrOverlay').classList.add('show');if(!mQrDone){$('qrDiv').innerHTML='';new QRCode($('qrDiv'),{text:REVIEW_URL,width:170,height:170,colorDark:'#1a1a2e',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.H});mQrDone=true;}}
+function closeQR(){$('qrOverlay').classList.remove('show');}
+
+async function mSubmitForm(){
+  const date=$('mfDate').value;const name=($('mfName')?.value||'').trim();const achieved=parseFloat($('mfAchieved').value);
+  if(!date){showToast('⚠️ Date chunein!','err');return;}
+  if(!name){showToast('⚠️ Naam daalo!','err');return;}
+  if(isNaN(achieved)||achieved<0){showToast('⚠️ Sahi number daalo!','err');return;}
+  if(mAmcCount>0){const cs=mGetAmc();for(let i=0;i<cs.length;i++){if(!cs[i].name){showToast(`⚠️ Customer ${i+1} naam!`,'err');return;}if(!cs[i].mobile||cs[i].mobile.length<10){showToast(`⚠️ Customer ${i+1} mobile!`,'err');return;}}}
+  const btn=$('mSubmitBtn');btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Submit…';
+  const target=parseFloat($('mfTarget').value)||mBranchSettings.dailyTarget;
+  const pct=Math.round((achieved/target)*100);
+  const entry={branchId:mBid,branchName:mBranch.name||'',mechanic:name,date,target,achieved,pct,amcCount:mAmcCount,amcCustomers:mGetAmc(),amcCommission:mAmcCount*125,starRating:mSelStar,googleReviews:mGrCount,status:'pending',submittedAt:new Date().toISOString(),submittedTs:Date.now()};
+  try{
+    const key=`${date}_${name.replace(/\s+/g,'_')}_${Date.now()}`;
+    await db.ref('sac_entries/'+mBid+'/'+key).set(entry);
+    localStorage.setItem('sac_mname_'+mBid,name);
+    mShowSuccess(entry,pct);
+  }catch(e){showToast('❌ Submit fail! Internet check karo.','err',4000);btn.disabled=false;btn.innerHTML='✅ REPORT SUBMIT KARO';}
+}
+function mShowSuccess(entry,pct){
+  $('mechFormSection').style.display='none';$('mechSuccessSection').classList.add('show');
+  let emoji='📋',title='Submit Ho Gayi!';
+  if(pct>=100){emoji='🏆';title='Target Pura!';}else if(pct>=80){emoji='🎉';title='Badhiya!';}
+  $('mSEmoji').textContent=emoji;$('mSTitle').textContent=title;
+  $('mSMsg').textContent=`Branch: ${mBranch.name||''}. Owner check karega.`;
+  const chips=[{l:`📅 ${entry.date}`,c:'blue'},{l:`👤 ${entry.mechanic}`,c:''},{l:`₹${fmt(entry.achieved)} (${pct}%)`,c:pct>=80?'green':'red'}];
+  if(entry.amcCount>0)chips.push({l:`AMC×${entry.amcCount} ₹${fmt(entry.amcCommission)}`,c:'orange'});
+  if(entry.starRating>0)chips.push({l:`${'⭐'.repeat(entry.starRating)}`,c:'yellow'});
+  if(entry.googleReviews>0)chips.push({l:`🔵 ${entry.googleReviews} Reviews`,c:'google'});
+  chips.push({l:'⏳ Pending',c:'pending'});
+  const cont=$('mSChips');cont.innerHTML='';chips.forEach((c,i)=>{const el=document.createElement('div');el.className='chip '+c.c;el.style.animationDelay=(i*0.07)+'s';el.textContent=c.l;cont.appendChild(el);});
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function mResetForm(){
+  mAmcCount=0;mGrCount=0;mSelStar=0;$('mAmcNum').textContent='0';$('mGrNum').textContent='0';
+  $('mAmcEntries').innerHTML='';$('mAmcList').style.display='none';
+  document.querySelectorAll('.star-btn').forEach(b=>b.classList.remove('active'));$('mStarLabel').textContent='Koi rating nahi';
+  $('mfAchieved').value='';$('mfAchHint').textContent='';
+  $('mSubmitBtn').disabled=false;$('mSubmitBtn').innerHTML='✅ REPORT SUBMIT KARO';
+  mSetToday();$('mechSuccessSection').classList.remove('show');$('mechFormSection').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});mRefreshTargets();
+}
+</script>
+</body>
+</html>

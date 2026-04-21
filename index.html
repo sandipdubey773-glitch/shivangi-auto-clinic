@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Shivangi Auto Clinic – Launcher</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Noto+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f0eb;--card:#fff;--dark:#1a1a2e;--accent:#e85d04;--accent2:#0077b6;--green:#2d6a4f;--greenl:#d8f3dc;--red:#c1121f;--redl:#ffe5e5;--border:#e2ddd8;--muted:#8a8a8a;--gold:#f59e0b;--goldl:#fef3c7;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);font-family:'Noto Sans',sans-serif;min-height:100vh;}
+.topbar{background:linear-gradient(135deg,#1a1a2e,#2d3561);padding:16px 18px;text-align:center;}
+.topbar h1{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:#fff;}
+.topbar h1 span{color:var(--accent);}
+.topbar p{font-size:12px;color:rgba(255,255,255,0.5);margin-top:4px;}
+.main{padding:16px;max-width:480px;margin:0 auto;}
+
+/* STATUS CARD */
+.status-card{background:var(--card);border-radius:16px;padding:16px;box-shadow:0 3px 12px rgba(0,0,0,0.08);margin-bottom:16px;border-left:5px solid var(--gold);}
+.status-card h3{font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;color:var(--dark);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.status-row{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--bg);border-radius:9px;margin-bottom:6px;}
+.status-row:last-child{margin-bottom:0;}
+.sr-left{font-size:13px;font-weight:600;}
+.sr-right{font-size:12px;color:var(--muted);}
+.status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;}
+.dot-green{background:var(--green);}
+.dot-red{background:var(--red);}
+.dot-yellow{background:var(--gold);}
+
+/* LINK CARDS */
+.link-card{background:var(--card);border-radius:16px;padding:16px;box-shadow:0 3px 12px rgba(0,0,0,0.08);margin-bottom:14px;}
+.link-card.gold{border-top:4px solid var(--gold);}
+.link-card.orange{border-top:4px solid var(--accent);}
+.link-card.blue{border-top:4px solid var(--accent2);}
+.link-card h3{font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;color:var(--dark);margin-bottom:4px;}
+.link-card p{font-size:12px;color:var(--muted);margin-bottom:12px;}
+.pin-info{background:var(--bg);border-radius:9px;padding:9px 12px;margin-bottom:10px;font-size:12px;font-weight:600;color:var(--dark);border:1px solid var(--border);}
+.pin-info span{color:var(--accent);font-family:'Baloo 2',cursive;font-size:15px;}
+.open-btn{display:block;width:100%;background:var(--dark);color:#fff;border:none;border-radius:11px;padding:12px;font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;cursor:pointer;text-align:center;text-decoration:none;transition:transform 0.15s;margin-bottom:7px;}
+.open-btn:active{transform:scale(0.98);}
+.open-btn.gold{background:linear-gradient(135deg,var(--gold),#d97706);}
+.open-btn.orange{background:var(--accent);}
+.open-btn.blue{background:var(--accent2);}
+.copy-btn{display:block;width:100%;background:var(--bg);color:var(--muted);border:1.5px solid var(--border);border-radius:11px;padding:10px;font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;cursor:pointer;text-align:center;transition:all 0.15s;}
+.copy-btn:active{background:var(--greenl);color:var(--green);border-color:#b7e4c7;}
+
+/* BRANCH LIST */
+.branch-section{background:var(--card);border-radius:16px;padding:16px;box-shadow:0 3px 12px rgba(0,0,0,0.08);margin-bottom:14px;}
+.branch-section h3{font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;color:var(--dark);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.branch-item{background:var(--bg);border-radius:11px;padding:12px;margin-bottom:9px;border:1.5px solid var(--border);}
+.branch-item:last-child{margin-bottom:0;}
+.bi-name{font-family:'Baloo 2',cursive;font-size:14px;font-weight:800;color:var(--dark);margin-bottom:6px;}
+.bi-links{display:flex;flex-direction:column;gap:6px;}
+.bi-link-row{display:flex;align-items:center;gap:7px;}
+.bi-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted);min-width:65px;}
+.bi-url{flex:1;font-size:11px;color:var(--accent2);word-break:break-all;background:#fff;border-radius:6px;padding:5px 8px;border:1px solid var(--border);}
+.bi-copy{background:var(--accent2);color:#fff;border:none;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Baloo 2',cursive;}
+.bi-copy:active{opacity:0.8;}
+.no-branch{padding:16px;text-align:center;color:var(--muted);font-size:13px;}
+
+/* HOW IT WORKS */
+.how-card{background:linear-gradient(135deg,#1a1a2e,#2d3561);border-radius:16px;padding:16px;margin-bottom:14px;}
+.how-card h3{font-family:'Baloo 2',cursive;font-size:14px;font-weight:800;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;}
+.step{display:flex;gap:12px;margin-bottom:10px;}
+.step:last-child{margin-bottom:0;}
+.step-num{width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-family:'Baloo 2',cursive;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.step-text{font-size:12px;color:rgba(255,255,255,0.75);padding-top:4px;line-height:1.5;}
+.step-text strong{color:#fff;}
+
+.spacer{height:28px;}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a2e;color:#fff;padding:11px 20px;border-radius:99px;font-size:13px;font-weight:600;font-family:'Baloo 2',cursive;opacity:0;transition:all 0.3s;z-index:9999;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.ok{background:var(--green);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>⚙️ <span>Shivangi</span> Auto Clinic</h1>
+  <p>System Launcher — Sab Links Ek Jagah</p>
+</div>
+
+<div class="main">
+
+  <!-- STATUS -->
+  <div class="status-card">
+    <h3>📡 Firebase Status</h3>
+    <div class="status-row">
+      <span class="sr-left"><span class="status-dot dot-yellow" id="fbDot"></span>Firebase Connection</span>
+      <span class="sr-right" id="fbStatus">Checking…</span>
+    </div>
+    <div class="status-row">
+      <span class="sr-left"><span class="status-dot dot-yellow" id="brDot"></span>Branches</span>
+      <span class="sr-right" id="brStatus">Loading…</span>
+    </div>
+    <div class="status-row">
+      <span class="sr-left"><span class="status-dot dot-yellow" id="entDot"></span>Total Entries</span>
+      <span class="sr-right" id="entStatus">Loading…</span>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="how-card">
+    <h3>⚡ Kaise Use Karein</h3>
+    <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Super Admin</strong> open karo — PIN: <strong>9999</strong><br>Wahan se nayi branch banao</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-text">Branch banate hi <strong>🔗 Links button</strong> se branch admin link milega<br>Woh link branch owner ko do</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-text">Branch admin mein <strong>Mechanics tab</strong> se mechanic add karo<br>Phir mechanic form link share karo</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-text">Mechanic daily <strong>report submit</strong> karega<br>Branch owner verify karega, aap sab dekh sakte ho</div></div>
+  </div>
+
+  <!-- SUPER ADMIN -->
+  <div class="link-card gold">
+    <h3>👑 Super Admin Panel</h3>
+    <p>Aapka full control — sabhi branches, reports, settings</p>
+    <div class="pin-info">🔐 PIN: <span>9999</span> &nbsp;(Settings mein change karo)</div>
+    <a class="open-btn gold" href="super-admin.html" target="_blank">👑 Super Admin Kholein</a>
+    <button class="copy-btn" onclick="copyText(window.location.origin+window.location.pathname.replace('index.html','')+'super-admin.html')">📋 Link Copy Karo</button>
+  </div>
+
+  <!-- BRANCH LINKS (dynamic) -->
+  <div class="branch-section">
+    <h3>🏢 Branches ke Links</h3>
+    <div id="branchLinks"><div class="no-branch">⏳ Loading…</div></div>
+  </div>
+
+  <!-- DIRECT LINKS INFO -->
+  <div class="link-card orange">
+    <h3>🏢 Branch Admin Panel</h3>
+    <p>Har branch owner ko unka unique link do — neeche list mein milega</p>
+    <div class="pin-info" style="font-size:11px;">URL format: <code style="color:var(--accent2);">branch-admin.html?bid=BRANCH_ID</code><br>PIN: Branch banate waqt jo set kiya tha</div>
+  </div>
+
+  <div class="link-card blue">
+    <h3>👨‍🔧 Mechanic Form</h3>
+    <p>Mechanic ko uske branch ka link do — woh daily report bharta hai</p>
+    <div class="pin-info" style="font-size:11px;">URL format: <code style="color:var(--accent2);">mechanic-form.html?bid=BRANCH_ID</code><br>Koi PIN nahi — seedha form kholega</div>
+  </div>
+
+  <div class="spacer"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+<script>
+firebase.initializeApp({apiKey:"AIzaSyAH83DKzJ15zAE_o6Lof4qRDq3IAjxa1ok",authDomain:"shivangi-auto-clinic-99030.firebaseapp.com",databaseURL:"https://shivangi-auto-clinic-99030-default-rtdb.firebaseio.com",projectId:"shivangi-auto-clinic-99030",storageBucket:"shivangi-auto-clinic-99030.firebasestorage.app",messagingSenderId:"306166692836",appId:"1:306166692836:web:b87bb7a3444d3b7e3ba5f1"});
+const db=firebase.database();
+const $=id=>document.getElementById(id);
+
+function showToast(msg,type=''){const t=$('toast');t.textContent=msg;t.className='toast '+type+' show';clearTimeout(t._t);t._t=setTimeout(()=>t.className='toast',2400);}
+function copyText(txt){navigator.clipboard.writeText(txt).then(()=>showToast('📋 Copy ho gaya!','ok')).catch(()=>{showToast(txt);});}
+
+function getBase(){
+  const p=window.location.pathname;
+  return window.location.origin+p.substring(0,p.lastIndexOf('/')+1);
+}
+
+async function init(){
+  // Firebase check
+  try{
+    await db.ref('.info/connected').get();
+    $('fbDot').className='status-dot dot-green';
+    $('fbStatus').textContent='Connected ✅';
+  }catch(e){
+    $('fbDot').className='status-dot dot-red';
+    $('fbStatus').textContent='Error ❌';
+  }
+
+  // Load branches
+  try{
+    const snap=await db.ref('sac_branches').get();
+    const branches=snap.exists()?snap.val():{};
+    const count=Object.keys(branches).length;
+    $('brDot').className='status-dot dot-green';
+    $('brStatus').textContent=count+' branch'+(count!==1?'es':'');
+
+    // Load entries count
+    const eSnap=await db.ref('sac_entries').get();
+    let entCount=0;
+    if(eSnap.exists()) eSnap.forEach(b=>b.forEach(()=>entCount++));
+    $('entDot').className='status-dot dot-green';
+    $('entStatus').textContent=entCount+' entries';
+
+    // Render branch links
+    const base=getBase();
+    const c=$('branchLinks');
+    if(!count){
+      c.innerHTML='<div class="no-branch">🏢 Koi branch nahi. Super Admin se pehle branch banao.</div>';
+      return;
+    }
+    let html='';
+    Object.entries(branches).forEach(([bid,b])=>{
+      const adminLink=base+'branch-admin.html?bid='+bid;
+      const mechLink =base+'mechanic-form.html?bid='+bid;
+      html+=`<div class="branch-item">
+        <div class="bi-name">🏢 ${b.name||bid} ${b.city?'— '+b.city:''}</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">🔐 Branch PIN: <strong style="color:var(--accent);">${b.pin||'—'}</strong> &nbsp;|&nbsp; Targets: ₹${(b.settings?.monthlyTarget||120000).toLocaleString('en-IN')}/mo</div>
+        <div class="bi-links">
+          <div class="bi-link-row">
+            <span class="bi-label">🏢 Admin</span>
+            <span class="bi-url">${adminLink}</span>
+            <button class="bi-copy" onclick="copyText('${adminLink}')">Copy</button>
+          </div>
+          <div class="bi-link-row">
+            <span class="bi-label">👨‍🔧 Form</span>
+            <span class="bi-url">${mechLink}</span>
+            <button class="bi-copy" onclick="copyText('${mechLink}')">Copy</button>
+          </div>
+        </div>
+        <div style="display:flex;gap:7px;margin-top:9px;">
+          <a href="${adminLink}" target="_blank" style="flex:1;display:block;background:var(--accent);color:#fff;text-align:center;padding:9px;border-radius:9px;font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;text-decoration:none;">🏢 Admin Kholein</a>
+          <a href="${mechLink}" target="_blank" style="flex:1;display:block;background:var(--accent2);color:#fff;text-align:center;padding:9px;border-radius:9px;font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;text-decoration:none;">👨‍🔧 Form Kholein</a>
+        </div>
+      </div>`;
+    });
+    c.innerHTML=html;
+  }catch(e){
+    $('brDot').className='status-dot dot-red';
+    $('brStatus').textContent='Error: '+e.message;
+  }
+}
+
+// Auto-refresh every 30s
+init();
+setInterval(init,30000);
+</script>
+</body>
+</html>

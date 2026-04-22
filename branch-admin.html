@@ -612,6 +612,23 @@ function renderVerify(){
       e.amcCustomers.forEach((c,i)=>{amcHtml+=`<div class="amc-row"><span style="font-weight:800;color:var(--accent2);min-width:18px">${i+1}.</span><span style="font-weight:600;flex:1">${c.name||'—'}</span><span style="color:var(--muted);font-size:11px">📱 ${c.mobile||'—'}</span>${c.vehicle?`<span style="color:var(--accent);font-size:11px;font-weight:600">🚗 ${c.vehicle}</span>`:''}</div>`;});
       amcHtml+=`</div>`;
     }
+
+    // Google Review Details
+    let grHtml='';
+    if(e.googleReviews>0&&e.googleReviewDetails?.length){
+      grHtml=`<div style="background:#e8f0fe;border:1.5px solid #c5d8fc;border-radius:9px;padding:9px;margin-bottom:9px;">
+        <h5 style="font-size:11px;font-weight:700;color:#1a73e8;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;">🔵 Google Review Details</h5>`;
+      e.googleReviewDetails.forEach((g,i)=>{
+        grHtml+=`<div style="background:#fff;border-radius:8px;padding:8px 10px;margin-bottom:6px;border:1px solid #c5d8fc;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+            <span style="font-weight:700;font-size:12px;">👤 ${g.name||'—'}</span>
+            <span style="font-size:13px;">${'⭐'.repeat(g.stars||0)} <span style="font-family:'Baloo 2',cursive;font-weight:800;color:#1a73e8">${g.stars||0}/5</span></span>
+          </div>
+          ${g.comment?`<div style="font-size:11px;color:var(--muted);font-style:italic;">"${g.comment}"</div>`:''}
+        </div>`;
+      });
+      grHtml+=`</div>`;
+    }
     html+=`<div class="vi-item" id="vi_${e._key}">
       <div class="vi-row1"><span class="vi-name">👤 ${e.mechanic}</span><span class="vi-date">${e.date} · ${timeStr(e.submittedAt)}</span></div>
       <div class="vi-tags"><span class="vi-tag ${pc}">₹${fmt(e.achieved||0)}</span><span class="vi-tag ${pc}">${pct}%</span>${e.amcCount>0?`<span class="vi-tag o">AMC×${e.amcCount}</span>`:''}${e.starRating>0?`<span class="vi-tag y">${'⭐'.repeat(e.starRating)}</span>`:''}${e.googleReviews>0?`<span class="vi-tag gl">🔵${e.googleReviews}</span>`:''}</div>
@@ -624,6 +641,7 @@ function renderVerify(){
         <div class="vi-cell"><div class="vi-cell-label">Reviews</div><div class="vi-cell-val" style="color:#1a73e8">${e.googleReviews||0}</div></div>
       </div>
       ${amcHtml}
+      ${grHtml}
       <div class="vi-actions">
         <button class="vi-approve" onclick="verifyEntry('${e._key}','approved')">✅ Approve</button>
         <button class="vi-reject" onclick="verifyEntry('${e._key}','rejected')">❌ Reject</button>
@@ -702,24 +720,58 @@ function showLinksModal(){$('linkModal').classList.add('show');}
 function closeLinkModal(){$('linkModal').classList.remove('show');}
 function copyLink(id){navigator.clipboard.writeText($(id).textContent).then(()=>showToast('📋 Copy ho gaya!','ok')).catch(()=>showToast($(id).textContent));}
 
-/* CSV */
+/* CSV - No limit on AMC or GR customers */
+function buildCSVRows(entries){
+  // First find max AMC and GR counts across all entries
+  let maxAmc=0, maxGR=0;
+  entries.forEach(e=>{
+    maxAmc=Math.max(maxAmc,(e.amcCustomers||[]).length);
+    maxGR=Math.max(maxGR,(e.googleReviewDetails||[]).length);
+  });
+
+  // Build dynamic header
+  const header=['Date','Mechanic','Target','Achieved','Pct','AMC Count','AMC Commission','Stars','Google Reviews'];
+  for(let i=1;i<=maxAmc;i++){
+    header.push(`AMC Cust${i} Naam`, `AMC Cust${i} Mobile`, `AMC Cust${i} Gaadi`);
+  }
+  for(let i=1;i<=maxGR;i++){
+    header.push(`GR Cust${i} Naam`, `GR Cust${i} Stars`, `GR Cust${i} Review`);
+  }
+
+  const rows=[header];
+  entries.sort((a,b)=>b.date.localeCompare(a.date)).forEach(e=>{
+    const row=[e.date,e.mechanic,e.target||0,e.achieved||0,(e.pct||0)+'%',
+      e.amcCount||0,(e.amcCount||0)*125,e.starRating||0,e.googleReviews||0];
+    // All AMC customers — no limit
+    for(let i=0;i<maxAmc;i++){
+      const c=(e.amcCustomers||[])[i];
+      row.push(c?.name||'', c?.mobile||'', c?.vehicle||'');
+    }
+    // All GR customers — no limit
+    for(let i=0;i<maxGR;i++){
+      const g=(e.googleReviewDetails||[])[i];
+      row.push(g?.name||'', g?.stars?`${g.stars} Star`:'', g?.comment||'');
+    }
+    rows.push(row);
+  });
+  return rows;
+}
+
 function exportAllCSV(){
   const entries=Object.entries(allEntries).map(([k,v])=>({_key:k,...v})).filter(e=>e.status==='approved');
   if(!entries.length){showToast('Koi entry nahi!');return;}
-  const rows=[['Date','Mechanic','Target','Achieved','Pct','AMC','Commission','Stars','Google Reviews']];
-  entries.sort((a,b)=>b.date.localeCompare(a.date)).forEach(e=>rows.push([e.date,e.mechanic,e.target||0,e.achieved||0,(e.pct||0)+'%',e.amcCount||0,(e.amcCount||0)*125,e.starRating||0,e.googleReviews||0]));
-  dlCSV(rows,(branch?.name||'branch')+'_all_'+TODAY_STR+'.csv');
+  dlCSV(buildCSVRows(entries),(branch?.name||'branch')+'_all_'+TODAY_STR+'.csv');
 }
+
 function exportMechCSV(mName){
   const entries=Object.entries(allEntries).map(([k,v])=>({_key:k,...v})).filter(e=>e.status==='approved'&&e.mechanic===mName);
   if(!entries.length){showToast('Koi entry nahi!');return;}
-  const rows=[['Date','Mechanic','Target','Achieved','Pct','AMC','Commission','Stars','Google Reviews']];
-  entries.sort((a,b)=>b.date.localeCompare(a.date)).forEach(e=>rows.push([e.date,e.mechanic,e.target||0,e.achieved||0,(e.pct||0)+'%',e.amcCount||0,(e.amcCount||0)*125,e.starRating||0,e.googleReviews||0]));
-  dlCSV(rows,mName.replace(/\s+/g,'_')+'_report_'+TODAY_STR+'.csv');
+  dlCSV(buildCSVRows(entries),mName.replace(/\s+/g,'_')+'_report_'+TODAY_STR+'.csv');
 }
+
 function dlCSV(rows,filename){
-  const csv=rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
-  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
   a.download=filename;a.click();showToast('⬇️ CSV download!','ok');
 }
 </script>

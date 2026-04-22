@@ -126,6 +126,28 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
 @keyframes popIn{from{transform:scale(0.85);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @keyframes shine{from{opacity:0.7}to{opacity:1}}
+/* GR Customer Entries */
+.gr-entry{background:#fff;border:1.5px solid #c5d8fc;border-radius:10px;padding:11px 13px;margin-top:8px;animation:fadeUp 0.3s ease both;}
+.gr-entry-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;}
+.gr-entry-name{font-weight:700;font-size:13px;color:var(--dark);}
+.gr-entry-stars{font-size:13px;}
+.gr-entry-comment{font-size:11px;color:var(--muted);margin-top:2px;font-style:italic;}
+.gr-entry-del{background:var(--redl);color:var(--red);border:1px solid #ffb3b3;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;cursor:pointer;flex-shrink:0;}
+/* GR Modal */
+.gr-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9001;align-items:center;justify-content:center;padding:20px;}
+.gr-modal-overlay.show{display:flex;}
+.gr-modal{background:#fff;border-radius:20px;padding:22px;width:100%;max-width:340px;animation:popIn 0.25s cubic-bezier(.4,0,.2,1);}
+.gr-modal h3{font-family:'Baloo 2',cursive;font-size:17px;font-weight:800;color:var(--dark);margin-bottom:14px;}
+.gr-modal-field{margin-bottom:11px;}
+.gr-modal-field label{display:block;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;}
+.gr-modal-field input,.gr-modal-field textarea{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:9px;padding:11px 13px;font-size:14px;font-family:'Noto Sans',sans-serif;color:var(--text);outline:none;}
+.gr-modal-field input:focus,.gr-modal-field textarea:focus{border-color:#1a73e8;background:#fff;}
+.gr-modal-field textarea{resize:none;height:70px;}
+.gr-star-select{display:flex;gap:8px;margin-top:5px;}
+.gr-star-opt{font-size:28px;background:none;border:none;cursor:pointer;filter:grayscale(1);opacity:0.3;transition:all 0.15s;}
+.gr-star-opt.active{filter:none;opacity:1;transform:scale(1.1);}
+.gr-modal-save{width:100%;background:#1a73e8;color:#fff;border:none;border-radius:10px;padding:13px;font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;cursor:pointer;margin-top:4px;}
+.gr-modal-cancel{width:100%;background:var(--bg);color:var(--muted);border:1.5px solid var(--border);border-radius:10px;padding:11px;font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;cursor:pointer;margin-top:7px;}
 </style>
 </head>
 <body>
@@ -241,11 +263,13 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
         <div class="g-counter-row">
           <div class="g-counter-label">Kitne customers ne<br><strong style="color:#1a73e8">Google Review diya?</strong></div>
           <div class="g-btns">
-            <button class="g-btn" onclick="changeGR(-1)">−</button>
+            <button class="g-btn" onclick="grRemoveLast()">−</button>
             <div class="g-num" id="grNum">0</div>
-            <button class="g-btn plus" onclick="changeGR(1)">+</button>
+            <button class="g-btn plus" onclick="openGRModal()">+</button>
           </div>
         </div>
+        <!-- Customer Review Entries -->
+        <div id="grEntriesList"></div>
       </div>
 
       <button class="submit-btn" id="submitBtn" onclick="submitForm()">✅ REPORT SUBMIT KARO</button>
@@ -278,6 +302,34 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
   </div>
 </div>
 
+<!-- GR Customer Modal -->
+<div class="gr-modal-overlay" id="grModalOverlay" onclick="closeGRModal()">
+  <div class="gr-modal" onclick="event.stopPropagation()">
+    <h3>🔵 Google Review Add Karo</h3>
+    <div class="gr-modal-field">
+      <label>Customer ka Naam *</label>
+      <input type="text" id="grCustName" placeholder="Jaise: Ramesh Sharma" autocomplete="off">
+    </div>
+    <div class="gr-modal-field">
+      <label>Customer ne Kitne Stars Diye? *</label>
+      <div class="gr-star-select">
+        <button class="gr-star-opt" data-v="1" onclick="setGRStar(1)">⭐</button>
+        <button class="gr-star-opt" data-v="2" onclick="setGRStar(2)">⭐</button>
+        <button class="gr-star-opt" data-v="3" onclick="setGRStar(3)">⭐</button>
+        <button class="gr-star-opt" data-v="4" onclick="setGRStar(4)">⭐</button>
+        <button class="gr-star-opt" data-v="5" onclick="setGRStar(5)">⭐</button>
+      </div>
+      <div id="grStarLabel" style="font-size:11px;color:var(--muted);margin-top:5px;">Koi star select nahi</div>
+    </div>
+    <div class="gr-modal-field">
+      <label>Customer ne Kya Likha? (Optional)</label>
+      <textarea id="grCustComment" placeholder="Customer ka review likhein..."></textarea>
+    </div>
+    <button class="gr-modal-save" onclick="saveGREntry()">✅ Save Karo</button>
+    <button class="gr-modal-cancel" onclick="closeGRModal()">✕ Cancel</button>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -293,7 +345,8 @@ const MONTHLY_TARGET=120000;
 const urlParams=new URLSearchParams(window.location.search);
 const bid=urlParams.get('bid');
 
-let branch=null, mechanics=[], amcCount=0, grCount=0, selectedStar=0, qrGenerated=false;
+let branch=null, mechanics=[], amcCount=0, grReviews=[], selectedStar=0, qrGenerated=false;
+let grModalStar=0;
 let branchSettings={reviewTarget:250};
 let currentMechName='';
 
@@ -420,7 +473,66 @@ $('fAchieved') && document.addEventListener('input',function(e){
 const starLabels=['','Bahut Bura 😞','Theek Nahi 😐','Theek Hai 🙂','Acha Tha 😊','5 Star! 🌟'];
 function setStar(v){selectedStar=v;document.querySelectorAll('.star-btn').forEach(b=>b.classList.toggle('active',parseInt(b.dataset.v)<=v));const l=$('starLabel');l.textContent=starLabels[v];l.style.color=v===5?'#2d6a4f':'var(--muted)';}
 function changeAmc(d){amcCount=Math.max(0,amcCount+d);$('amcNum').textContent=amcCount;renderAmcEntries();}
-function changeGR(d){grCount=Math.max(0,grCount+d);$('grNum').textContent=grCount;}
+/* ── Google Review Modal ── */
+function openGRModal(){
+  grModalStar=0;
+  $('grCustName').value='';
+  $('grCustComment').value='';
+  $('grStarLabel').textContent='Koi star select nahi';
+  document.querySelectorAll('.gr-star-opt').forEach(b=>b.classList.remove('active'));
+  $('grModalOverlay').classList.add('show');
+  setTimeout(()=>$('grCustName').focus(),300);
+}
+function closeGRModal(){$('grModalOverlay').classList.remove('show');}
+
+const grStarLabels=['','Bahut Bura 😞','Theek Nahi 😐','Theek Hai 🙂','Acha Tha 😊','5 Star! Excellent! 🌟'];
+function setGRStar(v){
+  grModalStar=v;
+  document.querySelectorAll('.gr-star-opt').forEach(b=>b.classList.toggle('active',parseInt(b.dataset.v)<=v));
+  $('grStarLabel').textContent=grStarLabels[v];
+}
+
+function saveGREntry(){
+  const name=($('grCustName').value||'').trim();
+  if(!name){showToast('⚠️ Customer ka naam daalo!','err');return;}
+  if(!grModalStar){showToast('⚠️ Stars select karo!','err');return;}
+  const comment=($('grCustComment').value||'').trim();
+  grReviews.push({name,stars:grModalStar,comment,addedAt:new Date().toISOString()});
+  $('grNum').textContent=grReviews.length;
+  renderGREntries();
+  closeGRModal();
+  showToast('✅ Review add ho gaya!','ok');
+}
+
+function grRemoveLast(){
+  if(grReviews.length===0) return;
+  grReviews.pop();
+  $('grNum').textContent=grReviews.length;
+  renderGREntries();
+}
+
+function removeGREntry(idx){
+  grReviews.splice(idx,1);
+  $('grNum').textContent=grReviews.length;
+  renderGREntries();
+}
+
+function renderGREntries(){
+  const c=$('grEntriesList');
+  if(!grReviews.length){c.innerHTML='';return;}
+  let html='';
+  grReviews.forEach((r,i)=>{
+    html+=`<div class="gr-entry">
+      <div class="gr-entry-top">
+        <span class="gr-entry-name">👤 ${r.name}</span>
+        <span class="gr-entry-stars">${'⭐'.repeat(r.stars)} ${r.stars}/5</span>
+        <button class="gr-entry-del" onclick="removeGREntry(${i})">🗑️</button>
+      </div>
+      ${r.comment?`<div class="gr-entry-comment">"${r.comment}"</div>`:''}
+    </div>`;
+  });
+  c.innerHTML=html;
+}
 
 function renderAmcEntries(){
   const list=$('amcCustomerList');const container=$('amcEntries');
@@ -458,7 +570,7 @@ async function submitForm(){
   const target=parseFloat($('fTarget').value)||Math.round(Math.max(0,MONTHLY_TARGET)/getDaysLeft());
   const achieved=parseFloat($('fAchieved').value)||0;
   const pct=Math.round((achieved/target)*100);
-  const entry={branchId:bid,branchName:branch.name||'',mechanic:name,date:$('fDate').value,target,achieved,pct,amcCount,amcCustomers:getAmcCustomers(),amcCommission:amcCount*125,starRating:selectedStar,googleReviews:grCount,status:'pending',submittedAt:new Date().toISOString(),submittedTs:Date.now()};
+  const entry={branchId:bid,branchName:branch.name||'',mechanic:name,date:$('fDate').value,target,achieved,pct,amcCount,amcCustomers:getAmcCustomers(),amcCommission:amcCount*125,starRating:selectedStar,googleReviews:grReviews.length,googleReviewDetails:grReviews,status:'pending',submittedAt:new Date().toISOString(),submittedTs:Date.now()};
   try{
     const key=`${entry.date}_${name.replace(/\s+/g,'_')}_${Date.now()}`;
     await db.ref('sac_entries/'+bid+'/'+key).set(entry);
@@ -483,8 +595,9 @@ function showSuccess(entry,pct,mechName){
 }
 
 function resetForm(){
-  amcCount=0;grCount=0;selectedStar=0;
+  amcCount=0;grReviews=[];grModalStar=0;selectedStar=0;
   $('amcNum').textContent='0';$('grNum').textContent='0';
+  $('grEntriesList').innerHTML='';
   $('amcEntries').innerHTML='';$('amcCustomerList').style.display='none';
   document.querySelectorAll('.star-btn').forEach(b=>b.classList.remove('active'));
   $('starLabel').textContent='Koi rating nahi di';

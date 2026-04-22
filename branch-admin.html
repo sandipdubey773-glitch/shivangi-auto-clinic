@@ -9,7 +9,6 @@
 :root{--bg:#f5f0eb;--card:#fff;--dark:#1a1a2e;--accent:#e85d04;--accent2:#0077b6;--green:#2d6a4f;--greenl:#d8f3dc;--red:#c1121f;--redl:#ffe5e5;--yellow:#e9c46a;--yellowl:#fff8e1;--border:#e2ddd8;--muted:#8a8a8a;--text:#1a1a2e;}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;min-height:100vh;}
-/* PIN */
 .pin-screen{position:fixed;inset:0;background:var(--dark);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px;}
 .pin-screen.hide{display:none;}
 .pin-box{background:#fff;border-radius:24px;padding:28px 22px;width:100%;max-width:310px;text-align:center;}
@@ -24,7 +23,6 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
 .pin-key{background:var(--bg);border:1.5px solid var(--border);border-radius:11px;padding:13px;font-family:'Baloo 2',cursive;font-size:19px;font-weight:700;color:var(--dark);cursor:pointer;transition:all 0.15s;}
 .pin-key:active{background:var(--accent);color:#fff;border-color:var(--accent);}
 .pin-error{font-size:12px;color:var(--red);margin-top:10px;min-height:16px;font-weight:600;}
-/* TOPBAR */
 .topbar{background:var(--dark);padding:11px 15px;position:sticky;top:0;z-index:100;}
 .topbar-row{display:flex;align-items:center;justify-content:space-between;}
 .topbar-title{font-family:'Baloo 2',cursive;font-size:16px;font-weight:800;color:#fff;}
@@ -35,18 +33,15 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
 .tab-btn{padding:7px 4px;border-radius:18px;border:none;font-family:'Noto Sans',sans-serif;font-size:10px;font-weight:600;cursor:pointer;transition:all 0.2s;text-align:center;}
 .tab-btn.active{background:var(--accent);color:#fff;}
 .tab-btn:not(.active){background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.65);}
-/* SHARE BANNER */
 .share-banner{background:linear-gradient(135deg,#0d47a1,#1a73e8);margin:12px 12px 0;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;}
 .sb-text{flex:1;font-size:12px;color:#fff;font-weight:600;}
 .sb-text small{display:block;font-size:10px;color:rgba(255,255,255,0.65);margin-top:2px;word-break:break-all;}
 .sb-btn{background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:7px;padding:6px 11px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Baloo 2',cursive;}
-/* VIEWS */
 .view{display:none;padding:12px;max-width:540px;margin:0 auto;}
 .view.active{display:block;}
 .page-header{margin-bottom:14px;}
 .page-header h2{font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;}
 .page-header p{font-size:11px;color:var(--muted);margin-top:2px;}
-/* CARDS */
 .scard{background:var(--card);border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,0.07);margin-bottom:11px;}
 .scard h3{font-family:'Baloo 2',cursive;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:11px;padding-bottom:7px;border-bottom:1px solid var(--border);}
 .sfield{margin-bottom:11px;}
@@ -59,61 +54,56 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
 .save-btn:active{transform:scale(0.98);}
 .saved-msg{text-align:center;font-size:12px;color:var(--green);font-weight:600;margin-top:7px;display:none;}
 .saved-msg.show{display:block;}
-/* FILTER */
 .filter-bar{background:var(--card);border-radius:12px;padding:12px 13px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:11px;}
 .filter-bar h3{font-family:'Baloo 2',cursive;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:9px;}
 .qf-row{display:flex;gap:5px;flex-wrap:wrap;}
-.qf-btn{background:var(--bg);border:1.5px solid var(--border);color:var(--muted);border-radius:18px;padding:4px 10px;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:'Noto Sans',sans-serif;}
+.qf-btn{background:var(--bg);border:1.5px solid var(--border);color:var(--muted);border-radius:18px;padding:5px 11px;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:'Noto Sans',sans-serif;}
 .qf-btn.active{background:var(--dark);color:#fff;border-color:var(--dark);}
 .filter-result{font-size:11px;color:var(--accent);font-weight:600;margin-top:6px;}
-/* MONTHLY PROG */
 .monthly-prog{background:linear-gradient(135deg,#1a1a2e,#2d3561);border-radius:12px;padding:13px;margin-bottom:11px;}
-.monthly-prog h3{font-family:'Baloo 2',cursive;font-size:11px;font-weight:700;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:1px;margin-bottom:9px;}
+.monthly-prog h4{font-family:'Baloo 2',cursive;font-size:11px;font-weight:700;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:1px;margin-bottom:9px;}
 .mp-row{display:flex;justify-content:space-between;margin-bottom:7px;}
 .mp-item .mp-label{font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;}
 .mp-item .mp-val{font-family:'Baloo 2',cursive;font-size:16px;font-weight:800;color:#fff;}
 .mp-item .mp-val.accent{color:var(--accent);}
 .mp-item .mp-val.green{color:#52b788;}
-.mp-prog-wrap{background:rgba(255,255,255,0.1);border-radius:99px;height:9px;overflow:hidden;}
-.mp-prog-fill{height:100%;border-radius:99px;background:var(--accent);transition:width 0.9s;}
+.mp-bar{background:rgba(255,255,255,0.1);border-radius:99px;height:9px;overflow:hidden;}
+.mp-fill{height:100%;border-radius:99px;background:var(--accent);transition:width 0.9s;}
 .mp-pct{font-size:10px;color:rgba(255,255,255,0.35);margin-top:4px;text-align:right;}
-/* SUMMARY */
-.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:11px;}
-.sum-card{background:var(--card);border-radius:12px;padding:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);border-top:3px solid var(--border);}
+.sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:11px;}
+.sum-card{background:var(--card);border-radius:11px;padding:11px;box-shadow:0 2px 6px rgba(0,0,0,0.06);border-top:3px solid var(--border);}
 .sum-card.orange{border-top-color:var(--accent);}
 .sum-card.blue{border-top-color:var(--accent2);}
 .sum-card.green{border-top-color:#52b788;}
 .sum-card.yellow{border-top-color:var(--yellow);}
 .sum-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:3px;}
-.sum-value{font-family:'Baloo 2',cursive;font-size:19px;font-weight:800;line-height:1;}
+.sum-val{font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;}
 .sum-sub{font-size:10px;color:var(--muted);margin-top:2px;}
-/* ENTRIES */
-.entries-card{background:var(--card);border-radius:12px;overflow:hidden;margin-bottom:11px;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
-.entries-head{display:flex;justify-content:space-between;align-items:center;padding:11px 13px;border-bottom:1px solid var(--border);}
-.entries-head h3{font-family:'Baloo 2',cursive;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
-.date-group-header{background:var(--bg);padding:6px 13px;font-family:'Baloo 2',cursive;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
-.dg-count{font-size:10px;background:var(--dark);color:#fff;border-radius:99px;padding:1px 7px;}
-.entry-item{padding:11px 13px;border-bottom:1px solid var(--border);}
-.entry-item:last-child{border-bottom:none;}
-.entry-row1{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
-.entry-name{font-weight:700;font-size:13px;}
-.entry-time{font-size:10px;color:var(--muted);}
-.entry-tags{display:flex;gap:4px;flex-wrap:wrap;}
+.entries-wrap{background:var(--card);border-radius:12px;overflow:hidden;margin-bottom:11px;box-shadow:0 2px 6px rgba(0,0,0,0.06);}
+.entries-head{display:flex;justify-content:space-between;align-items:center;padding:10px 13px;border-bottom:1px solid var(--border);}
+.entries-head h4{font-family:'Baloo 2',cursive;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+.dg-header{background:var(--bg);padding:6px 13px;font-family:'Baloo 2',cursive;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.dg-count{background:var(--dark);color:#fff;border-radius:99px;padding:1px 7px;font-size:10px;}
+.entry-row{padding:10px 13px;border-bottom:1px solid var(--border);}
+.entry-row:last-child{border-bottom:none;}
+.er1{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.er-name{font-weight:700;font-size:13px;}
+.er-time{font-size:10px;color:var(--muted);}
+.er-tags{display:flex;gap:4px;flex-wrap:wrap;}
 .tag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:99px;background:var(--bg);color:var(--muted);border:1px solid var(--border);}
 .tag.green{background:var(--greenl);color:var(--green);border-color:#b7e4c7;}
 .tag.red{background:var(--redl);color:var(--red);border-color:#ffb3b3;}
 .tag.yellow{background:var(--yellowl);color:#856400;border-color:#ffe08a;}
-.tag.blue{background:#e0f0ff;color:var(--accent2);border-color:#a8d5f5;}
 .tag.orange{background:#fff0e6;color:var(--accent);border-color:#ffc9a3;}
+.tag.blue{background:#e0f0ff;color:var(--accent2);border-color:#a8d5f5;}
 .tag.google{background:#e8f0fe;color:#1a73e8;border-color:#c5d8fc;}
-/* VERIFY */
 .verify-card{background:var(--card);border-radius:14px;overflow:hidden;margin-bottom:11px;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
 .verify-head{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--border);}
 .verify-head h3{font-family:'Baloo 2',cursive;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
 .pbadge{border-radius:99px;padding:3px 9px;font-size:11px;font-weight:700;border:1px solid;}
 .pbadge.has{background:var(--redl);color:var(--red);border-color:#ffb3b3;}
 .pbadge.zero{background:var(--greenl);color:var(--green);border-color:#b7e4c7;}
-.vi-item{padding:13px 14px;border-bottom:1px solid var(--border);}
+.vi-item{padding:12px 13px;border-bottom:1px solid var(--border);}
 .vi-item:last-child{border-bottom:none;}
 .vi-row1{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
 .vi-name{font-weight:700;font-size:14px;}
@@ -125,44 +115,57 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
 .vi-tag.o{background:#fff0e6;color:var(--accent);border-color:#ffc9a3;}
 .vi-tag.y{background:var(--yellowl);color:#856400;border-color:#ffe08a;}
 .vi-tag.gl{background:#e8f0fe;color:#1a73e8;border-color:#c5d8fc;}
-.vi-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;background:var(--bg);border-radius:10px;padding:10px;margin-bottom:9px;border:1px solid var(--border);}
-.vi-cell{background:#fff;border-radius:7px;padding:7px 9px;text-align:center;border:1px solid var(--border);}
-.vi-cell-label{font-size:9px;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted);margin-bottom:2px;font-weight:600;}
-.vi-cell-val{font-family:'Baloo 2',cursive;font-size:14px;font-weight:800;color:var(--dark);}
-.vi-cell-val.g{color:var(--green);}
-.vi-cell-val.r{color:var(--red);}
-.vi-cell-val.o{color:var(--accent);}
-.vi-cell-val.gl{color:#1a73e8;}
+.vi-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;background:var(--bg);border-radius:10px;padding:9px;margin-bottom:8px;border:1px solid var(--border);}
+.vi-cell{background:#fff;border-radius:7px;padding:7px;text-align:center;border:1px solid var(--border);}
+.vi-cell-label{font-size:9px;text-transform:uppercase;color:var(--muted);margin-bottom:2px;font-weight:600;}
+.vi-cell-val{font-family:'Baloo 2',cursive;font-size:13px;font-weight:800;}
 .amc-list{background:#e8f4fd;border:1.5px solid #a8d5f5;border-radius:9px;padding:9px;margin-bottom:9px;}
 .amc-list h5{font-size:11px;font-weight:700;color:var(--accent2);text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;}
 .amc-row{display:flex;gap:7px;align-items:center;padding:5px 0;border-bottom:1px solid #c5dcf0;font-size:12px;}
 .amc-row:last-child{border-bottom:none;padding-bottom:0;}
-.amc-idx{font-weight:800;color:var(--accent2);min-width:18px;}
-.amc-name{font-weight:600;flex:1;}
-.amc-mob{color:var(--muted);font-size:11px;}
-.amc-veh{color:var(--accent);font-weight:600;font-size:11px;}
 .vi-actions{display:flex;gap:7px;}
 .vi-approve{flex:1;background:var(--greenl);color:var(--green);border:1.5px solid #b7e4c7;border-radius:8px;padding:10px;font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.15s;}
 .vi-approve:active{background:var(--green);color:#fff;}
 .vi-reject{flex:1;background:var(--redl);color:var(--red);border:1.5px solid #ffb3b3;border-radius:8px;padding:10px;font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.15s;}
 .vi-reject:active{background:var(--red);color:#fff;}
-/* MECHANICS */
+/* MECHANIC WISE */
+.mech-selector{background:var(--card);border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,0.07);margin-bottom:11px;}
+.mech-selector h3{font-family:'Baloo 2',cursive;font-size:13px;font-weight:800;color:var(--dark);margin-bottom:11px;}
+.mech-select-dd{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:9px;padding:12px 13px;font-size:14px;font-family:'Noto Sans',sans-serif;color:var(--text);outline:none;appearance:none;cursor:pointer;}
+.mech-select-dd:focus{border-color:var(--accent2);}
+.mech-dash{background:var(--card);border-radius:14px;overflow:hidden;margin-bottom:11px;box-shadow:0 2px 8px rgba(0,0,0,0.07);}
+.mech-dash-head{background:linear-gradient(135deg,#0077b6,#023e8a);padding:14px 16px;}
+.mech-dash-name{font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;color:#fff;margin-bottom:3px;}
+.mech-dash-sub{font-size:11px;color:rgba(255,255,255,0.6);}
+.mech-dash-body{padding:14px;}
+.mts-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;}
+.mts-item{background:var(--bg);border-radius:10px;padding:10px;text-align:center;}
+.mts-label{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:3px;font-weight:600;}
+.mts-val{font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;color:var(--dark);}
+.mts-val.green{color:var(--green);}
+.mts-val.red{color:var(--red);}
+.mts-val.accent{color:var(--accent);}
+.mts-val.blue{color:var(--accent2);}
+.mts-val.yellow{color:#856400;}
+.prog-wrap{background:var(--bg);border-radius:99px;height:12px;overflow:hidden;margin-bottom:4px;}
+.prog-fill{height:100%;border-radius:99px;transition:width 0.9s;}
+.prog-lbl{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:10px;}
+/* MECHANICS TAB */
 .mech-card{background:var(--card);border-radius:14px;overflow:hidden;margin-bottom:11px;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
 .mech-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--border);}
 .mech-row:last-child{border-bottom:none;}
-.mech-info .mech-name{font-weight:700;font-size:14px;}
-.mech-info .mech-meta{font-size:11px;color:var(--muted);margin-top:2px;}
+.mech-name{font-weight:700;font-size:14px;}
+.mech-meta{font-size:11px;color:var(--muted);margin-top:2px;}
 .mech-actions{display:flex;gap:7px;align-items:center;}
 .btn-sm{border:1.5px solid var(--border);background:var(--bg);color:var(--muted);border-radius:7px;padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.15s;font-family:'Noto Sans',sans-serif;}
 .btn-sm.del{border-color:#ffb3b3;color:var(--red);}
-.btn-sm.del:active{background:var(--red);color:#fff;}
 .inactive-badge{font-size:10px;background:var(--redl);color:var(--red);border-radius:99px;padding:2px 7px;border:1px solid #ffb3b3;}
 .active-badge{font-size:10px;background:var(--greenl);color:var(--green);border-radius:99px;padding:2px 7px;border:1px solid #b7e4c7;}
 .add-mech-form{background:var(--bg);border-radius:12px;padding:13px;border:1.5px dashed var(--border);margin-bottom:11px;}
 .add-mech-form h4{font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;color:var(--dark);margin-bottom:10px;}
-.add-row{display:flex;gap:8px;align-items:flex-end;}
+.add-row{display:flex;gap:8px;}
 .add-row .sfield{flex:1;margin-bottom:0;}
-.add-btn{background:var(--accent2);color:#fff;border:none;border-radius:9px;padding:11px 15px;font-family:'Baloo 2',cursive;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;transition:transform 0.15s;}
+.add-btn{background:var(--accent2);color:#fff;border:none;border-radius:9px;padding:11px 15px;font-family:'Baloo 2',cursive;font-size:14px;font-weight:700;cursor:pointer;transition:transform 0.15s;}
 .add-btn:active{transform:scale(0.95);}
 /* ALERT */
 .alert-banner{border-radius:11px;padding:11px 13px;margin-bottom:11px;display:none;align-items:flex-start;gap:9px;}
@@ -176,18 +179,15 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
 .alert-banner.danger .alert-text h4{color:var(--red);}
 .alert-banner.warning .alert-text h4{color:#856400;}
 .alert-banner.success .alert-text h4{color:var(--green);}
-/* LINK MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:9000;align-items:center;justify-content:center;padding:20px;}
 .modal-overlay.show{display:flex;}
 .modal{background:#fff;border-radius:20px;padding:24px;width:100%;max-width:340px;animation:popIn 0.25s cubic-bezier(.4,0,.2,1);}
 .modal h3{font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;margin-bottom:14px;color:var(--dark);}
-.link-box{background:var(--bg);border-radius:10px;padding:11px 13px;margin-bottom:10px;border:1.5px solid var(--border);}
-.link-box .link-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;}
-.link-box .link-url{font-size:11px;color:var(--accent2);word-break:break-all;margin-bottom:7px;}
-.copy-btn{background:var(--accent2);color:#fff;border:none;border-radius:7px;padding:6px 13px;font-family:'Baloo 2',cursive;font-size:12px;font-weight:700;cursor:pointer;transition:transform 0.15s;}
-.copy-btn:active{transform:scale(0.95);}
+.link-box{background:var(--bg);border-radius:10px;padding:11px;margin-bottom:9px;border:1.5px solid var(--border);}
+.link-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.link-url{font-size:11px;color:var(--accent2);word-break:break-all;margin-bottom:6px;line-height:1.4;}
+.copy-btn{background:var(--accent2);color:#fff;border:none;border-radius:7px;padding:6px 13px;font-family:'Baloo 2',cursive;font-size:12px;font-weight:700;cursor:pointer;}
 .modal-close{width:100%;background:var(--dark);color:#fff;border:none;border-radius:10px;padding:12px;font-family:'Baloo 2',cursive;font-size:14px;font-weight:700;cursor:pointer;margin-top:4px;}
-/* UTILS */
 .empty-state{padding:28px 14px;text-align:center;color:var(--muted);font-size:12px;}
 .empty-state .ei{font-size:32px;margin-bottom:7px;}
 .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a2e;color:#fff;padding:11px 20px;border-radius:99px;font-size:13px;font-weight:600;font-family:'Baloo 2',cursive;opacity:0;transition:all 0.3s;z-index:9999;pointer-events:none;white-space:nowrap;}
@@ -200,7 +200,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
 </style>
 </head>
 <body>
-<!-- PIN -->
+
 <div class="pin-screen" id="pinScreen">
   <div class="pin-box">
     <div class="lock">🏢</div>
@@ -218,7 +218,6 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
   </div>
 </div>
 
-<!-- TOPBAR -->
 <div class="topbar">
   <div class="topbar-row">
     <div><div class="topbar-title">⚙️ <span>Shivangi</span> Admin</div><div class="branch-name-top" id="branchNameTop">Loading…</div></div>
@@ -232,20 +231,19 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
   <button class="tab-btn" onclick="switchTab('settings',this)">⚙️ Settings</button>
 </div>
 
-<!-- SHARE BANNER (hidden until loaded) -->
 <div class="share-banner" id="shareBanner" style="display:none">
-  <div class="sb-text">🔗 Mechanic Form Link<small id="mechLinkPreview">—</small></div>
+  <div class="sb-text">🔗 Mechanic Form<small id="mechLinkPreview">—</small></div>
   <button class="sb-btn" onclick="showLinksModal()">Share</button>
 </div>
 
-<!-- REPORT TAB -->
+<!-- REPORT -->
 <div class="view active" id="view-report">
   <div class="page-header"><h2>📊 Report</h2><p id="reportSub">Branch ki approved entries</p></div>
   <div class="filter-bar">
     <h3>🔍 Date Range</h3>
     <div class="qf-row">
       <button class="qf-btn active" id="qf-all" onclick="quickFilter('all',this)">📋 Sab</button>
-      <button class="qf-btn" id="qf-today" onclick="quickFilter('today',this)">📅 Aaj</button>
+      <button class="qf-btn" id="qf-today" onclick="quickFilter('today',this)">📅 <span id="todayBtnLabel">Aaj</span></button>
       <button class="qf-btn" id="qf-week" onclick="quickFilter('week',this)">📆 Hafte</button>
       <button class="qf-btn" id="qf-month" onclick="quickFilter('month',this)">🗓️ Mahine</button>
     </div>
@@ -253,29 +251,39 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
   </div>
   <div class="alert-banner" id="alertBanner"><div class="alert-icon" id="alertIcon"></div><div class="alert-text"><h4 id="alertTitle"></h4><p id="alertMsg"></p></div></div>
   <div class="monthly-prog">
-    <h3>🏆 Mahine ka Progress (Approved)</h3>
+    <h4>🏆 Mahine ka Progress — Total Sab Mechanics</h4>
     <div class="mp-row">
-      <div class="mp-item"><div class="mp-label">Kamaya</div><div class="mp-val accent" id="mpEarned">₹0</div></div>
-      <div class="mp-item"><div class="mp-label">Target</div><div class="mp-val" id="mpTarget">₹0</div></div>
+      <div class="mp-item"><div class="mp-label">Total Kamaya</div><div class="mp-val accent" id="mpEarned">₹0</div></div>
+      <div class="mp-item"><div class="mp-label">Total Target</div><div class="mp-val" id="mpTarget">₹0</div></div>
       <div class="mp-item"><div class="mp-label">Baaki</div><div class="mp-val green" id="mpRem">₹0</div></div>
     </div>
-    <div class="mp-prog-wrap"><div class="mp-prog-fill" id="mpFill" style="width:0%"></div></div>
+    <div class="mp-bar"><div class="mp-fill" id="mpFill" style="width:0%"></div></div>
     <div class="mp-pct" id="mpPct">0%</div>
   </div>
-  <div class="summary-grid">
-    <div class="sum-card orange"><div class="sum-label">Total Labour</div><div class="sum-value" id="sumLabour">₹0</div><div class="sum-sub" id="sumEntries">0 entries</div></div>
-    <div class="sum-card blue"><div class="sum-label">Avg / Day</div><div class="sum-value" id="sumAvg">₹0</div><div class="sum-sub" id="sumDays">0 days</div></div>
-    <div class="sum-card yellow"><div class="sum-label">AMC</div><div class="sum-value" id="sumAmc">0</div><div class="sum-sub" id="sumAmcComm">₹0 comm</div></div>
-    <div class="sum-card green"><div class="sum-label">G-Reviews</div><div class="sum-value" id="sumGR">0</div><div class="sum-sub" id="sumGRTarget">Target: 0</div></div>
+  <div class="sum-grid">
+    <div class="sum-card orange"><div class="sum-label">Total Labour</div><div class="sum-val" id="sumLabour">₹0</div><div class="sum-sub" id="sumEntries">0 entries</div></div>
+    <div class="sum-card blue"><div class="sum-label">Avg / Day</div><div class="sum-val" id="sumAvg">₹0</div><div class="sum-sub" id="sumDays">0 days</div></div>
+    <div class="sum-card yellow"><div class="sum-label">AMC</div><div class="sum-val" id="sumAmc">0</div><div class="sum-sub" id="sumAmcComm">₹0 comm</div></div>
+    <div class="sum-card green"><div class="sum-label">G-Reviews</div><div class="sum-val" id="sumGR">0</div><div class="sum-sub" id="sumGRTarget">Target: 0</div></div>
   </div>
-  <div class="entries-card">
-    <div class="entries-head"><h3>📄 Entries</h3><button class="btn-sm" onclick="exportCSV()">⬇️ CSV</button></div>
+
+  <!-- MECHANIC WISE -->
+  <div class="mech-selector">
+    <h3>👤 Mechanic ka Individual Report Dekho</h3>
+    <select class="mech-select-dd" id="mechReportDd" onchange="renderMechDash()">
+      <option value="">— Mechanic chuno —</option>
+    </select>
+  </div>
+  <div id="mechDashWrap"></div>
+
+  <div class="entries-wrap">
+    <div class="entries-head"><h4>📄 Sab Entries</h4><button class="btn-sm" onclick="exportAllCSV()">⬇️ CSV (Sab)</button></div>
     <div id="entriesList"><div class="empty-state"><div class="ei">⏳</div>Loading…</div></div>
   </div>
   <div class="spacer"></div>
 </div>
 
-<!-- VERIFY TAB -->
+<!-- VERIFY -->
 <div class="view" id="view-verify">
   <div class="page-header"><h2>✅ Verify</h2><p>Pending entries approve ya reject karo</p></div>
   <div class="verify-card">
@@ -285,14 +293,14 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
   <div class="spacer"></div>
 </div>
 
-<!-- MECHANICS TAB -->
+<!-- MECHANICS -->
 <div class="view" id="view-mechanics">
-  <div class="page-header"><h2>👨‍🔧 Mechanics</h2><p>Mechanic add karo, link share karo</p></div>
+  <div class="page-header"><h2>👨‍🔧 Mechanics</h2><p>Add karo, manage karo</p></div>
   <div class="add-mech-form">
     <h4>➕ Naya Mechanic Add Karo</h4>
     <div class="add-row">
-      <div class="sfield"><label>Naam</label><input type="text" id="mNewName" placeholder="Mechanic ka naam"></div>
-      <div class="sfield"><label>Mobile</label><input type="tel" id="mNewPhone" placeholder="10 digit" maxlength="10" inputmode="numeric"></div>
+      <div class="sfield"><label>Naam</label><input type="text" id="mNewName" placeholder="Naam"></div>
+      <div class="sfield"><label>Mobile</label><input type="tel" id="mNewPhone" placeholder="Mobile" maxlength="10" inputmode="numeric"></div>
     </div>
     <button class="add-btn" style="width:100%;margin-top:10px;" onclick="addMechanic()">➕ Add Karo</button>
   </div>
@@ -300,14 +308,13 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
   <div class="spacer"></div>
 </div>
 
-<!-- SETTINGS TAB -->
+<!-- SETTINGS -->
 <div class="view" id="view-settings">
-  <div class="page-header"><h2>⚙️ Settings</h2><p>Branch targets aur PIN</p></div>
+  <div class="page-header"><h2>⚙️ Settings</h2></div>
   <div class="scard">
     <h3>🎯 Targets</h3>
-    <div class="sfield"><label>Monthly Labour Target (₹)</label><input type="number" id="sMonthly" inputmode="numeric"></div>
-    <div class="sfield"><label>Daily Labour Target (₹)</label><input type="number" id="sDaily" inputmode="numeric"></div>
-    <div class="sfield"><label>Monthly Google Reviews Target</label><input type="number" id="sReview" inputmode="numeric"></div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">Monthly target auto-calculate hota hai: <strong>Mechanics count × ₹1,20,000</strong><br>Har mechanic ka individual target: <strong>₹1,20,000/month</strong><br>Reset: <strong>Har mahine 1 tarikh ko</strong></p>
+    <div class="sfield"><label>Google Reviews Target (Monthly)</label><input type="number" id="sReview" inputmode="numeric"></div>
     <button class="save-btn" onclick="saveSettings()">💾 Save</button>
     <div class="saved-msg" id="savedMsg">✅ Save ho gaya!</div>
   </div>
@@ -320,21 +327,16 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
     <div class="saved-msg" id="pinMsg">✅ PIN change ho gaya!</div>
   </div>
   <div class="scard">
-    <h3>🔗 Share Links</h3>
-    <button class="save-btn" style="background:var(--accent2);" onclick="showLinksModal()">📋 Links Dekho / Copy Karo</button>
+    <h3>🔗 Links</h3>
+    <button class="save-btn" style="background:var(--accent2);" onclick="showLinksModal()">📋 Links Dekho</button>
   </div>
   <div class="spacer"></div>
 </div>
 
-<!-- LINK MODAL -->
 <div class="modal-overlay" id="linkModal" onclick="closeLinkModal()">
   <div class="modal" onclick="event.stopPropagation()">
     <h3>🔗 Share Links</h3>
-    <div class="link-box">
-      <div class="link-label">👨‍🔧 Mechanic Form Link</div>
-      <div class="link-url" id="mechFormLink">—</div>
-      <button class="copy-btn" onclick="copyLink('mechFormLink')">📋 Copy</button>
-    </div>
+    <div class="link-box"><div class="link-label">👨‍🔧 Mechanic Form Link</div><div class="link-url" id="mechFormLink">—</div><button class="copy-btn" onclick="copyLink('mechFormLink')">📋 Copy</button></div>
     <button class="modal-close" onclick="closeLinkModal()">✕ Band Karo</button>
   </div>
 </div>
@@ -349,15 +351,30 @@ const db=firebase.database();
 const $=id=>document.getElementById(id);
 const fmt=n=>Number(n).toLocaleString('en-IN');
 const toInputDate=d=>d.toISOString().split('T')[0];
+const MONTHLY_PER_MECH=120000;
 
 const urlParams=new URLSearchParams(window.location.search);
 const bid=urlParams.get('bid');
 
-let branch=null, branchSettings={monthlyTarget:120000,dailyTarget:4000,reviewTarget:250};
-let allEntries={}, mechanics={}, currentTab='report', filterMode='all';
+let branch=null, branchSettings={reviewTarget:250};
+let allEntries={}, mechanics={}, currentTab='report';
 let filterFrom=null, filterTo=null;
 
+// Real today
+const NOW=new Date();
+const TODAY_STR=toInputDate(NOW);
+const TODAY_DISP=NOW.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+
+// Show real date on Aaj button
+window.addEventListener('DOMContentLoaded',()=>{
+  const lbl=$('todayBtnLabel');
+  if(lbl) lbl.textContent=TODAY_DISP;
+});
+
+function getMonthStart(){const n=new Date();return toInputDate(new Date(n.getFullYear(),n.getMonth(),1));}
 function showToast(msg,type='',dur=2600){const t=$('toast');t.textContent=msg;t.className='toast '+type+' show';clearTimeout(t._t);t._t=setTimeout(()=>t.className='toast',dur);}
+function dispDate(s){if(!s)return s;const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d).toLocaleDateString('en-IN',{weekday:'short',day:'2-digit',month:'short'});}
+function timeStr(iso){if(!iso)return '';return new Date(iso).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true});}
 
 /* PIN */
 let pinBuf='';
@@ -367,40 +384,41 @@ function pinClear(){pinBuf='';updateDots();$('pinError').textContent='';}
 function updateDots(){for(let i=0;i<4;i++)$('d'+i).classList.toggle('filled',i<pinBuf.length);}
 
 async function loadBranch(){
-  if(!bid){$('pinBranchName').textContent='Invalid Link!';return;}
+  if(!bid){showBidError('Branch ID missing! Super Admin se sahi link lo.');return;}
   try{
     const snap=await db.ref('sac_branches/'+bid).get();
-    if(!snap.exists()){$('pinBranchName').textContent='Branch not found!';return;}
+    if(!snap.exists()){showBidError('Branch nahi mili! Super Admin se link lo.');return;}
     branch=snap.val();
     branchSettings={...branchSettings,...(branch.settings||{})};
-    $('pinBranchName').textContent=branch.name||'Branch';
-  }catch(e){$('pinBranchName').textContent='Load error';}
+    $('pinBranchName').textContent='📍 '+(branch.name||'Branch');
+  }catch(e){$('pinBranchName').textContent='⚠️ Load error';}
 }
 loadBranch();
 
+function showBidError(msg){
+  $('pinScreen').classList.add('hide');
+  document.body.innerHTML=`<div style="position:fixed;inset:0;background:#1a1a2e;display:flex;align-items:center;justify-content:center;padding:24px;"><div style="background:#fff;border-radius:20px;padding:28px;text-align:center;max-width:300px;"><div style="font-size:48px;margin-bottom:12px;">🔗</div><h3 style="font-family:sans-serif;font-size:17px;margin-bottom:10px;">Link Galat Hai</h3><p style="font-size:13px;color:#888;">${msg}</p></div></div>`;
+}
+
 async function checkPin(){
   if(!branch){showToast('Branch load ho rahi hai…');pinBuf='';updateDots();return;}
-  const correctPin=branch.pin||'1234';
-  if(pinBuf===correctPin){
+  if(pinBuf===(branch.pin||'1234')){
     $('pinScreen').classList.add('hide');
     afterLogin();
   } else {
-    $('pinError').textContent='❌ Galat PIN!';
-    pinBuf='';updateDots();
-    const box=$('pinScreen').querySelector('.pin-box');
-    box.style.animation='shake 0.4s';setTimeout(()=>box.style.animation='',400);
+    $('pinError').textContent='❌ Galat PIN!';pinBuf='';updateDots();
+    const b=$('pinScreen').querySelector('.pin-box');b.style.animation='shake 0.4s';setTimeout(()=>b.style.animation='',400);
   }
 }
 
 function afterLogin(){
   $('branchNameTop').textContent='📍 '+(branch.name||'Branch');
-  // Setup links
   const base=window.location.origin+window.location.pathname.replace('branch-admin.html','');
   const mechLink=base+'mechanic-form.html?bid='+bid;
   $('mechFormLink').textContent=mechLink;
   $('mechLinkPreview').textContent=mechLink;
   $('shareBanner').style.display='flex';
-  // Live listeners
+  $('sReview').value=branchSettings.reviewTarget||250;
   db.ref('sac_entries/'+bid).on('value',snap=>{
     allEntries=snap.exists()?snap.val():{};
     if(currentTab==='report') renderReport();
@@ -408,12 +426,12 @@ function afterLogin(){
   });
   db.ref('sac_mechanics/'+bid).on('value',snap=>{
     mechanics=snap.exists()?snap.val():{};
+    updateMechDd();
     if(currentTab==='mechanics') renderMechanics();
+    if(currentTab==='report') renderReport();
   });
-  renderSettings();
 }
 
-/* TABS */
 function switchTab(tab,btn){
   currentTab=tab;
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
@@ -423,18 +441,15 @@ function switchTab(tab,btn){
   if(tab==='report') renderReport();
   if(tab==='verify') renderVerify();
   if(tab==='mechanics') renderMechanics();
-  if(tab==='settings') renderSettings();
 }
 
-/* FILTER */
 function quickFilter(mode,btn){
-  filterMode=mode;
   document.querySelectorAll('.qf-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  const now=new Date();filterFrom=filterTo=null;
-  if(mode==='today'){filterFrom=filterTo=toInputDate(now);}
-  else if(mode==='week'){const s=new Date(now);s.setDate(now.getDate()-6);filterFrom=toInputDate(s);filterTo=toInputDate(now);}
-  else if(mode==='month'){filterFrom=toInputDate(new Date(now.getFullYear(),now.getMonth(),1));filterTo=toInputDate(now);}
+  filterFrom=filterTo=null;
+  if(mode==='today'){filterFrom=filterTo=TODAY_STR;}
+  else if(mode==='week'){const s=new Date(NOW);s.setDate(NOW.getDate()-6);filterFrom=toInputDate(s);filterTo=TODAY_STR;}
+  else if(mode==='month'){filterFrom=getMonthStart();filterTo=TODAY_STR;}
   renderReport();
 }
 
@@ -446,46 +461,122 @@ function getFiltered(onlyApproved=true){
   return e.sort((a,b)=>b.date.localeCompare(a.date)||b.submittedTs-a.submittedTs);
 }
 
-/* REPORT */
+function getActiveMechs(){return Object.values(mechanics).filter(m=>m.active!==false);}
+
+function updateMechDd(){
+  const dd=$('mechReportDd');if(!dd)return;
+  const cur=dd.value;
+  dd.innerHTML='<option value="">— Mechanic chuno —</option>';
+  getActiveMechs().forEach(m=>{dd.innerHTML+=`<option value="${m.name}">${m.name}</option>`;});
+  if(cur) dd.value=cur;
+}
+
+/* RENDER REPORT */
 function renderReport(){
   const entries=getFiltered(true);
-  const allValues=Object.values(allEntries);
-  const now=new Date();
-  const ms=toInputDate(new Date(now.getFullYear(),now.getMonth(),1));
-  const monthApproved=allValues.filter(e=>e.status==='approved'&&e.date>=ms);
-  const mEarned=monthApproved.reduce((s,e)=>s+(e.achieved||0),0);
-  const mTarget=branchSettings.monthlyTarget||120000;
-  const mPct=Math.min(100,Math.round((mEarned/mTarget)*100));
+  const allVals=Object.values(allEntries);
+  const ms=getMonthStart();
+  const mApproved=allVals.filter(e=>e.status==='approved'&&e.date>=ms);
+
+  const mechCount=getActiveMechs().length;
+  const totalTarget=mechCount*MONTHLY_PER_MECH;
+  const mEarned=mApproved.reduce((s,e)=>s+(e.achieved||0),0);
+  const mPct=totalTarget>0?Math.min(100,Math.round((mEarned/totalTarget)*100)):0;
+
   $('mpEarned').textContent='₹'+fmt(mEarned);
-  $('mpTarget').textContent='₹'+fmt(mTarget);
-  $('mpRem').textContent='₹'+fmt(Math.max(0,mTarget-mEarned));
+  $('mpTarget').textContent='₹'+fmt(totalTarget);
+  $('mpRem').textContent='₹'+fmt(Math.max(0,totalTarget-mEarned));
   $('mpFill').style.width=mPct+'%';
   $('mpFill').style.background=mPct>=100?'#52b788':'var(--accent)';
-  $('mpPct').textContent=mPct+'% complete';
+  $('mpPct').textContent=mPct+'% complete · '+mechCount+' mechanics × ₹1,20,000';
+
   // Alert
-  const daysInM=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
-  const expPct=Math.round((now.getDate()/daysInM)*100);
+  const dIM=new Date(NOW.getFullYear(),NOW.getMonth()+1,0).getDate();
+  const expPct=Math.round((NOW.getDate()/dIM)*100);
   const banner=$('alertBanner');banner.className='alert-banner';
-  if(mPct>=100){banner.classList.add('show','success');$('alertIcon').textContent='🏆';$('alertTitle').textContent='Monthly target pura!';$('alertMsg').textContent='Bahut badhiya!';}
+  if(mPct>=100){banner.classList.add('show','success');$('alertIcon').textContent='🏆';$('alertTitle').textContent='Monthly target pura!';$('alertMsg').textContent='Sab mechanics ne target achieve kiya!';}
   else if(mPct<expPct-15){banner.classList.add('show','danger');$('alertIcon').textContent='🚨';$('alertTitle').textContent='Peeche chal rahe ho!';$('alertMsg').textContent=`Expected ${expPct}%, actual ${mPct}%. Mehnat badhao!`;}
   else if(mPct<expPct-5){banner.classList.add('show','warning');$('alertIcon').textContent='⚠️';$('alertTitle').textContent='Pace slow hai';$('alertMsg').textContent=`${expPct-mPct}% peeche ho.`;}
-  // Summary
-  const totalL=entries.reduce((s,e)=>s+(e.achieved||0),0);
-  const uDays=[...new Set(entries.map(e=>e.date))].length;
-  const avgD=uDays>0?Math.round(totalL/uDays):0;
-  const totalAmc=entries.reduce((s,e)=>s+(e.amcCount||0),0);
-  const totalAmcC=entries.reduce((s,e)=>s+(e.amcCommission||0),0);
-  const totalGR=monthApproved.reduce((s,e)=>s+(e.googleReviews||0),0);
-  $('sumLabour').textContent='₹'+fmt(totalL);
+
+  const tL=entries.reduce((s,e)=>s+(e.achieved||0),0);
+  const uD=[...new Set(entries.map(e=>e.date))].length;
+  const tA=entries.reduce((s,e)=>s+(e.amcCount||0),0);
+  const tGR=mApproved.reduce((s,e)=>s+(e.googleReviews||0),0);
+  $('sumLabour').textContent='₹'+fmt(tL);
   $('sumEntries').textContent=entries.length+' entries';
-  $('sumAvg').textContent='₹'+fmt(avgD);
-  $('sumDays').textContent=uDays+' days';
-  $('sumAmc').textContent=totalAmc;
-  $('sumAmcComm').textContent='₹'+fmt(totalAmcC)+' comm';
-  $('sumGR').textContent=totalGR;
+  $('sumAvg').textContent='₹'+fmt(uD>0?Math.round(tL/uD):0);
+  $('sumDays').textContent=uD+' days';
+  $('sumAmc').textContent=tA;
+  $('sumAmcComm').textContent='₹'+fmt(tA*125)+' comm';
+  $('sumGR').textContent=tGR;
   $('sumGRTarget').textContent='Target: '+(branchSettings.reviewTarget||250);
-  $('filterResult').textContent='📋 '+entries.length+' approved entries';
+  $('filterResult').textContent='📋 '+entries.length+' approved entries — '+TODAY_DISP;
+
+  updateMechDd();
   renderEntriesList(entries);
+}
+
+/* MECHANIC INDIVIDUAL DASHBOARD */
+function renderMechDash(){
+  const mechName=$('mechReportDd').value;
+  const wrap=$('mechDashWrap');
+  if(!mechName){wrap.innerHTML='';return;}
+
+  const ms=getMonthStart();
+  const allVals=Object.values(allEntries);
+  const mechMonthApproved=allVals.filter(e=>e.status==='approved'&&e.date>=ms&&e.mechanic===mechName);
+  const mechAllApproved=allVals.filter(e=>e.status==='approved'&&e.mechanic===mechName);
+
+  const earned=mechMonthApproved.reduce((s,e)=>s+(e.achieved||0),0);
+  const remaining=Math.max(0,MONTHLY_PER_MECH-earned);
+  const pct=Math.min(100,Math.round((earned/MONTHLY_PER_MECH)*100));
+  const amc=mechMonthApproved.reduce((s,e)=>s+(e.amcCount||0),0);
+  const amcComm=amc*125;
+  const gr=mechMonthApproved.reduce((s,e)=>s+(e.googleReviews||0),0);
+  const ratedE=mechMonthApproved.filter(e=>e.starRating>0);
+  const avgStar=ratedE.length>0?(ratedE.reduce((s,e)=>s+e.starRating,0)/ratedE.length).toFixed(1):'—';
+  const pColor=pct>=80?'var(--green)':pct>=50?'var(--accent)':'var(--red)';
+
+  const recent=mechAllApproved.sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
+  let recentHtml='';
+  recent.forEach(e=>{
+    const ep=e.pct||Math.round(((e.achieved||0)/(e.target||1))*100);
+    recentHtml+=`<div class="entry-row">
+      <div class="er1"><span class="er-name">📅 ${e.date}</span><span class="er-time">${timeStr(e.submittedAt)}</span></div>
+      <div class="er-tags">
+        <span class="tag ${ep>=80?'green':'red'}">₹${fmt(e.achieved||0)}</span>
+        <span class="tag ${ep>=80?'green':'red'}">${ep}%</span>
+        ${e.amcCount>0?`<span class="tag orange">AMC×${e.amcCount}</span>`:''}
+        ${e.starRating>0?`<span class="tag yellow">${'⭐'.repeat(e.starRating)}</span>`:''}
+        ${e.googleReviews>0?`<span class="tag google">🔵${e.googleReviews}</span>`:''}
+      </div></div>`;
+  });
+
+  wrap.innerHTML=`
+  <div class="mech-dash">
+    <div class="mech-dash-head">
+      <div class="mech-dash-name">👤 ${mechName}</div>
+      <div class="mech-dash-sub">Individual Report · ${NOW.toLocaleDateString('en-IN',{month:'long',year:'numeric'})} · Reset: Har 1 tarikh</div>
+    </div>
+    <div class="mech-dash-body">
+      <div class="mts-grid">
+        <div class="mts-item"><div class="mts-label">Kamaya</div><div class="mts-val accent">₹${fmt(earned)}</div></div>
+        <div class="mts-item"><div class="mts-label">Monthly Target</div><div class="mts-val">₹${fmt(MONTHLY_PER_MECH)}</div></div>
+        <div class="mts-item"><div class="mts-label">Baaki</div><div class="mts-val green">₹${fmt(remaining)}</div></div>
+        <div class="mts-item"><div class="mts-label">AMC</div><div class="mts-val blue">${amc} (₹${fmt(amcComm)})</div></div>
+        <div class="mts-item"><div class="mts-label">Reviews</div><div class="mts-val" style="color:#1a73e8">${gr}</div></div>
+        <div class="mts-item"><div class="mts-label">Avg ⭐</div><div class="mts-val yellow">${avgStar}</div></div>
+      </div>
+      <div class="prog-lbl"><span style="color:${pColor};font-weight:700">${pct}% target complete</span><span>₹${fmt(earned)} / ₹${fmt(MONTHLY_PER_MECH)}</span></div>
+      <div class="prog-wrap"><div class="prog-fill" style="width:${pct}%;background:${pColor}"></div></div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">🔄 Reset: Har mahine 1 tarikh ko automatically reset hoga</div>
+      ${recent.length>0?`
+        <div style="font-family:'Baloo 2',cursive;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">📋 Recent Entries</div>
+        <div class="entries-wrap" style="margin-bottom:10px">${recentHtml}</div>
+      `:'<div class="empty-state" style="padding:16px"><div class="ei">📭</div>Koi approved entry nahi</div>'}
+      <button class="save-btn" style="background:var(--accent2);margin-top:4px;" onclick="exportMechCSV('${mechName}')">⬇️ ${mechName} ka CSV Download Karo</button>
+    </div>
+  </div>`;
 }
 
 function renderEntriesList(entries){
@@ -494,19 +585,16 @@ function renderEntriesList(entries){
   const groups={};entries.forEach(e=>{(groups[e.date]=groups[e.date]||[]).push(e);});
   let html='';
   Object.keys(groups).sort((a,b)=>b.localeCompare(a)).forEach(date=>{
-    const list=groups[date];const dt=new Date(...date.split('-').map((v,i)=>i===1?v-1:v));
-    const dl=dt.toLocaleDateString('en-IN',{weekday:'short',day:'2-digit',month:'short'});
-    const dayTotal=list.reduce((s,e)=>s+(e.achieved||0),0);
-    html+=`<div class="date-group-header">${dl} — ₹${fmt(dayTotal)}<span class="dg-count">${list.length}</span></div>`;
+    const list=groups[date];const dayTotal=list.reduce((s,e)=>s+(e.achieved||0),0);
+    html+=`<div class="dg-header">${dispDate(date)} — ₹${fmt(dayTotal)}<span class="dg-count">${list.length}</span></div>`;
     list.forEach(e=>{
       const pct=e.pct||Math.round(((e.achieved||0)/(e.target||1))*100);
-      html+=`<div class="entry-item"><div class="entry-row1"><span class="entry-name">👤 ${e.mechanic}</span><span class="entry-time">${timeStr(e.submittedAt)}</span></div>
-      <div class="entry-tags"><span class="tag ${pct>=80?'green':'red'}">₹${fmt(e.achieved||0)}</span><span class="tag ${pct>=80?'green':'red'}">${pct}%</span>${e.amcCount>0?`<span class="tag orange">AMC×${e.amcCount}</span>`:''} ${e.starRating>0?`<span class="tag yellow">${'⭐'.repeat(e.starRating)}</span>`:''} ${e.googleReviews>0?`<span class="tag google">🔵${e.googleReviews}</span>`:''}</div></div>`;
+      html+=`<div class="entry-row"><div class="er1"><span class="er-name">👤 ${e.mechanic}</span><span class="er-time">${timeStr(e.submittedAt)}</span></div>
+      <div class="er-tags"><span class="tag ${pct>=80?'green':'red'}">₹${fmt(e.achieved||0)}</span><span class="tag ${pct>=80?'green':'red'}">${pct}%</span>${e.amcCount>0?`<span class="tag orange">AMC×${e.amcCount}</span>`:''}${e.starRating>0?`<span class="tag yellow">${'⭐'.repeat(e.starRating)}</span>`:''}${e.googleReviews>0?`<span class="tag google">🔵${e.googleReviews}</span>`:''}</div></div>`;
     });
   });
   c.innerHTML=html;
 }
-function timeStr(iso){if(!iso)return '';return new Date(iso).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true});}
 
 /* VERIFY */
 function renderVerify(){
@@ -521,19 +609,19 @@ function renderVerify(){
     let amcHtml='';
     if(e.amcCount>0&&e.amcCustomers?.length){
       amcHtml=`<div class="amc-list"><h5>📋 AMC Customers</h5>`;
-      e.amcCustomers.forEach((c,i)=>{amcHtml+=`<div class="amc-row"><span class="amc-idx">${i+1}.</span><span class="amc-name">${c.name||'—'}</span><span class="amc-mob">📱 ${c.mobile||'—'}</span>${c.vehicle?`<span class="amc-veh">🚗 ${c.vehicle}</span>`:''}</div>`;});
+      e.amcCustomers.forEach((c,i)=>{amcHtml+=`<div class="amc-row"><span style="font-weight:800;color:var(--accent2);min-width:18px">${i+1}.</span><span style="font-weight:600;flex:1">${c.name||'—'}</span><span style="color:var(--muted);font-size:11px">📱 ${c.mobile||'—'}</span>${c.vehicle?`<span style="color:var(--accent);font-size:11px;font-weight:600">🚗 ${c.vehicle}</span>`:''}</div>`;});
       amcHtml+=`</div>`;
     }
     html+=`<div class="vi-item" id="vi_${e._key}">
       <div class="vi-row1"><span class="vi-name">👤 ${e.mechanic}</span><span class="vi-date">${e.date} · ${timeStr(e.submittedAt)}</span></div>
-      <div class="vi-tags"><span class="vi-tag ${pc}">₹${fmt(e.achieved||0)}</span><span class="vi-tag ${pc}">${pct}%</span>${e.amcCount>0?`<span class="vi-tag o">AMC×${e.amcCount}</span>`:''} ${e.starRating>0?`<span class="vi-tag y">${'⭐'.repeat(e.starRating)}</span>`:''} ${e.googleReviews>0?`<span class="vi-tag gl">🔵${e.googleReviews}</span>`:''}</div>
+      <div class="vi-tags"><span class="vi-tag ${pc}">₹${fmt(e.achieved||0)}</span><span class="vi-tag ${pc}">${pct}%</span>${e.amcCount>0?`<span class="vi-tag o">AMC×${e.amcCount}</span>`:''}${e.starRating>0?`<span class="vi-tag y">${'⭐'.repeat(e.starRating)}</span>`:''}${e.googleReviews>0?`<span class="vi-tag gl">🔵${e.googleReviews}</span>`:''}</div>
       <div class="vi-grid">
         <div class="vi-cell"><div class="vi-cell-label">Target</div><div class="vi-cell-val">₹${fmt(e.target||0)}</div></div>
-        <div class="vi-cell"><div class="vi-cell-label">Kamaya</div><div class="vi-cell-val ${pc}">₹${fmt(e.achieved||0)}</div></div>
-        <div class="vi-cell"><div class="vi-cell-label">%</div><div class="vi-cell-val ${pc}">${pct}%</div></div>
-        <div class="vi-cell"><div class="vi-cell-label">AMC</div><div class="vi-cell-val o">${e.amcCount||0}</div></div>
-        <div class="vi-cell"><div class="vi-cell-label">Comm</div><div class="vi-cell-val o">₹${fmt(amcC)}</div></div>
-        <div class="vi-cell"><div class="vi-cell-label">Reviews</div><div class="vi-cell-val gl">${e.googleReviews||0}</div></div>
+        <div class="vi-cell"><div class="vi-cell-label">Kamaya</div><div class="vi-cell-val" style="color:${pct>=80?'var(--green)':'var(--red)'}">₹${fmt(e.achieved||0)}</div></div>
+        <div class="vi-cell"><div class="vi-cell-label">%</div><div class="vi-cell-val" style="color:${pct>=80?'var(--green)':'var(--red)'}">${pct}%</div></div>
+        <div class="vi-cell"><div class="vi-cell-label">AMC</div><div class="vi-cell-val" style="color:var(--accent)">${e.amcCount||0}</div></div>
+        <div class="vi-cell"><div class="vi-cell-label">Comm</div><div class="vi-cell-val" style="color:var(--accent)">₹${fmt(amcC)}</div></div>
+        <div class="vi-cell"><div class="vi-cell-label">Reviews</div><div class="vi-cell-val" style="color:#1a73e8">${e.googleReviews||0}</div></div>
       </div>
       ${amcHtml}
       <div class="vi-actions">
@@ -545,10 +633,8 @@ function renderVerify(){
 }
 async function verifyEntry(key,status){
   const el=$('vi_'+key);if(el){el.style.opacity='0.5';el.style.pointerEvents='none';}
-  try{
-    await db.ref('sac_entries/'+bid+'/'+key).update({status,verifiedAt:new Date().toISOString()});
-    showToast(status==='approved'?'✅ Approved!':'❌ Rejected',status==='approved'?'ok':'err');
-  }catch(e){showToast('❌ Error!','err');if(el){el.style.opacity='1';el.style.pointerEvents='';}}
+  try{await db.ref('sac_entries/'+bid+'/'+key).update({status,verifiedAt:new Date().toISOString()});showToast(status==='approved'?'✅ Approved!':'❌ Rejected',status==='approved'?'ok':'err');}
+  catch(e){showToast('❌ Error!','err');if(el){el.style.opacity='1';el.style.pointerEvents='';}}
 }
 
 /* MECHANICS */
@@ -559,9 +645,9 @@ function renderMechanics(){
   let html='';
   list.forEach(m=>{
     html+=`<div class="mech-row">
-      <div class="mech-info"><div class="mech-name">👤 ${m.name}</div><div class="mech-meta">📱 ${m.phone||'—'}</div></div>
+      <div><div class="mech-name">👤 ${m.name}</div><div class="mech-meta">📱 ${m.phone||'—'} · Target: ₹${fmt(MONTHLY_PER_MECH)}/mo</div></div>
       <div class="mech-actions">
-        <span class="${m.active===false?'inactive-badge':'active-badge'}">${m.active===false?'Inactive':'Active'}</span>
+        <span class="${m.active===false?'inactive-badge':'active-badge'}">${m.active===false?'Off':'On'}</span>
         <button class="btn-sm" onclick="toggleMechanic('${m.id}',${m.active===false})">${m.active===false?'Activate':'Deactivate'}</button>
         <button class="btn-sm del" onclick="deleteMechanic('${m.id}','${m.name}')">🗑️</button>
       </div></div>`;
@@ -572,32 +658,28 @@ async function addMechanic(){
   const name=($('mNewName')?.value||'').trim();const phone=($('mNewPhone')?.value||'').trim();
   if(!name){showToast('⚠️ Naam daalo!','err');return;}
   try{
-    const mid='m_'+Date.now();
-    await db.ref('sac_mechanics/'+bid+'/'+mid).set({name,phone,active:true,addedAt:new Date().toISOString()});
+    await db.ref('sac_mechanics/'+bid+'/m_'+Date.now()).set({name,phone,active:true,addedAt:new Date().toISOString()});
     $('mNewName').value='';$('mNewPhone').value='';
     showToast('✅ '+name+' add ho gaya!','ok');
   }catch(e){showToast('❌ Error!','err');}
 }
 async function toggleMechanic(mid,makeActive){
-  try{await db.ref('sac_mechanics/'+bid+'/'+mid).update({active:makeActive});showToast(makeActive?'✅ Activated!':'⛔ Deactivated!','ok');}catch(e){showToast('❌ Error!','err');}
+  try{await db.ref('sac_mechanics/'+bid+'/'+mid).update({active:makeActive});showToast(makeActive?'✅ Active!':'⛔ Inactive!','ok');}
+  catch(e){showToast('❌ Error!','err');}
 }
 async function deleteMechanic(mid,name){
-  if(!confirm(name+' ko delete karo? Sure?'))return;
-  try{await db.ref('sac_mechanics/'+bid+'/'+mid).remove();showToast('🗑️ Deleted','ok');}catch(e){showToast('❌ Error!','err');}
+  if(!confirm(name+' ko delete karo?'))return;
+  try{await db.ref('sac_mechanics/'+bid+'/'+mid).remove();showToast('🗑️ Deleted','ok');}
+  catch(e){showToast('❌ Error!','err');}
 }
 
 /* SETTINGS */
-function renderSettings(){
-  $('sMonthly').value=branchSettings.monthlyTarget||'';
-  $('sDaily').value=branchSettings.dailyTarget||'';
-  $('sReview').value=branchSettings.reviewTarget||'';
-}
 async function saveSettings(){
-  const m=parseInt($('sMonthly').value),d=parseInt($('sDaily').value),r=parseInt($('sReview').value);
-  if(isNaN(m)||isNaN(d)||isNaN(r)){showToast('⚠️ Sab fields bharo!','err');return;}
-  branchSettings={monthlyTarget:m,dailyTarget:d,reviewTarget:r};
+  const r=parseInt($('sReview').value);
+  if(isNaN(r)){showToast('⚠️ Sab bharo!','err');return;}
+  branchSettings.reviewTarget=r;
   try{
-    await db.ref('sac_branches/'+bid+'/settings').set(branchSettings);
+    await db.ref('sac_branches/'+bid+'/settings/reviewTarget').set(r);
     $('savedMsg').classList.add('show');setTimeout(()=>$('savedMsg').classList.remove('show'),2500);
     showToast('✅ Save ho gaya!','ok');
   }catch(e){showToast('❌ Error!','err');}
@@ -606,34 +688,39 @@ async function changePin(){
   const op=$('sOldPin').value,np=$('sNewPin').value,np2=$('sNewPin2').value;
   if(!op||!np||!np2){showToast('⚠️ Sab bharo!','err');return;}
   if(op!==(branch.pin||'1234')){showToast('❌ Purana PIN galat!','err');return;}
-  if(!/^\d{4}$/.test(np)){showToast('⚠️ 4 digit PIN chahiye!','err');return;}
-  if(np!==np2){showToast('⚠️ PIN match nahi karta!','err');return;}
+  if(!/^\d{4}$/.test(np)){showToast('⚠️ 4 digit chahiye!','err');return;}
+  if(np!==np2){showToast('⚠️ PIN match nahi!','err');return;}
   try{
-    await db.ref('sac_branches/'+bid+'/pin').set(np);
-    branch.pin=np;$('sOldPin').value='';$('sNewPin').value='';$('sNewPin2').value='';
+    await db.ref('sac_branches/'+bid+'/pin').set(np);branch.pin=np;
+    $('sOldPin').value='';$('sNewPin').value='';$('sNewPin2').value='';
     $('pinMsg').classList.add('show');setTimeout(()=>$('pinMsg').classList.remove('show'),2500);
-    showToast('🔐 PIN update ho gaya!','ok');
+    showToast('🔐 PIN update!','ok');
   }catch(e){showToast('❌ Error!','err');}
 }
 
-/* LINKS MODAL */
 function showLinksModal(){$('linkModal').classList.add('show');}
 function closeLinkModal(){$('linkModal').classList.remove('show');}
-function copyLink(id){
-  const txt=$(id).textContent;
-  navigator.clipboard.writeText(txt).then(()=>showToast('📋 Link copy ho gaya!','ok')).catch(()=>{showToast('Link: '+txt);});
-}
+function copyLink(id){navigator.clipboard.writeText($(id).textContent).then(()=>showToast('📋 Copy ho gaya!','ok')).catch(()=>showToast($(id).textContent));}
 
 /* CSV */
-function exportCSV(){
-  const entries=getFiltered(true);
+function exportAllCSV(){
+  const entries=Object.entries(allEntries).map(([k,v])=>({_key:k,...v})).filter(e=>e.status==='approved');
   if(!entries.length){showToast('Koi entry nahi!');return;}
   const rows=[['Date','Mechanic','Target','Achieved','Pct','AMC','Commission','Stars','Google Reviews']];
-  entries.forEach(e=>rows.push([e.date,e.mechanic,e.target||0,e.achieved||0,(e.pct||0)+'%',e.amcCount||0,(e.amcCount||0)*125,e.starRating||0,e.googleReviews||0]));
+  entries.sort((a,b)=>b.date.localeCompare(a.date)).forEach(e=>rows.push([e.date,e.mechanic,e.target||0,e.achieved||0,(e.pct||0)+'%',e.amcCount||0,(e.amcCount||0)*125,e.starRating||0,e.googleReviews||0]));
+  dlCSV(rows,(branch?.name||'branch')+'_all_'+TODAY_STR+'.csv');
+}
+function exportMechCSV(mName){
+  const entries=Object.entries(allEntries).map(([k,v])=>({_key:k,...v})).filter(e=>e.status==='approved'&&e.mechanic===mName);
+  if(!entries.length){showToast('Koi entry nahi!');return;}
+  const rows=[['Date','Mechanic','Target','Achieved','Pct','AMC','Commission','Stars','Google Reviews']];
+  entries.sort((a,b)=>b.date.localeCompare(a.date)).forEach(e=>rows.push([e.date,e.mechanic,e.target||0,e.achieved||0,(e.pct||0)+'%',e.amcCount||0,(e.amcCount||0)*125,e.starRating||0,e.googleReviews||0]));
+  dlCSV(rows,mName.replace(/\s+/g,'_')+'_report_'+TODAY_STR+'.csv');
+}
+function dlCSV(rows,filename){
   const csv=rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
   const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
-  a.download=`${branch.name||'branch'}_report_${toInputDate(new Date())}.csv`;a.click();
-  showToast('⬇️ CSV download!','ok');
+  a.download=filename;a.click();showToast('⬇️ CSV download!','ok');
 }
 </script>
 </body>

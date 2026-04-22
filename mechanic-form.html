@@ -13,17 +13,27 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
 .topbar{background:var(--dark);display:flex;align-items:center;justify-content:space-between;padding:14px 18px;}
 .topbar-title{font-family:'Baloo 2',cursive;font-size:17px;font-weight:800;color:#fff;}
 .topbar-title span{color:var(--accent);}
-.branch-pill{background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);border-radius:99px;padding:3px 10px;font-size:10px;font-weight:600;letter-spacing:0.5px;}
+.branch-pill{background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);border-radius:99px;padding:3px 10px;font-size:10px;font-weight:600;}
 .main{padding:16px;max-width:480px;margin:0 auto;}
 .form-header{text-align:center;margin-bottom:18px;}
 .form-header .emoji{font-size:42px;margin-bottom:6px;display:block;}
 .form-header h2{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--dark);}
 .form-header p{font-size:12px;color:var(--muted);margin-top:3px;}
-.target-strip{background:linear-gradient(135deg,#1a1a2e,#2d3561);border-radius:14px;padding:14px 18px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;}
+/* TARGET STRIP */
+.target-strip{background:linear-gradient(135deg,#1a1a2e,#2d3561);border-radius:14px;padding:14px 16px;margin-bottom:14px;}
+.ts-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
 .ts-item .ts-label{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,0.45);margin-bottom:3px;}
 .ts-item .ts-val{font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;color:#fff;}
 .ts-item .ts-val.accent{color:var(--accent);}
-.ts-divider{width:1px;height:36px;background:rgba(255,255,255,0.15);}
+.ts-item .ts-val.green{color:#52b788;}
+.ts-divider{width:1px;height:32px;background:rgba(255,255,255,0.15);}
+/* Individual progress bar */
+.mech-prog-section{border-top:1px solid rgba(255,255,255,0.1);padding-top:10px;margin-top:2px;}
+.mech-prog-label{display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,0.5);margin-bottom:5px;}
+.mech-prog-bar{background:rgba(255,255,255,0.1);border-radius:99px;height:8px;overflow:hidden;}
+.mech-prog-fill{height:100%;border-radius:99px;background:var(--accent);transition:width 0.9s;}
+.mech-prog-note{font-size:9px;color:rgba(255,255,255,0.35);margin-top:4px;text-align:right;}
+/* CARDS */
 .card{background:var(--card);border-radius:16px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,0.07);margin-bottom:12px;}
 .card h3{font-family:'Baloo 2',cursive;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
 .field{margin-bottom:12px;}
@@ -42,11 +52,11 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
 .counter-info .ci-main{font-size:14px;font-weight:600;}
 .counter-info .ci-sub{font-size:11px;color:var(--muted);margin-top:2px;}
 .counter-btns{display:flex;align-items:center;gap:12px;}
-.c-btn{width:36px;height:36px;border-radius:50%;border:2px solid var(--border);background:var(--bg);color:var(--text);font-size:20px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.c-btn{width:36px;height:36px;border-radius:50%;border:2px solid var(--border);background:var(--bg);font-size:20px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
 .c-btn.plus{background:var(--accent2);color:#fff;border-color:var(--accent2);}
 .c-btn:active{transform:scale(0.9);}
 .c-num{font-family:'Baloo 2',cursive;font-size:28px;font-weight:800;color:var(--accent2);min-width:34px;text-align:center;}
-.star-row{display:flex;gap:10px;margin-top:6px;}
+.star-row{display:flex;gap:12px;margin-top:6px;}
 .star-btn{font-size:30px;background:none;border:none;cursor:pointer;transition:transform 0.15s;filter:grayscale(1);opacity:0.3;}
 .star-btn.active{filter:none;opacity:1;transform:scale(1.15);}
 .google-card{background:linear-gradient(135deg,#e8f0fe,#f0f7ff);border:1.5px solid #c5d8fc;border-radius:16px;padding:16px;margin-bottom:12px;}
@@ -68,7 +78,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
 .amc-customer-entry:last-child{margin-bottom:0;}
 .ace-num{font-family:'Baloo 2',cursive;font-size:12px;font-weight:800;color:var(--accent2);margin-bottom:10px;}
 .ace-fields{display:flex;flex-direction:column;gap:8px;}
-.ace-fields input{width:100%;background:#fff;border:1.5px solid #a8d5f5;border-radius:8px;padding:11px 13px;font-size:14px;font-family:'Noto Sans',sans-serif;color:var(--text);outline:none;transition:border-color 0.2s;}
+.ace-fields input{background:#fff;border:1.5px solid #a8d5f5;border-radius:8px;padding:11px 13px;font-size:14px;font-family:'Noto Sans',sans-serif;color:var(--text);outline:none;width:100%;}
 .ace-fields input:focus{border-color:var(--accent2);}
 .ace-fields input::placeholder{color:#aaa;}
 /* SUCCESS */
@@ -82,12 +92,12 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
 .chip.green{background:var(--greenl);border-color:#b7e4c7;color:var(--green);}
 .chip.red{background:var(--redl);border-color:#ffb3b3;color:var(--red);}
 .chip.yellow{background:var(--yellowl);border-color:#ffe08a;color:#856400;}
-.chip.blue{background:#e0f0ff;border-color:#a8d5f5;color:var(--accent2);}
 .chip.orange{background:#fff0e6;border-color:#ffc9a3;color:var(--accent);}
+.chip.blue{background:#e0f0ff;border-color:#a8d5f5;color:var(--accent2);}
 .chip.google{background:#e8f0fe;border-color:#c5d8fc;color:#1a73e8;}
 .chip.pending{background:var(--yellowl);border-color:#ffe08a;color:#856400;}
 .btn-new{background:var(--dark);color:#fff;border:none;border-radius:14px;padding:14px 32px;font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.2);}
-/* QR OVERLAY */
+/* QR */
 .qr-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:999;align-items:center;justify-content:center;padding:20px;}
 .qr-overlay.show{display:flex;}
 .qr-popup{background:#fff;border-radius:24px;width:100%;max-width:300px;overflow:hidden;animation:popIn 0.25s cubic-bezier(.4,0,.2,1);}
@@ -104,12 +114,6 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
 .loading-screen.hide{display:none;}
 .ld-spinner{width:48px;height:48px;border:5px solid rgba(255,255,255,0.15);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;}
 .ld-text{font-family:'Baloo 2',cursive;font-size:16px;color:rgba(255,255,255,0.7);}
-.error-screen{display:none;position:fixed;inset:0;background:var(--dark);align-items:center;justify-content:center;padding:30px;z-index:9999;}
-.error-screen.show{display:flex;}
-.error-box{background:#fff;border-radius:20px;padding:30px;text-align:center;max-width:300px;}
-.error-box .ei{font-size:48px;margin-bottom:12px;}
-.error-box h3{font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;margin-bottom:6px;}
-.error-box p{font-size:13px;color:var(--muted);}
 /* UTILS */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a2e;color:#fff;padding:12px 22px;border-radius:99px;font-size:13px;font-weight:600;font-family:'Baloo 2',cursive;opacity:0;transition:all 0.3s;z-index:9999;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
@@ -121,7 +125,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
 @keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
 @keyframes popIn{from{transform:scale(0.85);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-@keyframes shine{from{opacity:0.7;transform:scale(0.95)}to{opacity:1;transform:scale(1.05)}}
+@keyframes shine{from{opacity:0.7}to{opacity:1}}
 </style>
 </head>
 <body>
@@ -129,14 +133,6 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
 <div class="loading-screen" id="loadingScreen">
   <div class="ld-spinner"></div>
   <div class="ld-text">Branch load ho raha hai…</div>
-</div>
-
-<div class="error-screen" id="errorScreen">
-  <div class="error-box">
-    <div class="ei">❌</div>
-    <h3>Link Galat Hai</h3>
-    <p id="errorMsg">Yeh link valid nahi hai. Branch owner se naya link maango.</p>
-  </div>
 </div>
 
 <div id="mainApp" style="display:none">
@@ -153,12 +149,32 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
         <p id="formSubtitle">Har kaam ka record daalo — sahi sahi</p>
       </div>
 
+      <!-- TARGET STRIP with individual mechanic progress -->
       <div class="target-strip">
-        <div class="ts-item"><div class="ts-label">Labour Baaki</div><div class="ts-val">₹<span id="stripMonthly">—</span></div></div>
-        <div class="ts-divider"></div>
-        <div class="ts-item"><div class="ts-label">Daily Target</div><div class="ts-val accent">₹<span id="stripDaily">—</span></div></div>
-        <div class="ts-divider"></div>
-        <div class="ts-item" style="text-align:right"><div class="ts-label">Review Baaki</div><div class="ts-val" style="color:#74b9ff;font-size:15px;">🔵 <span id="stripReview">—</span></div></div>
+        <div class="ts-top">
+          <div class="ts-item">
+            <div class="ts-label">Mera Baaki Target</div>
+            <div class="ts-val accent">₹<span id="stripRemaining">—</span></div>
+          </div>
+          <div class="ts-divider"></div>
+          <div class="ts-item">
+            <div class="ts-label">Monthly Target</div>
+            <div class="ts-val">₹<span id="stripMonthly">1,20,000</span></div>
+          </div>
+          <div class="ts-divider"></div>
+          <div class="ts-item" style="text-align:right">
+            <div class="ts-label">Review Baaki</div>
+            <div class="ts-val" style="color:#74b9ff;font-size:15px;">🔵 <span id="stripReview">—</span></div>
+          </div>
+        </div>
+        <div class="mech-prog-section">
+          <div class="mech-prog-label">
+            <span id="mechProgName">—</span>
+            <span id="mechProgPct">0%</span>
+          </div>
+          <div class="mech-prog-bar"><div class="mech-prog-fill" id="mechProgFill" style="width:0%"></div></div>
+          <div class="mech-prog-note">🔄 Har mahine 1 tarikh ko reset · Aaj: <span id="stripTodayDate">—</span></div>
+        </div>
       </div>
 
       <div class="card">
@@ -171,9 +187,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
 
       <div class="card">
         <h3>👤 Aapka Naam</h3>
-        <div class="field" id="mechanicFieldWrap">
-          <!-- Populated by JS: dropdown or text input -->
-        </div>
+        <div class="field" id="mechanicFieldWrap"></div>
       </div>
 
       <div class="card">
@@ -181,7 +195,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
         <div class="field">
           <label>Aaj ka Target (₹)</label>
           <input type="number" id="fTarget" inputmode="numeric">
-          <div class="field-hint">Owner ne set kiya: ₹<span id="dailyHint">—</span></div>
+          <div class="field-hint" id="dailyHintWrap">Daily target: ₹<span id="dailyHint">—</span></div>
         </div>
         <div class="field">
           <label>Maine Kitna Kamaya (₹)</label>
@@ -271,27 +285,33 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
 <script>
 firebase.initializeApp({apiKey:"AIzaSyAH83DKzJ15zAE_o6Lof4qRDq3IAjxa1ok",authDomain:"shivangi-auto-clinic-99030.firebaseapp.com",databaseURL:"https://shivangi-auto-clinic-99030-default-rtdb.firebaseio.com",projectId:"shivangi-auto-clinic-99030",storageBucket:"shivangi-auto-clinic-99030.firebasestorage.app",messagingSenderId:"306166692836",appId:"1:306166692836:web:b87bb7a3444d3b7e3ba5f1"});
 const db=firebase.database();
+const $=id=>document.getElementById(id);
+const fmt=n=>Number(n).toLocaleString('en-IN');
+const toInputDate=d=>d.toISOString().split('T')[0];
+const MONTHLY_TARGET=120000;
 
-const $ = id => document.getElementById(id);
-const fmt = n => Number(n).toLocaleString('en-IN');
-const toInputDate = d => d.toISOString().split('T')[0];
+const urlParams=new URLSearchParams(window.location.search);
+const bid=urlParams.get('bid');
 
-const urlParams = new URLSearchParams(window.location.search);
-const bid = urlParams.get('bid');
+let branch=null, mechanics=[], amcCount=0, grCount=0, selectedStar=0, qrGenerated=false;
+let branchSettings={reviewTarget:250};
+let currentMechName='';
 
-let branch = null, mechanics = [], amcCount=0, grCount=0, selectedStar=0, qrGenerated=false;
-let branchSettings = {monthlyTarget:120000, dailyTarget:4000, reviewTarget:250};
+// Real today
+const NOW=new Date();
+const TODAY_STR=toInputDate(NOW);
+const TODAY_DISP=NOW.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
 
 function showToast(msg,type='',dur=2800){const t=$('toast');t.textContent=msg;t.className='toast '+type+' show';clearTimeout(t._t);t._t=setTimeout(()=>t.className='toast',dur);}
+function getMonthStart(){const n=new Date();return toInputDate(new Date(n.getFullYear(),n.getMonth(),1));}
 
 async function init(){
   if(!bid){showError('Branch ID missing. Sahi link use karo.');return;}
   try{
     const snap=await db.ref('sac_branches/'+bid).get();
-    if(!snap.exists()){showError('Yeh branch exist nahi karti. Branch owner se link maango.');return;}
+    if(!snap.exists()){showError('Branch exist nahi karti. Branch owner se link maango.');return;}
     branch=snap.val();
     branchSettings={...branchSettings,...(branch.settings||{})};
-    // Load mechanics
     const mSnap=await db.ref('sac_mechanics/'+bid).get();
     if(mSnap.exists()){
       mechanics=Object.entries(mSnap.val()).filter(([,v])=>v.active!==false).map(([id,v])=>({id,...v}));
@@ -299,65 +319,102 @@ async function init(){
     $('loadingScreen').classList.add('hide');
     $('mainApp').style.display='block';
     $('branchPill').textContent='📍 '+(branch.name||'Branch');
+    $('stripTodayDate').textContent=TODAY_DISP;
     buildMechanicField();
     setToday();
-    refreshTargets();
-    $('fTarget').placeholder='₹'+fmt(branchSettings.dailyTarget);
-    $('dailyHint').textContent=fmt(branchSettings.dailyTarget);
   }catch(e){showError('Load failed: '+e.message);}
 }
 
 function showError(msg){
   $('loadingScreen').classList.add('hide');
-  $('errorMsg').textContent=msg;
-  $('errorScreen').classList.add('show');
+  document.body.innerHTML=`<div style="position:fixed;inset:0;background:#1a1a2e;display:flex;align-items:center;justify-content:center;padding:24px;"><div style="background:#fff;border-radius:20px;padding:28px;text-align:center;max-width:300px;"><div style="font-size:48px;margin-bottom:12px;">❌</div><h3 style="font-family:sans-serif;font-size:18px;margin-bottom:8px;">Link Galat Hai</h3><p style="font-size:13px;color:#888;">${msg}</p></div></div>`;
 }
 
 function buildMechanicField(){
   const wrap=$('mechanicFieldWrap');
   if(mechanics.length>0){
     wrap.innerHTML=`<label>Apna Naam Chuno</label>
-      <select id="fName">
+      <select id="fName" onchange="onMechSelect()">
         <option value="">— Naam chunein —</option>
         ${mechanics.map(m=>`<option value="${m.name}">${m.name}</option>`).join('')}
       </select>`;
   } else {
     wrap.innerHTML=`<label>Apna Naam Likho</label>
-      <input type="text" id="fName" placeholder="Jaise: Raju Kumar" autocomplete="name">
+      <input type="text" id="fName" placeholder="Jaise: Raju Kumar" autocomplete="name" oninput="onMechNameInput()">
       <div class="field-hint">⚠️ Branch owner se apna naam register karwaao</div>`;
     const saved=localStorage.getItem('sac_mechanic_name_'+bid);
-    if(saved) $('fName').value=saved;
+    if(saved){$('fName').value=saved;onMechNameInput();}
   }
 }
 
-async function refreshTargets(){
-  try{
-    const snap=await db.ref('sac_entries/'+bid).get();
-    const entries=snap.exists()?Object.values(snap.val()):[];
-    const now=new Date();
-    const ms=toInputDate(new Date(now.getFullYear(),now.getMonth(),1));
-    const approved=entries.filter(e=>e.status==='approved'&&e.date>=ms);
-    const earned=approved.reduce((s,e)=>s+(e.achieved||0),0);
-    const reviews=approved.reduce((s,e)=>s+(e.googleReviews||0),0);
-    $('stripMonthly').textContent=fmt(Math.max(0,branchSettings.monthlyTarget-earned));
-    $('stripDaily').textContent=fmt(branchSettings.dailyTarget);
-    $('stripReview').textContent=Math.max(0,(branchSettings.reviewTarget||250)-reviews);
-  }catch(e){}
+async function onMechSelect(){
+  currentMechName=$('fName').value;
+  if(currentMechName) await refreshTargets(currentMechName);
+  else clearStrip();
 }
 
-function setToday(){$('fDate').value=toInputDate(new Date());}
+async function onMechNameInput(){
+  currentMechName=($('fName')?.value||'').trim();
+  if(currentMechName.length>=2) await refreshTargets(currentMechName);
+  else clearStrip();
+}
 
-$('fAchieved') && (()=>{})(); // will bind after DOM ready
-document.addEventListener('DOMContentLoaded',()=>{
-  document.body.addEventListener('input',function(e){
-    if(e.target.id==='fAchieved'){
-      const t=parseFloat($('fTarget').value)||branchSettings.dailyTarget;
-      const a=parseFloat($('fAchieved').value);
-      const h=$('achievedHint');
-      if(!isNaN(a)&&t>0){const p=Math.round((a/t)*100);h.textContent=p+'% of target '+(p>=100?'🎯':p>=80?'💪':'📉');h.className='field-hint '+(p>=80?'green':'red');}
-      else h.textContent='';
-    }
-  });
+function clearStrip(){
+  $('stripRemaining').textContent='—';
+  $('mechProgName').textContent='—';
+  $('mechProgPct').textContent='0%';
+  $('mechProgFill').style.width='0%';
+}
+
+// KEY FUNCTION: Calculate individual mechanic's remaining target
+async function refreshTargets(mechName){
+  try{
+    const ms=getMonthStart();
+    const snap=await db.ref('sac_entries/'+bid).get();
+    const entries=snap.exists()?Object.values(snap.val()):[];
+
+    // This mechanic's approved entries this month
+    const myEntries=entries.filter(e=>e.status==='approved'&&e.date>=ms&&e.mechanic===mechName);
+    const myEarned=myEntries.reduce((s,e)=>s+(e.achieved||0),0);
+    const myRemaining=Math.max(0,MONTHLY_TARGET-myEarned);
+    const myPct=Math.min(100,Math.round((myEarned/MONTHLY_TARGET)*100));
+
+    // Branch reviews
+    const allApproved=entries.filter(e=>e.status==='approved'&&e.date>=ms);
+    const totalGR=allApproved.reduce((s,e)=>s+(e.googleReviews||0),0);
+    const remGR=Math.max(0,(branchSettings.reviewTarget||250)-totalGR);
+
+    $('stripRemaining').textContent=fmt(myRemaining);
+    $('stripMonthly').textContent=fmt(MONTHLY_TARGET);
+    $('stripReview').textContent=remGR;
+    $('mechProgName').textContent=mechName+' ka progress';
+    $('mechProgPct').textContent=myPct+'%';
+    $('mechProgFill').style.width=myPct+'%';
+    $('mechProgFill').style.background=myPct>=80?'#52b788':myPct>=50?'var(--accent)':'var(--red)';
+
+    // Set daily target field
+    const dailyTarget=Math.round(myRemaining/Math.max(1,getDaysLeft()));
+    $('fTarget').placeholder='₹'+fmt(dailyTarget);
+    $('dailyHint').textContent=fmt(dailyTarget);
+  }catch(e){console.warn(e);}
+}
+
+function getDaysLeft(){
+  const now=new Date();
+  const lastDay=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
+  return Math.max(1,lastDay-now.getDate()+1);
+}
+
+function setToday(){$('fDate').value=TODAY_STR;}
+
+$('fAchieved') && document.addEventListener('input',function(e){
+  if(e.target.id==='fAchieved'){
+    const t=parseFloat($('fTarget').value)||Math.round(Math.max(0,MONTHLY_TARGET-(parseInt($('stripRemaining').textContent?.replace(/,/g,'')||'0')))/getDaysLeft());
+    const a=parseFloat($('fAchieved').value);
+    const h=$('achievedHint');
+    if(!isNaN(a)&&t>0){const p=Math.round((a/t)*100);h.textContent=p+'% of today\'s target '+(p>=100?'🎯':p>=80?'💪':'📉');h.className='field-hint '+(p>=80?'green':'red');}
+    else h.textContent='';
+  }
 });
 
 const starLabels=['','Bahut Bura 😞','Theek Nahi 😐','Theek Hai 🙂','Acha Tha 😊','5 Star! 🌟'];
@@ -369,8 +426,7 @@ function renderAmcEntries(){
   const list=$('amcCustomerList');const container=$('amcEntries');
   if(amcCount===0){list.style.display='none';container.innerHTML='';return;}
   list.style.display='block';
-  const existing=container.querySelectorAll('.amc-customer-entry');
-  const cur=existing.length;
+  const cur=container.querySelectorAll('.amc-customer-entry').length;
   for(let i=cur;i<amcCount;i++){
     const div=document.createElement('div');div.className='amc-customer-entry';div.dataset.index=i;div.style.animationDelay=(i*0.06)+'s';
     div.innerHTML=`<div class="ace-num">🚗 Customer ${i+1}</div><div class="ace-fields"><input type="text" id="amcName${i}" placeholder="Customer ka naam"><input type="tel" id="amcMobile${i}" placeholder="Mobile (10 digit)" inputmode="numeric" maxlength="10"><input type="text" id="amcVehicle${i}" placeholder="Gaadi number (Optional)" style="text-transform:uppercase"></div>`;
@@ -378,12 +434,7 @@ function renderAmcEntries(){
   }
   for(let i=cur-1;i>=amcCount;i--){const el=container.querySelector(`[data-index="${i}"]`);if(el)el.remove();}
 }
-
-function getAmcCustomers(){
-  const c=[];
-  for(let i=0;i<amcCount;i++) c.push({name:($(`amcName${i}`)?.value||'').trim(),mobile:($(`amcMobile${i}`)?.value||'').trim(),vehicle:($(`amcVehicle${i}`)?.value||'').trim().toUpperCase()});
-  return c;
-}
+function getAmcCustomers(){const c=[];for(let i=0;i<amcCount;i++)c.push({name:($(`amcName${i}`)?.value||'').trim(),mobile:($(`amcMobile${i}`)?.value||'').trim(),vehicle:($(`amcVehicle${i}`)?.value||'').trim().toUpperCase()});return c;}
 
 const REVIEW_URL='https://g.page/r/CSg2Z2OSYNVcEBM/review';
 function openQR(){$('qrOverlay').classList.add('show');if(!qrGenerated){$('qrDiv').innerHTML='';new QRCode($('qrDiv'),{text:REVIEW_URL,width:180,height:180,colorDark:'#1a1a2e',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.H});qrGenerated=true;}}
@@ -404,7 +455,7 @@ async function submitForm(){
   if(!validate())return;
   const btn=$('submitBtn');btn.disabled=true;btn.innerHTML='<span class="spinner-inline"></span> Submit ho raha hai…';
   const name=($('fName')?.value||'').trim();
-  const target=parseFloat($('fTarget').value)||branchSettings.dailyTarget;
+  const target=parseFloat($('fTarget').value)||Math.round(Math.max(0,MONTHLY_TARGET)/getDaysLeft());
   const achieved=parseFloat($('fAchieved').value)||0;
   const pct=Math.round((achieved/target)*100);
   const entry={branchId:bid,branchName:branch.name||'',mechanic:name,date:$('fDate').value,target,achieved,pct,amcCount,amcCustomers:getAmcCustomers(),amcCommission:amcCount*125,starRating:selectedStar,googleReviews:grCount,status:'pending',submittedAt:new Date().toISOString(),submittedTs:Date.now()};
@@ -412,21 +463,20 @@ async function submitForm(){
     const key=`${entry.date}_${name.replace(/\s+/g,'_')}_${Date.now()}`;
     await db.ref('sac_entries/'+bid+'/'+key).set(entry);
     localStorage.setItem('sac_mechanic_name_'+bid,name);
-    showSuccess(entry,pct);
+    showSuccess(entry,pct,name);
   }catch(e){showToast('❌ Submit fail! Internet check karo.','err',4000);btn.disabled=false;btn.innerHTML='✅ REPORT SUBMIT KARO';}
 }
 
-function showSuccess(entry,pct){
+function showSuccess(entry,pct,mechName){
   $('formSection').style.display='none';$('successSection').classList.add('show');
   let emoji='📋',title='Report Submit Ho Gayi!';
-  if(pct>=100){emoji='🏆';title='Target Pura! Kya Baat!';}
-  else if(pct>=80){emoji='🎉';title='Badhiya! Almost!';}
+  if(pct>=100){emoji='🏆';title='Aaj ka Target Pura!';}else if(pct>=80){emoji='🎉';title='Badhiya! Almost!';}
   $('sEmoji').textContent=emoji;$('sTitle').textContent=title;
   $('sMsg').textContent=`Branch: ${branch.name||''}. Owner check karke approve karega.`;
-  const chips=[{l:`📅 ${entry.date}`,c:'blue'},{l:`👤 ${entry.mechanic}`,c:''},{l:`💰 ₹${fmt(entry.achieved)} (${pct}%)`,c:pct>=80?'green':'red'}];
-  if(entry.amcCount>0) chips.push({l:`📋 ${entry.amcCount} AMC (₹${fmt(entry.amcCommission)})`,c:'orange'});
-  if(entry.starRating>0) chips.push({l:`${'⭐'.repeat(entry.starRating)} ${entry.starRating}/5`,c:'yellow'});
-  if(entry.googleReviews>0) chips.push({l:`🔵 ${entry.googleReviews} Reviews`,c:'google'});
+  const chips=[{l:`📅 ${entry.date}`,c:'blue'},{l:`👤 ${mechName}`,c:''},{l:`₹${fmt(entry.achieved)} (${pct}%)`,c:pct>=80?'green':'red'}];
+  if(entry.amcCount>0)chips.push({l:`AMC×${entry.amcCount} ₹${fmt(entry.amcCommission)}`,c:'orange'});
+  if(entry.starRating>0)chips.push({l:`${'⭐'.repeat(entry.starRating)} ${entry.starRating}/5`,c:'yellow'});
+  if(entry.googleReviews>0)chips.push({l:`🔵 ${entry.googleReviews} Reviews`,c:'google'});
   chips.push({l:'⏳ Pending Approval',c:'pending'});
   const cont=$('sChips');cont.innerHTML='';chips.forEach((c,i)=>{const el=document.createElement('div');el.className='chip '+c.c;el.style.animationDelay=(i*0.07)+'s';el.textContent=c.l;cont.appendChild(el);});
   window.scrollTo({top:0,behavior:'smooth'});
@@ -441,7 +491,8 @@ function resetForm(){
   $('fAchieved').value='';$('achievedHint').textContent='';
   $('submitBtn').disabled=false;$('submitBtn').innerHTML='✅ REPORT SUBMIT KARO';
   setToday();$('successSection').classList.remove('show');$('formSection').style.display='block';
-  window.scrollTo({top:0,behavior:'smooth'});refreshTargets();
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(currentMechName) refreshTargets(currentMechName);
 }
 
 init();

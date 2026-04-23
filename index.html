@@ -157,9 +157,19 @@ function getBase(){
 }
 
 async function init(){
-  // Firebase check
+  // Firebase check - use listener for real-time connected status
+  db.ref('.info/connected').on('value', snap=>{
+    if(snap.val()===true){
+      $('fbDot').className='status-dot dot-green';
+      $('fbStatus').textContent='Connected ✅';
+    } else {
+      $('fbDot').className='status-dot dot-yellow';
+      $('fbStatus').textContent='Connecting…';
+    }
+  });
+  // Also verify with a read
   try{
-    await db.ref('.info/connected').get();
+    await db.ref('sac_branches').limitToFirst(1).get();
     $('fbDot').className='status-dot dot-green';
     $('fbStatus').textContent='Connected ✅';
   }catch(e){

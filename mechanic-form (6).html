@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Shivangi Auto Clinic – Report Form</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Noto+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f0eb;--card:#fff;--dark:#1a1a2e;--accent:#e85d04;--accent2:#0077b6;--green:#2d6a4f;--greenl:#d8f3dc;--red:#c1121f;--redl:#ffe5e5;--yellow:#e9c46a;--yellowl:#fff8e1;--border:#e2ddd8;--muted:#8a8a8a;--text:#1a1a2e;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;min-height:100vh;}
+.topbar{background:var(--dark);display:flex;align-items:center;justify-content:space-between;padding:14px 18px;}
+.topbar-title{font-family:'Baloo 2',cursive;font-size:17px;font-weight:800;color:#fff;}
+.topbar-title span{color:var(--accent);}
+.branch-pill{background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);border-radius:99px;padding:3px 10px;font-size:10px;font-weight:600;}
+.main{padding:16px;max-width:480px;margin:0 auto;}
+.form-header{text-align:center;margin-bottom:18px;}
+.form-header .emoji{font-size:42px;margin-bottom:6px;display:block;}
+.form-header h2{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--dark);}
+.form-header p{font-size:12px;color:var(--muted);margin-top:3px;}
+/* TARGET STRIP */
+.target-strip{background:linear-gradient(135deg,#1a1a2e,#2d3561);border-radius:14px;padding:14px 16px;margin-bottom:14px;}
+.ts-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.ts-item .ts-label{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,0.45);margin-bottom:3px;}
+.ts-item .ts-val{font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;color:#fff;}
+.ts-item .ts-val.accent{color:var(--accent);}
+.ts-item .ts-val.green{color:#52b788;}
+.ts-divider{width:1px;height:32px;background:rgba(255,255,255,0.15);}
+/* Individual progress bar */
+.mech-prog-section{border-top:1px solid rgba(255,255,255,0.1);padding-top:10px;margin-top:2px;}
+.mech-prog-label{display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,0.5);margin-bottom:5px;}
+.mech-prog-bar{background:rgba(255,255,255,0.1);border-radius:99px;height:8px;overflow:hidden;}
+.mech-prog-fill{height:100%;border-radius:99px;background:var(--accent);transition:width 0.9s;}
+.mech-prog-note{font-size:9px;color:rgba(255,255,255,0.35);margin-top:4px;text-align:right;}
+/* CARDS */
+.card{background:var(--card);border-radius:16px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,0.07);margin-bottom:12px;}
+.card h3{font-family:'Baloo 2',cursive;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.field{margin-bottom:12px;}
+.field:last-child{margin-bottom:0;}
+.field label{display:block;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;}
+.field input,.field select{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;font-size:15px;font-family:'Noto Sans',sans-serif;color:var(--text);outline:none;transition:border-color 0.2s;appearance:none;}
+.field input:focus,.field select:focus{border-color:var(--accent);background:#fff;}
+.field-hint{font-size:11px;color:var(--muted);margin-top:4px;}
+.field-hint.green{color:var(--green);}
+.field-hint.red{color:var(--red);}
+.date-row{display:flex;align-items:center;gap:10px;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;}
+.date-row input[type="date"]{flex:1;background:transparent;border:none;padding:0;font-size:15px;color:var(--text);outline:none;}
+.today-btn{background:var(--accent);color:#fff;border:none;border-radius:6px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Baloo 2',cursive;}
+.counter-row{display:flex;align-items:center;gap:14px;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;}
+.counter-info{flex:1;}
+.counter-info .ci-main{font-size:14px;font-weight:600;}
+.counter-info .ci-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.counter-btns{display:flex;align-items:center;gap:12px;}
+.c-btn{width:36px;height:36px;border-radius:50%;border:2px solid var(--border);background:var(--bg);font-size:20px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.c-btn.plus{background:var(--accent2);color:#fff;border-color:var(--accent2);}
+.c-btn:active{transform:scale(0.9);}
+.c-num{font-family:'Baloo 2',cursive;font-size:28px;font-weight:800;color:var(--accent2);min-width:34px;text-align:center;}
+.star-row{display:flex;gap:12px;margin-top:6px;}
+.star-btn{font-size:30px;background:none;border:none;cursor:pointer;transition:transform 0.15s;filter:grayscale(1);opacity:0.3;}
+.star-btn.active{filter:none;opacity:1;transform:scale(1.15);}
+.google-card{background:linear-gradient(135deg,#e8f0fe,#f0f7ff);border:1.5px solid #c5d8fc;border-radius:16px;padding:16px;margin-bottom:12px;}
+.google-card h3{font-family:'Baloo 2',cursive;font-size:12px;font-weight:700;color:#1a73e8;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #c5d8fc;display:flex;align-items:center;gap:8px;}
+.g-logo{width:14px;height:14px;border-radius:50%;background:conic-gradient(#4285F4 0deg 90deg,#34A853 90deg 180deg,#FBBC05 180deg 270deg,#EA4335 270deg 360deg);flex-shrink:0;}
+.qr-btn{width:100%;background:linear-gradient(135deg,#1a73e8,#0d47a1);color:#fff;border:none;border-radius:12px;padding:13px;font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 14px rgba(26,115,232,0.3);transition:transform 0.15s;}
+.qr-btn:active{transform:scale(0.97);}
+.g-counter-row{display:flex;align-items:center;gap:12px;background:#fff;border-radius:12px;padding:12px 14px;border:1.5px solid #c5d8fc;margin-top:10px;}
+.g-counter-label{flex:1;font-size:12px;color:#444;font-weight:600;}
+.g-btns{display:flex;align-items:center;gap:10px;}
+.g-btn{width:32px;height:32px;border-radius:50%;border:2px solid #c5d8fc;background:#e8f0fe;color:#1a73e8;font-size:18px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.g-btn.plus{background:#1a73e8;color:#fff;border-color:#1a73e8;}
+.g-btn:active{transform:scale(0.9);}
+.g-num{font-family:'Baloo 2',cursive;font-size:26px;font-weight:800;color:#1a73e8;min-width:30px;text-align:center;}
+.submit-btn{width:100%;background:var(--accent);color:#fff;border:none;border-radius:14px;padding:16px;font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;cursor:pointer;margin-top:4px;box-shadow:0 4px 18px rgba(232,93,4,0.35);transition:transform 0.15s,opacity 0.2s;}
+.submit-btn:active{transform:scale(0.98);}
+.submit-btn:disabled{opacity:0.6;cursor:not-allowed;}
+.amc-customer-entry{background:#e8f4fd;border:2px solid #a8d5f5;border-radius:12px;padding:14px;margin-bottom:10px;animation:fadeUp 0.3s ease both;}
+.amc-customer-entry:last-child{margin-bottom:0;}
+.ace-num{font-family:'Baloo 2',cursive;font-size:12px;font-weight:800;color:var(--accent2);margin-bottom:10px;}
+.ace-fields{display:flex;flex-direction:column;gap:8px;}
+.ace-fields input{background:#fff;border:1.5px solid #a8d5f5;border-radius:8px;padding:11px 13px;font-size:14px;font-family:'Noto Sans',sans-serif;color:var(--text);outline:none;width:100%;}
+.ace-fields input:focus{border-color:var(--accent2);}
+.ace-fields input::placeholder{color:#aaa;}
+/* SUCCESS */
+.success{display:none;text-align:center;padding:36px 16px;}
+.success.show{display:block;}
+.success .s-emoji{font-size:60px;margin-bottom:10px;display:block;animation:pop 0.5s cubic-bezier(.4,0,.2,1);}
+.success h2{font-family:'Baloo 2',cursive;font-size:24px;font-weight:800;margin-bottom:6px;}
+.success p{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6;}
+.result-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:24px;}
+.chip{font-size:12px;font-weight:600;padding:5px 14px;border-radius:99px;background:var(--bg);border:1.5px solid var(--border);animation:fadeUp 0.4s ease both;}
+.chip.green{background:var(--greenl);border-color:#b7e4c7;color:var(--green);}
+.chip.red{background:var(--redl);border-color:#ffb3b3;color:var(--red);}
+.chip.yellow{background:var(--yellowl);border-color:#ffe08a;color:#856400;}
+.chip.orange{background:#fff0e6;border-color:#ffc9a3;color:var(--accent);}
+.chip.blue{background:#e0f0ff;border-color:#a8d5f5;color:var(--accent2);}
+.chip.google{background:#e8f0fe;border-color:#c5d8fc;color:#1a73e8;}
+.chip.pending{background:var(--yellowl);border-color:#ffe08a;color:#856400;}
+.btn-new{background:var(--dark);color:#fff;border:none;border-radius:14px;padding:14px 32px;font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.2);}
+/* QR */
+.qr-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:999;align-items:center;justify-content:center;padding:20px;}
+.qr-overlay.show{display:flex;}
+.qr-popup{background:#fff;border-radius:24px;width:100%;max-width:300px;overflow:hidden;animation:popIn 0.25s cubic-bezier(.4,0,.2,1);}
+.qp-top{background:linear-gradient(135deg,#e85d04,#f4a261);padding:20px;text-align:center;}
+.qp-name{font-family:'Baloo 2',cursive;font-size:17px;font-weight:800;color:#fff;margin-bottom:4px;}
+.qp-ask{font-size:13px;color:rgba(255,255,255,0.92);line-height:1.4;}
+.qp-stars{font-size:22px;margin-top:8px;letter-spacing:4px;animation:shine 1s ease-in-out infinite alternate;}
+.qp-box{padding:18px;display:flex;align-items:center;justify-content:center;background:#f8f8f8;}
+.qp-hint{text-align:center;font-size:11px;color:#888;padding:0 16px 4px;}
+.qp-link{text-align:center;font-size:9px;color:#bbb;padding:0 16px 10px;word-break:break-all;}
+.qp-close{width:calc(100% - 28px);margin:0 14px 14px;background:#1a1a2e;color:#fff;border:none;border-radius:10px;padding:12px;font-family:'Baloo 2',cursive;font-size:14px;font-weight:700;cursor:pointer;}
+/* LOADING */
+.loading-screen{position:fixed;inset:0;background:var(--dark);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:16px;}
+.loading-screen.hide{display:none;}
+.ld-spinner{width:48px;height:48px;border:5px solid rgba(255,255,255,0.15);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;}
+.ld-text{font-family:'Baloo 2',cursive;font-size:16px;color:rgba(255,255,255,0.7);}
+/* UTILS */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a2e;color:#fff;padding:12px 22px;border-radius:99px;font-size:13px;font-weight:600;font-family:'Baloo 2',cursive;opacity:0;transition:all 0.3s;z-index:9999;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.err{background:var(--red);}
+.toast.ok{background:var(--green);}
+.spinner-inline{display:inline-block;width:16px;height:16px;border:3px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;}
+.spacer{height:28px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+@keyframes popIn{from{transform:scale(0.85);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shine{from{opacity:0.7}to{opacity:1}}
+/* GR Customer Entries */
+.gr-entry{background:#fff;border:1.5px solid #c5d8fc;border-radius:10px;padding:11px 13px;margin-top:8px;animation:fadeUp 0.3s ease both;}
+.gr-entry-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;}
+.gr-entry-name{font-weight:700;font-size:13px;color:var(--dark);}
+.gr-entry-stars{font-size:13px;}
+.gr-entry-comment{font-size:11px;color:var(--muted);margin-top:2px;font-style:italic;}
+.gr-entry-del{background:var(--redl);color:var(--red);border:1px solid #ffb3b3;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;cursor:pointer;flex-shrink:0;}
+/* GR Modal */
+.gr-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9001;align-items:center;justify-content:center;padding:20px;}
+.gr-modal-overlay.show{display:flex;}
+.gr-modal{background:#fff;border-radius:20px;padding:22px;width:100%;max-width:340px;animation:popIn 0.25s cubic-bezier(.4,0,.2,1);}
+.gr-modal h3{font-family:'Baloo 2',cursive;font-size:17px;font-weight:800;color:var(--dark);margin-bottom:14px;}
+.gr-modal-field{margin-bottom:11px;}
+.gr-modal-field label{display:block;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;}
+.gr-modal-field input,.gr-modal-field textarea{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:9px;padding:11px 13px;font-size:14px;font-family:'Noto Sans',sans-serif;color:var(--text);outline:none;}
+.gr-modal-field input:focus,.gr-modal-field textarea:focus{border-color:#1a73e8;background:#fff;}
+.gr-modal-field textarea{resize:none;height:70px;}
+.gr-star-select{display:flex;gap:8px;margin-top:5px;}
+.gr-star-opt{font-size:28px;background:none;border:none;cursor:pointer;filter:grayscale(1);opacity:0.3;transition:all 0.15s;}
+.gr-star-opt.active{filter:none;opacity:1;transform:scale(1.1);}
+.gr-modal-save{width:100%;background:#1a73e8;color:#fff;border:none;border-radius:10px;padding:13px;font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;cursor:pointer;margin-top:4px;}
+.gr-modal-cancel{width:100%;background:var(--bg);color:var(--muted);border:1.5px solid var(--border);border-radius:10px;padding:11px;font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;cursor:pointer;margin-top:7px;}
+</style>
+</head>
+<body>
+
+<div class="loading-screen" id="loadingScreen">
+  <div class="ld-spinner"></div>
+  <div class="ld-text">Branch load ho raha hai…</div>
+</div>
+
+<div id="mainApp" style="display:none">
+  <div class="topbar">
+    <div class="topbar-title">⚙️ <span>Shivangi</span> Auto Clinic</div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <button id="historyBtn" onclick="toggleHistory()" style="display:none;background:rgba(255,255,255,0.15);color:#fff;border:none;border-radius:7px;padding:5px 11px;font-family:'Baloo 2',cursive;font-size:12px;font-weight:700;cursor:pointer;">📋 History</button>
+      <div class="branch-pill" id="branchPill">Branch</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div id="formSection">
+      <div class="form-header">
+        <span class="emoji">🔧</span>
+        <h2>Aaj ka Report Bharo</h2>
+        <p id="formSubtitle">Har kaam ka record daalo — sahi sahi</p>
+      </div>
+
+      <!-- TARGET STRIP with individual mechanic progress -->
+      <div class="target-strip">
+        <div class="ts-top">
+          <div class="ts-item">
+            <div class="ts-label">Mera Baaki Target</div>
+            <div class="ts-val accent">₹<span id="stripRemaining">—</span></div>
+          </div>
+          <div class="ts-divider"></div>
+          <div class="ts-item">
+            <div class="ts-label">Monthly Target</div>
+            <div class="ts-val">₹<span id="stripMonthly">1,20,000</span></div>
+          </div>
+          <div class="ts-divider"></div>
+          <div class="ts-item" style="text-align:right">
+            <div class="ts-label">Review Baaki</div>
+            <div class="ts-val" style="color:#74b9ff;font-size:15px;">🔵 <span id="stripReview">—</span></div>
+          </div>
+        </div>
+        <div class="mech-prog-section">
+          <div class="mech-prog-label">
+            <span id="mechProgName">—</span>
+            <span id="mechProgPct">0%</span>
+          </div>
+          <div class="mech-prog-bar"><div class="mech-prog-fill" id="mechProgFill" style="width:0%"></div></div>
+          <div class="mech-prog-note">🔄 Har mahine 1 tarikh ko reset · Aaj: <span id="stripTodayDate">—</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📅 Date</h3>
+        <div class="date-row">
+          <input type="date" id="fDate">
+          <button class="today-btn" onclick="setToday()">Aaj</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>👤 Aapka Naam</h3>
+        <div class="field" id="mechanicFieldWrap"></div>
+      </div>
+
+      <div class="card">
+        <h3>💰 Labour</h3>
+        <div class="field">
+          <label>Aaj ka Target (₹)</label>
+          <input type="number" id="fTarget" inputmode="numeric">
+          <div class="field-hint" id="dailyHintWrap">Daily target: ₹<span id="dailyHint">—</span></div>
+        </div>
+        <div class="field">
+          <label>Maine Kitna Kamaya (₹)</label>
+          <input type="number" id="fAchieved" placeholder="Jaise: 3500" inputmode="numeric">
+          <div class="field-hint" id="achievedHint"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📋 AMC Sales</h3>
+        <div style="font-size:12px;color:var(--accent2);font-weight:700;margin-bottom:8px;">Step 1 — Kitne AMC beche? (+) dabaao</div>
+        <div class="counter-row">
+          <div class="counter-info"><div class="ci-main">AMC Count</div><div class="ci-sub">Har AMC = ₹125 commission</div></div>
+          <div class="counter-btns">
+            <button class="c-btn" onclick="changeAmc(-1)">−</button>
+            <div class="c-num" id="amcNum">0</div>
+            <button class="c-btn plus" onclick="changeAmc(1)">+</button>
+          </div>
+        </div>
+        <div id="amcCustomerList" style="margin-top:12px;display:none;">
+          <div style="font-size:12px;color:var(--accent2);font-weight:700;margin-bottom:8px;">Step 2 — Har customer ka naam aur mobile daalo ⬇️</div>
+          <div id="amcEntries"></div>
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-top:8px;">⚠️ Naam aur mobile <strong>compulsory</strong> hai</div>
+      </div>
+
+      <div class="card">
+        <h3>⭐ Customer Feedback</h3>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:8px;">Customer ne kitne star diye?</p>
+        <div class="star-row">
+          <button class="star-btn" data-v="1" onclick="setStar(1)">⭐</button>
+          <button class="star-btn" data-v="2" onclick="setStar(2)">⭐</button>
+          <button class="star-btn" data-v="3" onclick="setStar(3)">⭐</button>
+          <button class="star-btn" data-v="4" onclick="setStar(4)">⭐</button>
+          <button class="star-btn" data-v="5" onclick="setStar(5)">⭐</button>
+        </div>
+        <p id="starLabel" style="font-size:12px;color:var(--muted);margin-top:8px;">Koi rating nahi di</p>
+      </div>
+
+      <div class="google-card">
+        <h3><div class="g-logo"></div> Google Review</h3>
+        <button class="qr-btn" onclick="openQR()">📱 Customer ko QR Dikhao</button>
+        <div class="g-counter-row">
+          <div class="g-counter-label">Kitne customers ne<br><strong style="color:#1a73e8">Google Review diya?</strong></div>
+          <div class="g-btns">
+            <button class="g-btn" onclick="grRemoveLast()">−</button>
+            <div class="g-num" id="grNum">0</div>
+            <button class="g-btn plus" onclick="openGRModal()">+</button>
+          </div>
+        </div>
+        <!-- Customer Review Entries -->
+        <div id="grEntriesList"></div>
+      </div>
+
+      <div id="mechStatusWrap" style="margin-bottom:12px;"></div>
+
+      <button onclick="openBillFromForm()" style="width:100%;background:var(--accent2);color:#fff;border:none;border-radius:14px;padding:14px;font-family:'Baloo 2',cursive;font-size:16px;font-weight:800;cursor:pointer;margin-bottom:10px;box-shadow:0 4px 14px rgba(0,119,182,0.3);">📄 BILL BANAO</button>
+
+      <button class="submit-btn" id="submitBtn" onclick="submitForm()">✅ REPORT SUBMIT KARO</button>
+      <div class="spacer"></div>
+    </div>
+
+    <div class="success" id="successSection">
+      <span class="s-emoji" id="sEmoji">🎉</span>
+      <h2 id="sTitle">Report Submit Ho Gayi!</h2>
+      <p id="sMsg">Aapki report branch owner ke paas pahunch gayi.</p>
+      <div class="result-chips" id="sChips"></div>
+      <button class="btn-new" onclick="resetForm()">+ Nayi Entry Karo</button>
+      <div class="spacer"></div>
+    </div>
+
+    <!-- HISTORY SECTION -->
+    <div id="historySection" style="display:none;">
+      <div style="text-align:center;margin-bottom:14px;">
+        <span style="font-size:32px;display:block;margin-bottom:5px;">📋</span>
+        <div style="font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;" id="historyMechName">Meri History</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:3px;">Sab entries — approved, pending, rejected</div>
+      </div>
+      <!-- Monthly Summary -->
+      <div style="background:linear-gradient(135deg,#1a1a2e,#2d3561);border-radius:13px;padding:13px;margin-bottom:12px;">
+        <div style="font-family:'Baloo 2',cursive;font-size:11px;font-weight:700;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:1px;margin-bottom:9px;">🏆 Is Mahine Ka Summary</div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:7px;">
+          <div><div style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:2px;">Kamaya</div><div style="font-family:'Baloo 2',cursive;font-size:16px;font-weight:800;color:var(--accent);" id="hEarned">₹0</div></div>
+          <div><div style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:2px;">Target</div><div style="font-family:'Baloo 2',cursive;font-size:16px;font-weight:800;color:#fff;">₹1,20,000</div></div>
+          <div><div style="font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:2px;">Baaki</div><div style="font-family:'Baloo 2',cursive;font-size:16px;font-weight:800;color:#52b788;" id="hRem">₹0</div></div>
+        </div>
+        <div style="background:rgba(255,255,255,0.1);border-radius:99px;height:8px;overflow:hidden;margin-bottom:4px;"><div id="hProgFill" style="height:100%;border-radius:99px;background:var(--accent);transition:width 0.9s;width:0%"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,0.35);">
+          <span id="hPct">0%</span>
+          <span>AMC: <span id="hAmc">0</span> · Reviews: <span id="hGR">0</span></span>
+        </div>
+      </div>
+      <!-- Entries List -->
+      <div style="background:var(--card);border-radius:13px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.07);margin-bottom:12px;">
+        <div style="padding:10px 13px;border-bottom:1px solid var(--border);font-family:'Baloo 2',cursive;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">📄 Meri Sab Entries</div>
+        <div id="historyList"><div class="empty-state"><div class="ei">⏳</div>Loading…</div></div>
+      </div>
+      <button class="btn-new" onclick="showForm()" style="width:100%;">+ Nayi Entry Karo</button>
+      <!-- BILL HISTORY -->
+      <div style="background:var(--card);border-radius:13px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.07);margin-top:14px;margin-bottom:12px;">
+        <div style="padding:10px 13px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-family:'Baloo 2',cursive;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">📄 Mere Bills</div>
+        </div>
+        <div id="billHistorySection"><div class="empty-state"><div class="ei">⏳</div>Loading…</div></div>
+      </div>
+      <div class="spacer"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MECHANIC PIN SCREEN -->
+<div id="mechPinScreen" style="display:none;position:fixed;inset:0;background:var(--dark);align-items:center;justify-content:center;padding:20px;z-index:500;">
+  <div style="background:#fff;border-radius:22px;padding:26px 22px;width:100%;max-width:300px;text-align:center;">
+    <div style="font-size:44px;margin-bottom:8px;">🔐</div>
+    <div style="font-family:'Baloo 2',cursive;font-size:19px;font-weight:800;color:var(--dark);margin-bottom:3px;" id="mechPinTitle">PIN Daalo</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:16px;">Apna 4-digit PIN daalo</div>
+    <div style="display:flex;justify-content:center;gap:10px;margin-bottom:16px;">
+      <div class="pin-dot" id="mp0"></div><div class="pin-dot" id="mp1"></div><div class="pin-dot" id="mp2"></div><div class="pin-dot" id="mp3"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;max-width:220px;margin:0 auto;">
+      <button class="pin-key" onclick="mechPinKey('1')">1</button><button class="pin-key" onclick="mechPinKey('2')">2</button><button class="pin-key" onclick="mechPinKey('3')">3</button>
+      <button class="pin-key" onclick="mechPinKey('4')">4</button><button class="pin-key" onclick="mechPinKey('5')">5</button><button class="pin-key" onclick="mechPinKey('6')">6</button>
+      <button class="pin-key" onclick="mechPinKey('7')">7</button><button class="pin-key" onclick="mechPinKey('8')">8</button><button class="pin-key" onclick="mechPinKey('9')">9</button>
+      <button class="pin-key" onclick="mechPinClear()">C</button><button class="pin-key" onclick="mechPinKey('0')">0</button><button class="pin-key" onclick="mechPinDel()">⌫</button>
+    </div>
+    <div style="font-size:12px;color:var(--red);margin-top:10px;min-height:16px;font-weight:600;" id="mechPinError"></div>
+    <button onclick="mechPinCancel()" style="margin-top:10px;background:var(--bg);color:var(--muted);border:1.5px solid var(--border);border-radius:9px;padding:9px 20px;font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;cursor:pointer;width:100%;">← Wapas Jao</button>
+  </div>
+</div>
+<div class="qr-overlay" id="qrOverlay" onclick="closeQR()">
+  <div class="qr-popup" onclick="event.stopPropagation()">
+    <div class="qp-top">
+      <div class="qp-name">⚙️ Shivangi Auto Clinic</div>
+      <div class="qp-ask">Hamari service kaisi lagi?<br><strong>Google Review dijiye! 🙏</strong></div>
+      <div class="qp-stars">⭐⭐⭐⭐⭐</div>
+    </div>
+    <div class="qp-box"><div id="qrDiv"></div></div>
+    <div class="qp-hint">📷 Camera se scan karein</div>
+    <div class="qp-link">g.page/r/CSg2Z2OSYNVcEBM/review</div>
+    <button class="qp-close" onclick="closeQR()">✕ Band Karo</button>
+  </div>
+</div>
+
+<!-- GR Customer Modal -->
+<div class="gr-modal-overlay" id="grModalOverlay" onclick="closeGRModal()">
+  <div class="gr-modal" onclick="event.stopPropagation()">
+    <h3>🔵 Google Review Add Karo</h3>
+    <div class="gr-modal-field">
+      <label>Customer ka Naam *</label>
+      <input type="text" id="grCustName" placeholder="Jaise: Ramesh Sharma" autocomplete="off">
+    </div>
+    <div class="gr-modal-field">
+      <label>Customer ne Kitne Stars Diye? *</label>
+      <div class="gr-star-select">
+        <button class="gr-star-opt" data-v="1" onclick="setGRStar(1)">⭐</button>
+        <button class="gr-star-opt" data-v="2" onclick="setGRStar(2)">⭐</button>
+        <button class="gr-star-opt" data-v="3" onclick="setGRStar(3)">⭐</button>
+        <button class="gr-star-opt" data-v="4" onclick="setGRStar(4)">⭐</button>
+        <button class="gr-star-opt" data-v="5" onclick="setGRStar(5)">⭐</button>
+      </div>
+      <div id="grStarLabel" style="font-size:11px;color:var(--muted);margin-top:5px;">Koi star select nahi</div>
+    </div>
+    <div class="gr-modal-field">
+      <label>Customer ne Kya Likha? (Optional)</label>
+      <textarea id="grCustComment" placeholder="Customer ka review likhein..."></textarea>
+    </div>
+    <button class="gr-modal-save" onclick="saveGREntry()">✅ Save Karo</button>
+    <button class="gr-modal-cancel" onclick="closeGRModal()">✕ Cancel</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+<script>
+firebase.initializeApp({apiKey:"AIzaSyAH83DKzJ15zAE_o6Lof4qRDq3IAjxa1ok",authDomain:"shivangi-auto-clinic-99030.firebaseapp.com",databaseURL:"https://shivangi-auto-clinic-99030-default-rtdb.firebaseio.com",projectId:"shivangi-auto-clinic-99030",storageBucket:"shivangi-auto-clinic-99030.firebasestorage.app",messagingSenderId:"306166692836",appId:"1:306166692836:web:b87bb7a3444d3b7e3ba5f1"});
+const db=firebase.database();
+const $=id=>document.getElementById(id);
+const fmt=n=>Number(n).toLocaleString('en-IN');
+const toInputDate=d=>d.toISOString().split('T')[0];
+const MONTHLY_TARGET=120000;
+
+const urlParams=new URLSearchParams(window.location.search);
+const bid=urlParams.get('bid');
+
+let branch=null, mechanics=[], amcCount=0, grReviews=[], selectedStar=0, qrGenerated=false;
+let grModalStar=0;
+let branchSettings={reviewTarget:250};
+let currentMechName='';
+
+// Real today
+const NOW=new Date();
+const TODAY_STR=toInputDate(NOW);
+const TODAY_DISP=NOW.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+
+function showToast(msg,type='',dur=2800){const t=$('toast');t.textContent=msg;t.className='toast '+type+' show';clearTimeout(t._t);t._t=setTimeout(()=>t.className='toast',dur);}
+function getMonthStart(){const n=new Date();return toInputDate(new Date(n.getFullYear(),n.getMonth(),1));}
+
+async function init(){
+  if(!bid){showError('Branch ID missing. Sahi link use karo.');return;}
+  try{
+    const snap=await db.ref('sac_branches/'+bid).get();
+    if(!snap.exists()){showError('Branch exist nahi karti. Branch owner se link maango.');return;}
+    branch=snap.val();
+    branchSettings={...branchSettings,...(branch.settings||{})};
+    const mSnap=await db.ref('sac_mechanics/'+bid).get();
+    if(mSnap.exists()){
+      mechanics=Object.entries(mSnap.val()).filter(([,v])=>v.active!==false).map(([id,v])=>({id,...v}));
+    }
+    $('loadingScreen').classList.add('hide');
+    $('mainApp').style.display='block';
+    $('branchPill').textContent='📍 '+(branch.name||'Branch');
+    $('stripTodayDate').textContent=TODAY_DISP;
+    buildMechanicField();
+    setToday();
+  }catch(e){showError('Load failed: '+e.message);}
+}
+
+function showError(msg){
+  $('loadingScreen').classList.add('hide');
+  document.body.innerHTML=`<div style="position:fixed;inset:0;background:#1a1a2e;display:flex;align-items:center;justify-content:center;padding:24px;"><div style="background:#fff;border-radius:20px;padding:28px;text-align:center;max-width:300px;"><div style="font-size:48px;margin-bottom:12px;">❌</div><h3 style="font-family:sans-serif;font-size:18px;margin-bottom:8px;">Link Galat Hai</h3><p style="font-size:13px;color:#888;">${msg}</p></div></div>`;
+}
+
+function buildMechanicField(){
+  const wrap=$('mechanicFieldWrap');
+  const saved=localStorage.getItem('sac_mechanic_name_'+bid);
+
+  if(saved&&mechanics.length>0){
+    // Re-verify PIN on every fresh load
+    const mech=mechanics.find(m=>m.name===saved);
+    if(mech&&mech.pin&&!mechPinVerified){
+      // Show PIN screen for saved name
+      wrap.innerHTML=`<label>Apna Naam</label>
+        <div style="background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;font-family:'Baloo 2',cursive;font-size:16px;font-weight:800;">👤 ${saved}</div>
+        <div class="field-hint">🔐 PIN verification zaroori hai</div>`;
+      // Show PIN screen
+      pendingMechName=saved;
+      mechPinBuf='';
+      $('mechPinTitle').textContent='🔐 '+saved;
+      $('mechPinError').textContent='';
+      for(let i=0;i<4;i++) $('mp'+i).classList.remove('filled');
+      $('mechPinScreen').style.display='flex';
+      return;
+    }
+    // PIN already verified this session
+    showLockedName(saved);
+    return;
+  }
+
+  if(mechanics.length>0){
+    wrap.innerHTML=`<label>Apna Naam Chuno</label>
+      <select id="fName" onchange="onMechSelect()">
+        <option value="">— Naam chunein —</option>
+        ${mechanics.map(m=>`<option value="${m.name}">${m.name}</option>`).join('')}
+      </select>
+      <div class="field-hint">🔐 Naam chunne ke baad PIN verify hoga</div>`;
+  } else {
+    wrap.innerHTML=`<label>Apna Naam Likho</label>
+      <input type="text" id="fName" placeholder="Jaise: Raju Kumar" autocomplete="name" oninput="onMechNameInput()">
+      <div class="field-hint">⚠️ Branch owner se apna naam register karwaao</div>`;
+    if(saved){$('fName').value=saved;onMechNameInput();}
+  }
+}
+
+function showLockedName(name){
+  const wrap=$('mechanicFieldWrap');
+  wrap.innerHTML=`
+    <div style="background:var(--greenl);border:1.5px solid #b7e4c7;border-radius:10px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-size:10px;font-weight:600;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;">✅ Logged In As</div>
+        <div style="font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;color:var(--dark);">👤 ${name}</div>
+      </div>
+      <button onclick="changeName()" style="background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:6px 11px;font-size:11px;font-weight:600;cursor:pointer;color:var(--muted);">🔄 Change</button>
+    </div>
+    <input type="hidden" id="fName" value="${name}">`;
+  // Auto load targets
+  currentMechName=name;
+  refreshTargets(name);
+  $('historyBtn').style.display='block';
+}
+
+function changeName(){
+  if(confirm('Naam change karna chahte ho? Logout ho jaoge.')){
+    localStorage.removeItem('sac_mechanic_name_'+bid);
+    currentMechName='';mechPinVerified=false;pendingMechName='';
+    clearStrip();
+    $('historyBtn').style.display='none';
+    buildMechanicField();
+  }
+}
+
+/* ── Mechanic PIN Verification ── */
+let mechPinBuf='', mechPinVerified=false, pendingMechName='';
+
+async function onMechSelect(){
+  const name=($('fName')?.value||'').trim();
+  if(!name){clearStrip();return;}
+  // Find mechanic's PIN
+  const mech=mechanics.find(m=>m.name===name);
+  if(mech&&mech.pin){
+    // PIN required — show PIN screen
+    pendingMechName=name;
+    mechPinBuf='';mechPinVerified=false;
+    $('mechPinTitle').textContent='🔐 '+name;
+    $('mechPinError').textContent='';
+    for(let i=0;i<4;i++) $('mp'+i).classList.remove('filled');
+    $('mechPinScreen').style.display='flex';
+  } else {
+    // No PIN set — allow directly
+    mechPinVerified=true;
+    localStorage.setItem('sac_mechanic_name_'+bid, name);
+    currentMechName=name;
+    showLockedName(name);
+    await refreshTargets(name);
+  }
+}
+
+function mechPinKey(d){
+  if(mechPinBuf.length>=4) return;
+  mechPinBuf+=d;
+  for(let i=0;i<4;i++) $('mp'+i).classList.toggle('filled',i<mechPinBuf.length);
+  if(mechPinBuf.length===4) setTimeout(checkMechPin,180);
+}
+function mechPinDel(){mechPinBuf=mechPinBuf.slice(0,-1);for(let i=0;i<4;i++) $('mp'+i).classList.toggle('filled',i<mechPinBuf.length);}
+function mechPinClear(){mechPinBuf='';for(let i=0;i<4;i++) $('mp'+i).classList.remove('filled');$('mechPinError').textContent='';}
+function mechPinCancel(){
+  $('mechPinScreen').style.display='none';
+  $('fName').value='';mechPinBuf='';pendingMechName='';
+  clearStrip();
+}
+
+async function checkMechPin(){
+  const mech=mechanics.find(m=>m.name===pendingMechName);
+  if(mech&&mechPinBuf===mech.pin){
+    $('mechPinScreen').style.display='none';
+    mechPinVerified=true;
+    localStorage.setItem('sac_mechanic_name_'+bid, pendingMechName);
+    currentMechName=pendingMechName;
+    showLockedName(pendingMechName);
+    await refreshTargets(pendingMechName);
+    showToast('✅ Welcome '+pendingMechName+'!','ok');
+  } else {
+    $('mechPinError').textContent='❌ Galat PIN! Dobara try karo.';
+    mechPinBuf='';
+    for(let i=0;i<4;i++) $('mp'+i).classList.remove('filled');
+    const box=$('mechPinScreen').querySelector('div');
+    box.style.animation='shake 0.4s';setTimeout(()=>box.style.animation='',400);
+  }
+}
+
+async function onMechNameInput(){
+  currentMechName=($('fName')?.value||'').trim();
+  if(currentMechName.length>=2) await refreshTargets(currentMechName);
+  else clearStrip();
+}
+
+function clearStrip(){
+  $('stripRemaining').textContent='—';
+  $('mechProgName').textContent='—';
+  $('mechProgPct').textContent='0%';
+  $('mechProgFill').style.width='0%';
+}
+
+// KEY FUNCTION: Calculate individual mechanic's remaining target
+// ALL entries count (pending + approved + rejected) - mechanic ka kaam hua hai
+async function refreshTargets(mechName){
+  try{
+    const ms=getMonthStart();
+    const snap=await db.ref('sac_entries/'+bid).get();
+    const entries=snap.exists()?Object.values(snap.val()):[];
+
+    // ALL entries this month - rejected bhi count hoga
+    const myEntries=entries.filter(e=>e.date>=ms&&e.mechanic===mechName);
+    const myEarned=myEntries.reduce((s,e)=>s+(e.achieved||0),0);
+    const myRemaining=Math.max(0,MONTHLY_TARGET-myEarned);
+    const myPct=Math.min(100,Math.round((myEarned/MONTHLY_TARGET)*100));
+
+    // Branch reviews (all)
+    const allEntries2=entries.filter(e=>e.date>=ms);
+    const totalGR=allEntries2.reduce((s,e)=>s+(e.googleReviews||0),0);
+    const remGR=Math.max(0,(branchSettings.reviewTarget||250)-totalGR);
+
+    $('stripRemaining').textContent=fmt(myRemaining);
+    $('stripMonthly').textContent=fmt(MONTHLY_TARGET);
+    $('stripReview').textContent=remGR;
+    $('mechProgName').textContent=mechName+' ka progress';
+    $('mechProgPct').textContent=myPct+'%';
+    $('mechProgFill').style.width=myPct+'%';
+    $('mechProgFill').style.background=myPct>=80?'#52b788':myPct>=50?'var(--accent)':'var(--red)';
+
+    // Show history button and load history
+    $('historyBtn').style.display='block';
+    loadMechHistory(mechName, entries);
+  }catch(e){console.warn(e);}
+}
+
+// Working days left = days remaining in month, excluding Sundays
+function getWorkingDaysLeft(){
+  const now=new Date();
+  const lastDay=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
+  let count=0;
+  for(let d=now.getDate();d<=lastDay;d++){
+    const day=new Date(now.getFullYear(),now.getMonth(),d).getDay();
+    if(day!==0) count++; // 0 = Sunday
+  }
+  return Math.max(1,count);
+}
+function getDaysLeft(){return getWorkingDaysLeft();}
+
+function loadMechHistory(mechName, entries){
+  const ms=getMonthStart();
+  const myEntries=entries.filter(e=>e.mechanic===mechName).sort((a,b)=>b.date.localeCompare(a.date)||b.submittedTs-a.submittedTs);
+  const myMonth=myEntries.filter(e=>e.date>=ms);
+  const earned=myMonth.reduce((s,e)=>s+(e.achieved||0),0);
+  const remaining=Math.max(0,MONTHLY_TARGET-earned);
+  const pct=Math.min(100,Math.round((earned/MONTHLY_TARGET)*100));
+  const amc=myMonth.reduce((s,e)=>s+(e.amcCount||0),0);
+  const gr=myMonth.reduce((s,e)=>s+(e.googleReviews||0),0);
+  $('historyMechName').textContent='📋 '+mechName+' ki History';
+  $('hEarned').textContent='₹'+fmt(earned);
+  $('hRem').textContent='₹'+fmt(remaining);
+  $('hPct').textContent=pct+'% complete';
+  $('hProgFill').style.width=pct+'%';
+  $('hProgFill').style.background=pct>=80?'#52b788':pct>=50?'var(--accent)':'var(--red)';
+  $('hAmc').textContent=amc;
+  $('hGR').textContent=gr;
+  const list=$('historyList');
+  if(!myEntries.length){list.innerHTML='<div class="empty-state"><div class="ei">📭</div>Koi entry nahi</div>';return;}
+  let html='';
+  const groups={};myEntries.forEach(e=>{(groups[e.date]=groups[e.date]||[]).push(e);});
+  Object.keys(groups).sort((a,b)=>b.localeCompare(a)).forEach(date=>{
+    const list2=groups[date];
+    const dt=new Date(...date.split('-').map((v,i)=>i===1?v-1:v));
+    const dl=dt.toLocaleDateString('en-IN',{weekday:'short',day:'2-digit',month:'short'});
+    const isSunday=dt.getDay()===0;
+    html+=`<div style="background:var(--bg);padding:6px 13px;font-family:'Baloo 2',cursive;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;"><span>${dl}${isSunday?' 🔴 Sunday':''}</span><span style="background:var(--dark);color:#fff;border-radius:99px;padding:1px 7px;">${list2.length}</span></div>`;
+    list2.forEach(e=>{
+      const ep=e.pct||Math.round(((e.achieved||0)/(e.target||1))*100);
+      const sc=e.status==='approved'?'var(--green)':e.status==='rejected'?'var(--red)':'#856400';
+      const sb=e.status==='approved'?'var(--greenl)':e.status==='rejected'?'var(--redl)':'var(--yellowl)';
+      const si=e.status==='approved'?'✅ Approved':e.status==='rejected'?'❌ Rejected':'⏳ Pending';
+      let amcD='',grD='';
+      if(e.amcCount>0&&e.amcCustomers?.length){
+        amcD=`<div style="background:#e8f4fd;border:1px solid #a8d5f5;border-radius:8px;padding:8px;margin-top:7px;"><div style="font-size:10px;font-weight:700;color:var(--accent2);text-transform:uppercase;margin-bottom:5px;">📋 AMC (${e.amcCount})</div>`;
+        e.amcCustomers.forEach((c,i)=>{amcD+=`<div style="font-size:11px;padding:3px 0;border-bottom:1px solid #c5dcf0;display:flex;gap:6px;"><span style="font-weight:800;color:var(--accent2)">${i+1}.</span><span style="font-weight:600;flex:1">${c.name||'—'}</span><span style="color:var(--muted)">📱 ${c.mobile||'—'}</span>${c.vehicle?`<span style="color:var(--accent);font-weight:600">🚗 ${c.vehicle}</span>`:''}</div>`;});
+        amcD+=`</div>`;
+      }
+      if(e.googleReviews>0&&e.googleReviewDetails?.length){
+        grD=`<div style="background:#e8f0fe;border:1px solid #c5d8fc;border-radius:8px;padding:8px;margin-top:7px;"><div style="font-size:10px;font-weight:700;color:#1a73e8;text-transform:uppercase;margin-bottom:5px;">🔵 Reviews (${e.googleReviews})</div>`;
+        e.googleReviewDetails.forEach(g=>{grD+=`<div style="background:#fff;border-radius:6px;padding:6px 8px;margin-bottom:5px;border:1px solid #c5d8fc;"><div style="display:flex;justify-content:space-between;"><span style="font-weight:700;font-size:12px;">👤 ${g.name||'—'}</span><span>${'⭐'.repeat(g.stars||0)} ${g.stars||0}/5</span></div>${g.comment?`<div style="font-size:11px;color:var(--muted);font-style:italic;">"${g.comment}"</div>`:''}</div>`;});
+        grD+=`</div>`;
+      }
+      html+=`<div style="padding:11px 13px;border-bottom:1px solid var(--border);">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <span style="font-weight:700;font-size:13px;">💰 ₹${fmt(e.achieved||0)}</span>
+          <span style="background:${sb};color:${sc};border-radius:99px;padding:3px 10px;font-size:11px;font-weight:700;">${si}</span>
+        </div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:4px;">
+          <span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:99px;background:${ep>=80?'var(--greenl)':'var(--redl)'};color:${ep>=80?'var(--green)':'var(--red)'};">${ep}%</span>
+          ${e.amcCount>0?`<span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:99px;background:#fff0e6;color:var(--accent);">AMC×${e.amcCount} ₹${fmt(e.amcCount*125)}</span>`:''}
+          ${e.starRating>0?`<span style="font-size:10px;padding:2px 7px;border-radius:99px;background:var(--yellowl);color:#856400;">${'⭐'.repeat(e.starRating)}</span>`:''}
+          ${e.googleReviews>0?`<span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:99px;background:#e8f0fe;color:#1a73e8;">🔵 ${e.googleReviews}</span>`:''}
+        </div>
+        ${amcD}${grD}
+        <div style="font-size:10px;color:var(--muted);margin-top:4px;">⏰ ${timeStr(e.submittedAt)||'—'}</div>
+      </div>`;
+    });
+  });
+  $('historyList').innerHTML=html;
+  // Load bill history too
+  loadBillHistory(mechName);
+}
+
+function toggleHistory(){
+  const hs=$('historySection');
+  if(!hs||hs.style.display==='none'||!hs.style.display){
+    if(hs) hs.style.display='block';
+    $('formSection').style.display='none';
+    $('successSection').classList.remove('show');
+    $('historyBtn').textContent='📝 Form';
+    window.scrollTo({top:0,behavior:'smooth'});
+    // Reload fresh data from Firebase
+    if(currentMechName) reloadHistory(currentMechName);
+  } else {
+    showForm();
+  }
+}
+
+async function reloadHistory(mechName){
+  const list=$('historyList');
+  const billSec=$('billHistorySection');
+  if(list) list.innerHTML='<div class="empty-state"><div class="ei">⏳</div>Loading…</div>';
+  if(billSec) billSec.innerHTML='<div class="empty-state"><div class="ei">⏳</div>Loading…</div>';
+  try{
+    const snap=await db.ref('sac_entries/'+bid).get();
+    const entries=snap.exists()?Object.values(snap.val()):[];
+    loadMechHistory(mechName, entries);
+    loadBillHistory(mechName);
+  }catch(e){
+    if(list) list.innerHTML='<div class="empty-state"><div class="ei">⚠️</div>Load error</div>';
+  }
+}
+
+function showForm(){
+  const hs=$('historySection');
+  if(hs) hs.style.display='none';
+  $('successSection').classList.remove('show');
+  $('formSection').style.display='block';
+  $('historyBtn').textContent='📋 History';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function setToday(){$('fDate').value=TODAY_STR;}
+
+$('fAchieved') && document.addEventListener('input',function(e){
+  if(e.target.id==='fAchieved'){
+    const t=parseFloat($('fTarget').value)||Math.round(Math.max(0,MONTHLY_TARGET-(parseInt($('stripRemaining').textContent?.replace(/,/g,'')||'0')))/getDaysLeft());
+    const a=parseFloat($('fAchieved').value);
+    const h=$('achievedHint');
+    if(!isNaN(a)&&t>0){const p=Math.round((a/t)*100);h.textContent=p+'% of today\'s target '+(p>=100?'🎯':p>=80?'💪':'📉');h.className='field-hint '+(p>=80?'green':'red');}
+    else h.textContent='';
+  }
+});
+
+const starLabels=['','Bahut Bura 😞','Theek Nahi 😐','Theek Hai 🙂','Acha Tha 😊','5 Star! 🌟'];
+function setStar(v){selectedStar=v;document.querySelectorAll('.star-btn').forEach(b=>b.classList.toggle('active',parseInt(b.dataset.v)<=v));const l=$('starLabel');l.textContent=starLabels[v];l.style.color=v===5?'#2d6a4f':'var(--muted)';}
+function changeAmc(d){amcCount=Math.max(0,amcCount+d);$('amcNum').textContent=amcCount;renderAmcEntries();}
+/* ── Google Review Modal ── */
+function openGRModal(){
+  grModalStar=0;
+  $('grCustName').value='';
+  $('grCustComment').value='';
+  $('grStarLabel').textContent='Koi star select nahi';
+  document.querySelectorAll('.gr-star-opt').forEach(b=>b.classList.remove('active'));
+  $('grModalOverlay').classList.add('show');
+  setTimeout(()=>$('grCustName').focus(),300);
+}
+function closeGRModal(){$('grModalOverlay').classList.remove('show');}
+
+const grStarLabels=['','Bahut Bura 😞','Theek Nahi 😐','Theek Hai 🙂','Acha Tha 😊','5 Star! Excellent! 🌟'];
+function setGRStar(v){
+  grModalStar=v;
+  document.querySelectorAll('.gr-star-opt').forEach(b=>b.classList.toggle('active',parseInt(b.dataset.v)<=v));
+  $('grStarLabel').textContent=grStarLabels[v];
+}
+
+function saveGREntry(){
+  const name=($('grCustName').value||'').trim();
+  if(!name){showToast('⚠️ Customer ka naam daalo!','err');return;}
+  if(!grModalStar){showToast('⚠️ Stars select karo!','err');return;}
+  const comment=($('grCustComment').value||'').trim();
+  grReviews.push({name,stars:grModalStar,comment,addedAt:new Date().toISOString()});
+  $('grNum').textContent=grReviews.length;
+  renderGREntries();
+  closeGRModal();
+  showToast('✅ Review add ho gaya!','ok');
+}
+
+function grRemoveLast(){
+  if(grReviews.length===0) return;
+  grReviews.pop();
+  $('grNum').textContent=grReviews.length;
+  renderGREntries();
+}
+
+function removeGREntry(idx){
+  grReviews.splice(idx,1);
+  $('grNum').textContent=grReviews.length;
+  renderGREntries();
+}
+
+function renderGREntries(){
+  const c=$('grEntriesList');
+  if(!grReviews.length){c.innerHTML='';return;}
+  let html='';
+  grReviews.forEach((r,i)=>{
+    html+=`<div class="gr-entry">
+      <div class="gr-entry-top">
+        <span class="gr-entry-name">👤 ${r.name}</span>
+        <span class="gr-entry-stars">${'⭐'.repeat(r.stars)} ${r.stars}/5</span>
+        <button class="gr-entry-del" onclick="removeGREntry(${i})">🗑️</button>
+      </div>
+      ${r.comment?`<div class="gr-entry-comment">"${r.comment}"</div>`:''}
+    </div>`;
+  });
+  c.innerHTML=html;
+}
+
+function renderAmcEntries(){
+  const list=$('amcCustomerList');const container=$('amcEntries');
+  if(amcCount===0){list.style.display='none';container.innerHTML='';return;}
+  list.style.display='block';
+  const cur=container.querySelectorAll('.amc-customer-entry').length;
+  for(let i=cur;i<amcCount;i++){
+    const div=document.createElement('div');div.className='amc-customer-entry';div.dataset.index=i;div.style.animationDelay=(i*0.06)+'s';
+    div.innerHTML=`<div class="ace-num">🚗 Customer ${i+1}</div><div class="ace-fields"><input type="text" id="amcName${i}" placeholder="Customer ka naam"><input type="tel" id="amcMobile${i}" placeholder="Mobile (10 digit)" inputmode="numeric" maxlength="10"><input type="text" id="amcVehicle${i}" placeholder="Gaadi number (Optional)" style="text-transform:uppercase"></div>`;
+    container.appendChild(div);
+  }
+  for(let i=cur-1;i>=amcCount;i--){const el=container.querySelector(`[data-index="${i}"]`);if(el)el.remove();}
+}
+function getAmcCustomers(){const c=[];for(let i=0;i<amcCount;i++)c.push({name:($(`amcName${i}`)?.value||'').trim(),mobile:($(`amcMobile${i}`)?.value||'').trim(),vehicle:($(`amcVehicle${i}`)?.value||'').trim().toUpperCase()});return c;}
+
+const REVIEW_URL='https://g.page/r/CSg2Z2OSYNVcEBM/review';
+function openQR(){$('qrOverlay').classList.add('show');if(!qrGenerated){$('qrDiv').innerHTML='';new QRCode($('qrDiv'),{text:REVIEW_URL,width:180,height:180,colorDark:'#1a1a2e',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.H});qrGenerated=true;}}
+function closeQR(){$('qrOverlay').classList.remove('show');}
+
+function validate(){
+  const date=$('fDate').value;
+  const name=($('fName')?.value||'').trim();
+  const achieved=parseFloat($('fAchieved').value);
+  if(!date){showToast('⚠️ Date chunein!','err');return false;}
+  if(!name){showToast('⚠️ Apna naam chunein/likho!','err');return false;}
+  if(isNaN(achieved)||achieved<0){showToast('⚠️ Kitna kamaya? Sahi number daalo!','err');return false;}
+  if(amcCount>0){const cs=getAmcCustomers();for(let i=0;i<cs.length;i++){if(!cs[i].name){showToast(`⚠️ Customer ${i+1} ka naam daalo!`,'err');return false;}if(!cs[i].mobile||cs[i].mobile.length<10){showToast(`⚠️ Customer ${i+1} ka valid mobile daalo!`,'err');return false;}}}
+  return true;
+}
+
+async function submitForm(){
+  if(!validate())return;
+  const btn=$('submitBtn');btn.disabled=true;btn.innerHTML='<span class="spinner-inline"></span> Submit ho raha hai…';
+  const name=($('fName')?.value||'').trim();
+  const target=parseFloat($('fTarget').value)||Math.round(Math.max(0,MONTHLY_TARGET)/getDaysLeft());
+  const achieved=parseFloat($('fAchieved').value)||0;
+  const pct=Math.round((achieved/target)*100);
+  const entry={branchId:bid,branchName:branch.name||'',mechanic:name,date:$('fDate').value,target,achieved,pct,amcCount,amcCustomers:getAmcCustomers(),amcCommission:amcCount*125,starRating:selectedStar,googleReviews:grReviews.length,googleReviewDetails:grReviews,status:'pending',submittedAt:new Date().toISOString(),submittedTs:Date.now()};
+  try{
+    const key=`${entry.date}_${name.replace(/\s+/g,'_')}_${Date.now()}`;
+    await db.ref('sac_entries/'+bid+'/'+key).set(entry);
+    localStorage.setItem('sac_mechanic_name_'+bid,name);
+    showSuccess(entry,pct,name);
+  }catch(e){showToast('❌ Submit fail! Internet check karo.','err',4000);btn.disabled=false;btn.innerHTML='✅ REPORT SUBMIT KARO';}
+}
+
+function showSuccess(entry,pct,mechName){
+  $('formSection').style.display='none';$('successSection').classList.add('show');
+  let emoji='📋',title='Report Submit Ho Gayi!';
+  if(pct>=100){emoji='🏆';title='Aaj ka Target Pura!';}else if(pct>=80){emoji='🎉';title='Badhiya! Almost!';}
+  $('sEmoji').textContent=emoji;$('sTitle').textContent=title;
+  $('sMsg').textContent=`Branch: ${branch.name||''}. Owner check karke approve karega.`;
+  const chips=[{l:`📅 ${entry.date}`,c:'blue'},{l:`👤 ${mechName}`,c:''},{l:`₹${fmt(entry.achieved)} (${pct}%)`,c:pct>=80?'green':'red'}];
+  if(entry.amcCount>0)chips.push({l:`AMC×${entry.amcCount} ₹${fmt(entry.amcCommission)}`,c:'orange'});
+  if(entry.starRating>0)chips.push({l:`${'⭐'.repeat(entry.starRating)} ${entry.starRating}/5`,c:'yellow'});
+  if(entry.googleReviews>0)chips.push({l:`🔵 ${entry.googleReviews} Reviews`,c:'google'});
+  chips.push({l:'⏳ Pending Approval',c:'pending'});
+  const cont=$('sChips');cont.innerHTML='';chips.forEach((c,i)=>{const el=document.createElement('div');el.className='chip '+c.c;el.style.animationDelay=(i*0.07)+'s';el.textContent=c.l;cont.appendChild(el);});
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function resetForm(){
+  amcCount=0;grReviews=[];grModalStar=0;selectedStar=0;
+  $('amcNum').textContent='0';$('grNum').textContent='0';
+  $('grEntriesList').innerHTML='';
+  $('amcEntries').innerHTML='';$('amcCustomerList').style.display='none';
+  document.querySelectorAll('.star-btn').forEach(b=>b.classList.remove('active'));
+  $('starLabel').textContent='Koi rating nahi di';
+  $('fAchieved').value='';$('achievedHint').textContent='';
+  $('submitBtn').disabled=false;$('submitBtn').innerHTML='✅ REPORT SUBMIT KARO';
+  setToday();
+  $('successSection').classList.remove('show');
+  const hs=$('historySection');if(hs) hs.style.display='none';
+  $('formSection').style.display='block';
+  $('historyBtn').textContent='📋 History';
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(currentMechName) refreshTargets(currentMechName);
+}
+
+function resetForm(){
+  amcCount=0;grReviews=[];grModalStar=0;selectedStar=0;
+  $('amcNum').textContent='0';$('grNum').textContent='0';
+  $('grEntriesList').innerHTML='';
+  $('amcEntries').innerHTML='';$('amcCustomerList').style.display='none';
+  document.querySelectorAll('.star-btn').forEach(b=>b.classList.remove('active'));
+  $('starLabel').textContent='Koi rating nahi di';
+  $('fAchieved').value='';$('achievedHint').textContent='';
+  $('submitBtn').disabled=false;$('submitBtn').innerHTML='✅ REPORT SUBMIT KARO';
+  setToday();
+  $('successSection').classList.remove('show');
+  const hs=$('historySection');if(hs) hs.style.display='none';
+  $('formSection').style.display='block';
+  $('historyBtn').textContent='📋 History';
+  const bb=$('billBtn');if(bb) bb.style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(currentMechName) refreshTargets(currentMechName);
+}
+
+/* ═══ BILL GENERATOR ═══ */
+let mfBillServices=[];
+let mfIsAMC=true;
+let mfInvCounter=parseInt(localStorage.getItem('sac_inv_counter')||'1');
+
+function openBillFromForm(){
+  mfBillServices=[];
+  mfIsAMC=false;
+  createBillOverlay();
+  // Pre-fill mechanic name
+  setTimeout(()=>{
+    const mn=$('mfMechName');
+    if(mn&&currentMechName) mn.value=currentMechName;
+  },100);
+}
+
+function createBillOverlay(){
+  let ov=$('mfBillOverlay');
+  if(!ov){
+    ov=document.createElement('div');
+    ov.id='mfBillOverlay';
+    ov.style.cssText='display:none;position:fixed;inset:0;background:var(--bg);z-index:8000;overflow-y:auto;';
+    ov.innerHTML=`
+    <div style="background:var(--dark);padding:13px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;">
+      <div style="font-family:'Baloo 2',cursive;font-size:16px;font-weight:800;color:#fff;">📄 <span style="color:var(--accent);">Bill</span> Generator</div>
+      <button onclick="$('mfBillOverlay').style.display='none'" style="background:rgba(255,255,255,0.15);color:#fff;border:none;border-radius:7px;padding:5px 12px;font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;cursor:pointer;">✕ Band Karo</button>
+    </div>
+    <div style="padding:14px;max-width:480px;margin:0 auto;">
+      <!-- Bill Type -->
+      <div style="background:#fff;border-radius:13px;padding:13px;margin-bottom:11px;box-shadow:0 2px 8px rgba(0,0,0,0.07);">
+        <div style="font-family:'Baloo 2',cursive;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid var(--border);">📋 Bill Type</div>
+        <div style="display:flex;gap:8px;margin-bottom:9px;">
+          <button id="mfBtnAMC" onclick="mfSetAMC(true)" style="flex:1;padding:10px;border-radius:10px;border:2px solid var(--accent);background:var(--bg);color:var(--muted);font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;cursor:pointer;">🌟 AMC Bill</button>
+          <button id="mfBtnNormal" onclick="mfSetAMC(false)" style="flex:1;padding:10px;border-radius:10px;border:2px solid var(--dark);background:var(--dark);color:#fff;font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;cursor:pointer;">📄 Normal Bill</button>
+        </div>
+        <div id="mfAmcInfo" style="background:#fff8f0;border:1.5px solid #ffc9a3;border-radius:9px;padding:10px;font-size:12px;color:var(--accent);display:none;"><strong>AMC:</strong> ₹1,200 · Service FREE · 12 Months Door Service</div>
+      </div>
+      <!-- Customer -->
+      <div style="background:#fff;border-radius:13px;padding:13px;margin-bottom:11px;box-shadow:0 2px 8px rgba(0,0,0,0.07);">
+        <div style="font-family:'Baloo 2',cursive;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid var(--border);">👤 Customer Details</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div><label style="display:block;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Naam *</label><input id="mfCustName" type="text" placeholder="Customer naam" style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:9px;padding:10px 11px;font-size:14px;font-family:'Noto Sans',sans-serif;outline:none;"></div>
+          <div><label style="display:block;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Mobile</label><input id="mfCustMob" type="tel" placeholder="Mobile" inputmode="numeric" maxlength="10" style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:9px;padding:10px 11px;font-size:14px;font-family:'Noto Sans',sans-serif;outline:none;"></div>
+          <div><label style="display:block;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Gaadi No.</label><input id="mfVehNum" type="text" placeholder="GJ05TK1992" oninput="this.value=this.value.toUpperCase()" style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:9px;padding:10px 11px;font-size:14px;font-family:'Noto Sans',sans-serif;outline:none;text-transform:uppercase;"></div>
+          <div><label style="display:block;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Gaadi Type</label><input id="mfVehType" type="text" placeholder="Honda Activa" style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:9px;padding:10px 11px;font-size:14px;font-family:'Noto Sans',sans-serif;outline:none;"></div>
+        </div>
+        <div style="margin-top:8px;">
+          <label style="display:block;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Mechanic / Date</label>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <input id="mfMechName" type="text" value="${currentMechName||''}" style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:9px;padding:10px 11px;font-size:14px;font-family:'Noto Sans',sans-serif;outline:none;">
+            <input id="mfBillDate" type="date" value="${TODAY_STR}" style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:9px;padding:10px 11px;font-size:14px;font-family:'Noto Sans',sans-serif;outline:none;">
+          </div>
+        </div>
+      </div>
+      <!-- Services -->
+      <div style="background:#fff;border-radius:13px;padding:13px;margin-bottom:11px;box-shadow:0 2px 8px rgba(0,0,0,0.07);">
+        <div style="font-family:'Baloo 2',cursive;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid var(--border);">🔧 Services / Parts</div>
+        <div id="mfSvcList"></div>
+        <button onclick="mfAddSvc()" style="width:100%;background:var(--bg);border:1.5px dashed var(--border);border-radius:9px;padding:10px;font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;margin-top:4px;">➕ Service Add Karo</button>
+      </div>
+      <!-- Summary -->
+      <div style="background:#fff;border-radius:13px;padding:13px;margin-bottom:11px;box-shadow:0 2px 8px rgba(0,0,0,0.07);">
+        <div style="font-family:'Baloo 2',cursive;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid var(--border);">💰 Summary</div>
+        <div id="mfSummary"></div>
+      </div>
+      <button onclick="mfPreview()" style="width:100%;background:var(--accent2);color:#fff;border:none;border-radius:11px;padding:13px;font-family:'Baloo 2',cursive;font-size:16px;font-weight:800;cursor:pointer;margin-bottom:20px;">👁️ Invoice Preview Karo</button>
+    </div>`;
+    document.body.appendChild(ov);
+  }
+  ov.style.display='block';
+  mfAddSvc('',1,0,false);
+  mfRenderSvc();mfRenderSummary();
+  window.scrollTo({top:0});
+}
+
+function mfSetAMC(v){
+  mfIsAMC=v;
+  const a=$('mfBtnAMC'),n=$('mfBtnNormal'),i=$('mfAmcInfo');
+  if(a){a.style.background=v?'var(--accent)':'var(--bg)';a.style.color=v?'#fff':'var(--muted)';a.style.borderColor=v?'var(--accent)':'var(--border)';}
+  if(n){n.style.background=!v?'var(--dark)':'var(--bg)';n.style.color=!v?'#fff':'var(--muted)';n.style.borderColor=!v?'var(--dark)':'var(--border)';}
+  if(i) i.style.display=v?'block':'none';
+  mfRenderSvc();mfRenderSummary();
+}
+
+function mfAddSvc(desc='',qty=1,amt=0,isFree=false){
+  mfBillServices.push({id:'mfs'+Date.now()+Math.random().toString(36).slice(2,4),desc,qty,amt,isFree});
+  mfRenderSvc();mfRenderSummary();
+}
+function mfRemoveSvc(id){mfBillServices=mfBillServices.filter(s=>s.id!==id);mfRenderSvc();mfRenderSummary();}
+function mfUpdSvc(id,f,v){const s=mfBillServices.find(x=>x.id===id);if(s){s[f]=v;mfRenderSummary();}}
+function mfTogFree(id,v){const s=mfBillServices.find(x=>x.id===id);if(s){s.isFree=v;mfRenderSvc();mfRenderSummary();}}
+
+function mfRenderSvc(){
+  const c=$('mfSvcList');if(!c)return;c.innerHTML='';
+  mfBillServices.forEach(s=>{
+    const row=document.createElement('div');
+    row.style.cssText='display:grid;grid-template-columns:1fr 50px 70px 28px;gap:5px;align-items:center;margin-bottom:6px;';
+    const inp=`style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:7px;padding:7px 8px;font-size:13px;font-family:'Noto Sans',sans-serif;outline:none;"`;
+    row.innerHTML=`
+      <input type="text" value="${s.desc}" placeholder="Service naam" oninput="mfUpdSvc('${s.id}','desc',this.value)" ${inp}>
+      <input type="number" value="${s.qty}" placeholder="1" oninput="mfUpdSvc('${s.id}','qty',this.value)" ${inp} style="text-align:center;">
+      ${mfIsAMC&&s.isFree?
+        `<div style="background:var(--greenl);color:var(--green);border-radius:6px;padding:7px 4px;font-size:11px;font-weight:700;text-align:center;border:1px solid #b7e4c7;">FREE</div>`:
+        `<input type="number" value="${s.amt}" placeholder="₹" oninput="mfUpdSvc('${s.id}','amt',this.value)" ${inp} style="text-align:right;">`
+      }
+      <button onclick="mfRemoveSvc('${s.id}')" style="background:var(--redl);color:var(--red);border:none;border-radius:6px;width:26px;height:32px;cursor:pointer;font-size:13px;font-weight:700;">✕</button>`;
+    if(mfIsAMC){
+      const cb=document.createElement('div');
+      cb.style.cssText='grid-column:1/-1;display:flex;align-items:center;gap:6px;font-size:11px;color:var(--green);margin-top:-3px;';
+      cb.innerHTML=`<input type="checkbox" ${s.isFree?'checked':''} onchange="mfTogFree('${s.id}',this.checked)" style="width:13px;height:13px;accent-color:var(--green);">
+        <label style="cursor:pointer;font-weight:600;">AMC benefit — FREE</label>`;
+      row.appendChild(cb);
+    }
+    c.appendChild(row);
+  });
+}
+
+function mfRenderSummary(){
+  const c=$('mfSummary');if(!c)return;
+  let sub=0,free=0;
+  mfBillServices.forEach(s=>{const a=parseFloat(s.amt)||0,q=parseInt(s.qty)||1;if(s.isFree&&mfIsAMC)free+=a*q;else sub+=a*q;});
+  const amc=mfIsAMC?1200:0,total=sub+amc,pay=total-free;
+  let h=`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:13px;"><span>Subtotal</span><span>₹${fmt(sub)}</span></div>`;
+  if(mfIsAMC) h+=`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--accent);font-weight:600;"><span>+ AMC (12 Months)</span><span>₹${fmt(amc)}</span></div>`;
+  if(free>0&&mfIsAMC) h+=`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--green);font-weight:600;"><span>- FREE Benefit</span><span>-₹${fmt(free)}</span></div>`;
+  h+=`<div style="display:flex;justify-content:space-between;padding:7px 0 2px;font-family:'Baloo 2',cursive;font-size:17px;font-weight:800;"><span>💰 PAYABLE</span><span>₹${fmt(pay)}/-</span></div>`;
+  c.innerHTML=h;
+}
+
+function mfPreview(){
+  const cName=$('mfCustName')?.value||'';
+  if(!cName.trim()){showToast('⚠️ Customer naam daalo!','err');return;}
+  let sub=0,free=0;
+  const svcs=mfBillServices.map(s=>{const a=parseFloat(s.amt)||0,q=parseInt(s.qty)||1,t=a*q;if(s.isFree&&mfIsAMC)free+=t;else sub+=t;return{...s,amtN:a,qtyN:q,totN:t};});
+  const amc=mfIsAMC?1200:0,total=sub+amc,pay=total-free;
+  const invNum='SAC-'+new Date().getFullYear()+'-'+String(mfInvCounter).padStart(4,'0');
+  const dateVal=$('mfBillDate')?.value||TODAY_STR;
+  const dateFmt2=new Date(dateVal).toLocaleDateString('en-IN',{day:'2-digit',month:'long',year:'numeric'});
+  let rows='';
+  svcs.forEach((s,i)=>{
+    rows+=`<tr>
+      <td style="padding:8px 10px;border-bottom:1px solid #f0ece6;font-size:12px;">${String(i+1).padStart(2,'0')}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #f0ece6;font-size:12px;">${s.desc||'—'}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #f0ece6;font-size:12px;text-align:center;">${s.qtyN}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #f0ece6;font-size:12px;text-align:right;${s.isFree&&mfIsAMC?'color:#2d6a4f;font-weight:700;':'font-weight:600;'}">
+        ${s.isFree&&mfIsAMC?`Rs.${fmt(s.amtN)} <span style="background:#d8f3dc;color:#2d6a4f;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:700;">FREE</span>`:`Rs.${fmt(s.totN)}`}
+      </td></tr>`;
+  });
+  const amcSect=mfIsAMC?`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;">
+      <div style="background:#fff8f0;border:2px solid #e85d04;border-radius:8px;padding:10px;">
+        <div style="font-size:11px;font-weight:800;color:#e85d04;text-transform:uppercase;margin-bottom:7px;">AMC Plan</div>
+        <ul style="list-style:none;padding:0;">
+          <li style="font-size:10px;color:#555;padding:2px 0;border-bottom:1px solid #ffe5cc;">* 12 Month Free Door Service</li>
+          <li style="font-size:10px;color:#555;padding:2px 0;border-bottom:1px solid #ffe5cc;">* General Service FREE (Rs.300)</li>
+          <li style="font-size:10px;color:#555;padding:2px 0;">* Dedicated Mechanic</li>
+        </ul>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f0ece6;font-size:12px;"><span>Subtotal</span><span>Rs.${fmt(sub)}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f0ece6;font-size:12px;color:#e85d04;font-weight:600;"><span>+ AMC</span><span>Rs.${fmt(amc)}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f0ece6;font-size:12px;"><span><strong>Total</strong></span><span><strong>Rs.${fmt(total)}</strong></span></div>
+        ${free>0?`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f0ece6;font-size:12px;color:#2d6a4f;font-weight:600;"><span>- AMC FREE Benefit</span><span>-Rs.0</span></div>`:''}
+        <div style="background:#1a1a2e;border-radius:7px;padding:10px;margin-top:7px;display:flex;justify-content:space-between;align-items:center;">
+          <div><div style="font-size:12px;font-weight:700;color:#fff;">PAYABLE</div>${free>0?`<div style="font-size:9px;color:rgba(255,255,255,0.5);">Engine Oil FREE</div>`:''}</div>
+          <div style="font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;color:#e85d04;">Rs.${fmt(pay)}/-</div>
+        </div>
+      </div>
+    </div>`:`
+    <div style="background:#1a1a2e;border-radius:7px;padding:10px;margin-top:8px;display:flex;justify-content:space-between;align-items:center;">
+      <div style="font-size:12px;font-weight:700;color:#fff;">PAYABLE AMOUNT</div>
+      <div style="font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;color:#e85d04;">Rs.${fmt(pay)}/-</div>
+    </div>`;
+
+  const paper=`<div id="mfInvPaper" style="background:#fff;padding:20px;font-family:'Noto Sans',sans-serif;color:#1a1a2e;border-radius:8px;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+      <div><div style="font-size:18px;font-weight:800;font-family:'Baloo 2',cursive;">SHIVANGI AUTO CLINIC</div><div style="font-size:10px;color:#888;text-transform:uppercase;">Doorstep Bike Servicing · Surat, Gujarat</div></div>
+      <div style="text-align:right;"><div style="font-size:22px;font-weight:800;color:#e85d04;font-family:'Baloo 2',cursive;">INVOICE</div><div style="font-size:11px;color:#888;">No. ${invNum}</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #e2ddd8;">
+      <div style="font-size:10px;color:#888;">Date<strong style="display:block;font-size:12px;color:#1a1a2e;">${dateFmt2}</strong></div>
+      <div style="font-size:10px;color:#888;">Ph<strong style="display:block;font-size:12px;color:#1a1a2e;">+91 XXXXX XXXXX</strong></div>
+      <div style="font-size:10px;color:#888;">Web<strong style="display:block;font-size:12px;color:#1a1a2e;">shivangiauto.in</strong></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:7px;background:#f8f5f0;border-radius:7px;padding:10px 12px;margin-bottom:10px;">
+      <div><div style="font-size:8px;text-transform:uppercase;letter-spacing:1px;color:#888;font-weight:600;">Customer</div><div style="font-size:12px;font-weight:700;">${cName.toUpperCase()}</div></div>
+      <div><div style="font-size:8px;text-transform:uppercase;letter-spacing:1px;color:#888;font-weight:600;">Vehicle</div><div style="font-size:12px;font-weight:700;">${($('mfVehNum')?.value||'—').toUpperCase()}</div></div>
+      <div><div style="font-size:8px;text-transform:uppercase;letter-spacing:1px;color:#888;font-weight:600;">Mobile</div><div style="font-size:12px;font-weight:700;">${$('mfCustMob')?.value||'—'}</div></div>
+      <div><div style="font-size:8px;text-transform:uppercase;letter-spacing:1px;color:#888;font-weight:600;">Mechanic</div><div style="font-size:12px;font-weight:700;">${$('mfMechName')?.value||'—'}</div></div>
+    </div>
+    <div style="background:#1a1a2e;color:#fff;border-radius:5px;padding:7px 11px;margin-bottom:10px;font-size:12px;font-weight:600;">🏍️ ${$('mfVehType')?.value||'—'} | Service Date: ${dateFmt2}</div>
+    <table style="width:100%;border-collapse:collapse;margin-bottom:10px;">
+      <thead><tr>
+        <th style="background:#f0ece6;padding:7px 9px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;color:#888;">#</th>
+        <th style="background:#f0ece6;padding:7px 9px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;color:#888;">Description</th>
+        <th style="background:#f0ece6;padding:7px 9px;text-align:center;font-size:10px;font-weight:700;text-transform:uppercase;color:#888;">QTY</th>
+        <th style="background:#f0ece6;padding:7px 9px;text-align:right;font-size:10px;font-weight:700;text-transform:uppercase;color:#888;">Amount (Rs.)</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    ${amcSect}
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:1px solid #e2ddd8;">
+      <div style="font-size:10px;color:#888;"><div>SHIVANGI AUTO CLINIC</div><div>Doorstep Bike Service · Surat, Gujarat</div></div>
+      <div style="text-align:right;"><div style="border-top:1px dashed #ccc;width:110px;padding-top:3px;font-size:9px;color:#aaa;">Authorized Signature: ___</div><div style="font-size:11px;font-weight:700;color:#e85d04;margin-top:3px;">THANK YOU! 🙏</div></div>
+    </div>
+  </div>`;
+
+  // Show invoice preview
+  let prev=$('mfInvPreview');
+  if(!prev){
+    prev=document.createElement('div');
+    prev.id='mfInvPreview';
+    prev.style.cssText='display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9000;overflow-y:auto;padding:12px;';
+    prev.innerHTML=`<div style="max-width:600px;margin:0 auto;">
+      <button onclick="mfDownload()" style="width:100%;background:#2d6a4f;color:#fff;border:none;border-radius:10px;padding:12px;font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;cursor:pointer;margin-bottom:8px;">⬇️ Download / Print Karo</button>
+      <button onclick="$('mfInvPreview').style.display='none'" style="width:100%;background:#fff;color:#1a1a2e;border:none;border-radius:10px;padding:12px;font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;cursor:pointer;margin-bottom:10px;">✕ Wapas Jao</button>
+      <div id="mfInvContent"></div>
+      <button onclick="mfDownload()" style="width:100%;background:#2d6a4f;color:#fff;border:none;border-radius:10px;padding:12px;font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;cursor:pointer;margin-top:10px;">⬇️ Download / Print Karo</button>
+    </div>`;
+    document.body.appendChild(prev);
+  }
+  $('mfInvContent').innerHTML=paper;
+  prev.style.display='block';
+  window.scrollTo({top:0});
+}
+
+function mfDownload(){
+  const paper=$('mfInvPaper');if(!paper)return;
+  const invNum='SAC-'+new Date().getFullYear()+'-'+String(mfInvCounter).padStart(4,'0');
+
+  // Save bill to Firebase
+  const billData={
+    invNum,
+    mechanic:currentMechName||$('mfMechName')?.value||'—',
+    custName:$('mfCustName')?.value||'—',
+    custMobile:$('mfCustMob')?.value||'—',
+    vehNum:($('mfVehNum')?.value||'—').toUpperCase(),
+    vehType:$('mfVehType')?.value||'—',
+    date:$('mfBillDate')?.value||TODAY_STR,
+    isAMC:mfIsAMC,
+    services:mfBillServices.map(s=>({desc:s.desc,qty:parseInt(s.qty)||1,amt:parseFloat(s.amt)||0,isFree:s.isFree||false})),
+    createdAt:new Date().toISOString(),
+    createdTs:Date.now()
+  };
+  // Calculate payable
+  let sub=0,free=0;
+  mfBillServices.forEach(s=>{const a=parseFloat(s.amt)||0,q=parseInt(s.qty)||1;if(s.isFree&&mfIsAMC)free+=a*q;else sub+=a*q;});
+  billData.subtotal=sub;
+  billData.amcAmount=mfIsAMC?1200:0;
+  billData.freeAmount=free;
+  billData.payable=sub+(mfIsAMC?1200:0)-free;
+
+  if(bid){
+    db.ref('sac_bills/'+bid+'/bill_'+Date.now()).set(billData)
+      .then(()=>showToast('✅ Bill Firebase mein save ho gaya!','ok'))
+      .catch(()=>showToast('⚠️ Save fail, print ho raha hai',''));
+  }
+
+  const pw=window.open('','_blank');
+  pw.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Invoice ${invNum}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Noto+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:'Noto Sans',sans-serif;padding:15px;}@media print{body{padding:0;}}</style>
+  </head><body>${paper.outerHTML}</body></html>`);
+  pw.document.close();pw.focus();setTimeout(()=>pw.print(),800);
+  mfInvCounter++;localStorage.setItem('sac_inv_counter',mfInvCounter);
+  showToast('🖨️ Print ho raha hai!','ok');
+
+  // Refresh bill history if visible
+  if(currentMechName) loadBillHistory(currentMechName);
+}
+
+/* ═══ BILL HISTORY in mechanic form ═══ */
+async function loadBillHistory(mechName){
+  const hSection=$('billHistorySection');
+  if(!hSection) return;
+  try{
+    const snap=await db.ref('sac_bills/'+bid).get();
+    if(!snap.exists()){hSection.innerHTML='<div class="empty-state"><div class="ei">📭</div>Koi bill nahi</div>';return;}
+    const bills=Object.entries(snap.val())
+      .map(([k,v])=>({_key:k,...v}))
+      .filter(b=>b.mechanic===mechName)
+      .sort((a,b)=>b.createdTs-a.createdTs);
+    if(!bills.length){hSection.innerHTML='<div class="empty-state"><div class="ei">📭</div>Koi bill nahi</div>';return;}
+    let html='';
+    bills.forEach(b=>{
+      html+=`<div style="padding:11px 13px;border-bottom:1px solid var(--border);">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+          <span style="font-weight:700;font-size:13px;">📄 ${b.invNum}</span>
+          <button onclick="deleteBill('${b._key}')" style="background:var(--redl);color:var(--red);border:1px solid #ffb3b3;border-radius:6px;padding:3px 9px;font-size:11px;font-weight:700;cursor:pointer;">🗑️ Delete</button>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">📅 ${b.date} · 👤 ${b.custName} · 📱 ${b.custMobile}</div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;">
+          <span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--greenl);color:var(--green);border:1px solid #b7e4c7;">₹${fmt(b.payable)} Payable</span>
+          ${b.isAMC?`<span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;background:#fff0e6;color:var(--accent);border:1px solid #ffc9a3;">🌟 AMC</span>`:''}
+          <span style="font-size:11px;padding:2px 8px;border-radius:99px;background:var(--bg);color:var(--muted);border:1px solid var(--border);">🚗 ${b.vehNum}</span>
+        </div>
+      </div>`;
+    });
+    hSection.innerHTML=html;
+  }catch(e){hSection.innerHTML='<div class="empty-state"><div class="ei">⚠️</div>Load error</div>';}
+}
+
+async function deleteBill(key){
+  if(!confirm('Yeh bill delete karo?'))return;
+  try{
+    await db.ref('sac_bills/'+bid+'/'+key).remove();
+    showToast('🗑️ Bill delete ho gaya!','ok');
+    if(currentMechName) loadBillHistory(currentMechName);
+  }catch(e){showToast('❌ Error!','err');}
+}
+
+init();
+</script>
+</body>
+</html>

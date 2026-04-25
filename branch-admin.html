@@ -452,6 +452,8 @@ function getMonthStart(){const n=new Date();return toInputDate(new Date(n.getFul
 function showToast(msg,type='',dur=2600){const t=$('toast');t.textContent=msg;t.className='toast '+type+' show';clearTimeout(t._t);t._t=setTimeout(()=>t.className='toast',dur);}
 function dispDate(s){if(!s)return s;const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d).toLocaleDateString('en-IN',{weekday:'short',day:'2-digit',month:'short'});}
 function timeStr(iso){if(!iso)return '';return new Date(iso).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true});}
+// Helper: Firebase may return arrays as objects with numeric keys — normalize to array
+function toArr(val){if(!val)return[];if(Array.isArray(val))return val;return Object.values(val);}
 
 /* PIN */
 let pinBuf='';
@@ -753,18 +755,20 @@ function buildVerifyItem(e, showActions){
   const pct=e.pct||Math.round(((e.achieved||0)/(e.target||1))*100);
   const pc=pct>=80?'g':'r';const amcC=(e.amcCount||0)*125;
   let amcHtml='';
-  if(e.amcCount>0&&e.amcCustomers?.length){
+  const amcCusts=toArr(e.amcCustomers);
+  if(e.amcCount>0&&amcCusts.length){
     amcHtml=`<div class="amc-list"><h5>📋 AMC Customers</h5>`;
-    e.amcCustomers.forEach((c,i)=>{amcHtml+=`<div class="amc-row"><span style="font-weight:800;color:var(--accent2);min-width:18px">${i+1}.</span><span style="font-weight:600;flex:1">${c.name||'—'}</span><span style="color:var(--muted);font-size:11px">📱 ${c.mobile||'—'}</span>${c.vehicle?`<span style="color:var(--accent);font-size:11px;font-weight:600">🚗 ${c.vehicle}</span>`:''}</div>`;});
+    amcCusts.forEach((c,i)=>{amcHtml+=`<div class="amc-row"><span style="font-weight:800;color:var(--accent2);min-width:18px">${i+1}.</span><span style="font-weight:600;flex:1">${c.name||'—'}</span><span style="color:var(--muted);font-size:11px">📱 ${c.mobile||'—'}</span>${c.vehicle?`<span style="color:var(--accent);font-size:11px;font-weight:600">🚗 ${c.vehicle}</span>`:''}</div>`;});
     amcHtml+=`</div>`;
   }
 
   // Google Review Details
   let grHtml='';
-  if(e.googleReviews>0&&e.googleReviewDetails?.length){
+  const grDetails=toArr(e.googleReviewDetails);
+  if(e.googleReviews>0&&grDetails.length){
     grHtml=`<div style="background:#e8f0fe;border:1.5px solid #c5d8fc;border-radius:9px;padding:9px;margin-bottom:9px;">
       <h5 style="font-size:11px;font-weight:700;color:#1a73e8;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;">🔵 Google Review Details</h5>`;
-    e.googleReviewDetails.forEach((g,i)=>{
+    grDetails.forEach((g,i)=>{
       grHtml+=`<div style="background:#fff;border-radius:8px;padding:8px 10px;margin-bottom:6px;border:1px solid #c5d8fc;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
           <span style="font-weight:700;font-size:12px;">👤 ${g.name||'—'}</span>
@@ -1172,9 +1176,8 @@ function bDownloadInv(){
 
 async function loadAdminBills(){
   const c=$('adminBillsList');if(!c)return;
-  const filterMech=$('bBillFilterMech')?.value||'';
 
-  // Update mechanic filter dropdown
+  // Update mechanic filter dropdown first
   const sel=$('bBillFilterMech');
   if(sel){
     const curVal=sel.value;
@@ -1185,16 +1188,18 @@ async function loadAdminBills(){
     if(curVal) sel.value=curVal;
   }
 
-  c.innerHTML='<div class="empty-state"><div class="ei">⏳</div>Loading…</div>';
+  const filterMech=sel?.value||'';
+  c.innerHTML='<div class="empty-state"><div class="ei">⏳</div>Bills load ho rahe hain…</div>';
   try{
+    if(!bid){c.innerHTML='<div class="empty-state"><div class="ei">⚠️</div>Branch ID missing</div>';return;}
     const snap=await db.ref('sac_bills/'+bid).get();
     if(!snap.exists()){c.innerHTML='<div class="empty-state"><div class="ei">📭</div>Koi saved bill nahi</div>';return;}
     let bills=Object.entries(snap.val()).map(([k,v])=>({_key:k,...v}));
     if(filterMech) bills=bills.filter(b=>b.mechanic===filterMech);
-    bills=bills.sort((a,b)=>b.createdTs-a.createdTs);
-    if(!bills.length){c.innerHTML='<div class="empty-state"><div class="ei">📭</div>Koi bill nahi</div>';return;}
+    bills=bills.sort((a,b)=>(b.createdTs||0)-(a.createdTs||0));
+    if(!bills.length){c.innerHTML='<div class="empty-state"><div class="ei">📭</div>Koi bill nahi is filter ke liye</div>';return;}
 
-    const groups={};bills.forEach(b=>{(groups[b.date]=groups[b.date]||[]).push(b);});
+    const groups={};bills.forEach(b=>{const d=b.date||'unknown';(groups[d]=groups[d]||[]).push(b);});
     let html='';
     Object.keys(groups).sort((a,b2)=>b2.localeCompare(a)).forEach(date=>{
       const list=groups[date];
@@ -1206,12 +1211,12 @@ async function loadAdminBills(){
       list.forEach(b=>{
         html+=`<div style="padding:10px 13px;border-bottom:1px solid var(--border);">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-            <span style="font-weight:700;font-size:13px;">📄 ${b.invNum}</span>
+            <span style="font-weight:700;font-size:13px;">📄 ${b.invNum||'—'}</span>
             <button onclick="deleteBillAdmin('${b._key}')" style="background:var(--redl);color:var(--red);border:1px solid #ffb3b3;border-radius:6px;padding:3px 9px;font-size:11px;font-weight:700;cursor:pointer;">🗑️ Delete</button>
           </div>
-          <div style="font-size:11px;color:var(--muted);margin-bottom:5px;">👤 ${b.mechanic} · 🧑 ${b.custName} · 📱 ${b.custMobile} · 🚗 ${b.vehNum}</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:5px;">👤 ${b.mechanic||'—'} · 🧑 ${b.custName||'—'} · 📱 ${b.custMobile||'—'} · 🚗 ${b.vehNum||'—'}</div>
           <div style="display:flex;gap:5px;flex-wrap:wrap;">
-            <span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--greenl);color:var(--green);border:1px solid #b7e4c7;">₹${fmt(b.payable)} Payable</span>
+            <span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--greenl);color:var(--green);border:1px solid #b7e4c7;">₹${fmt(b.payable||0)} Payable</span>
             ${b.isAMC?`<span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;background:#fff0e6;color:var(--accent);border:1px solid #ffc9a3;">🌟 AMC</span>`:''}
             <span style="font-size:11px;padding:2px 8px;border-radius:99px;background:var(--bg);color:var(--muted);border:1px solid var(--border);">${b.vehType||'—'}</span>
           </div>
@@ -1219,7 +1224,7 @@ async function loadAdminBills(){
       });
     });
     c.innerHTML=html;
-  }catch(e){c.innerHTML='<div class="empty-state"><div class="ei">⚠️</div>Load error</div>';}
+  }catch(e){c.innerHTML='<div class="empty-state"><div class="ei">⚠️</div>Bill load error — internet check karo</div>';console.error('loadAdminBills error:',e);}
 }
 
 async function deleteBillAdmin(key){

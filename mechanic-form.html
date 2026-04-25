@@ -631,6 +631,9 @@ function getWorkingDaysLeft(){
 }
 function getDaysLeft(){return getWorkingDaysLeft();}
 
+// Helper: normalize Firebase value that may be stored as object instead of array
+function toArr(val){if(!val)return[];if(Array.isArray(val))return val;return Object.values(val);}
+
 function loadMechHistory(mechName, entries){
   const ms=getMonthStart();
   const myEntries=entries.filter(e=>e.mechanic===mechName).sort((a,b)=>b.date.localeCompare(a.date)||b.submittedTs-a.submittedTs);
@@ -664,14 +667,16 @@ function loadMechHistory(mechName, entries){
       const sb=e.status==='approved'?'var(--greenl)':e.status==='rejected'?'var(--redl)':'var(--yellowl)';
       const si=e.status==='approved'?'✅ Approved':e.status==='rejected'?'❌ Rejected':'⏳ Pending';
       let amcD='',grD='';
-      if(e.amcCount>0&&e.amcCustomers?.length){
+      const amcCusts=toArr(e.amcCustomers);
+      if(e.amcCount>0&&amcCusts.length){
         amcD=`<div style="background:#e8f4fd;border:1px solid #a8d5f5;border-radius:8px;padding:8px;margin-top:7px;"><div style="font-size:10px;font-weight:700;color:var(--accent2);text-transform:uppercase;margin-bottom:5px;">📋 AMC (${e.amcCount})</div>`;
-        e.amcCustomers.forEach((c,i)=>{amcD+=`<div style="font-size:11px;padding:3px 0;border-bottom:1px solid #c5dcf0;display:flex;gap:6px;"><span style="font-weight:800;color:var(--accent2)">${i+1}.</span><span style="font-weight:600;flex:1">${c.name||'—'}</span><span style="color:var(--muted)">📱 ${c.mobile||'—'}</span>${c.vehicle?`<span style="color:var(--accent);font-weight:600">🚗 ${c.vehicle}</span>`:''}</div>`;});
+        amcCusts.forEach((c,i)=>{amcD+=`<div style="font-size:11px;padding:3px 0;border-bottom:1px solid #c5dcf0;display:flex;gap:6px;"><span style="font-weight:800;color:var(--accent2)">${i+1}.</span><span style="font-weight:600;flex:1">${c.name||'—'}</span><span style="color:var(--muted)">📱 ${c.mobile||'—'}</span>${c.vehicle?`<span style="color:var(--accent);font-weight:600">🚗 ${c.vehicle}</span>`:''}</div>`;});
         amcD+=`</div>`;
       }
-      if(e.googleReviews>0&&e.googleReviewDetails?.length){
+      const grDetails=toArr(e.googleReviewDetails);
+      if(e.googleReviews>0&&grDetails.length){
         grD=`<div style="background:#e8f0fe;border:1px solid #c5d8fc;border-radius:8px;padding:8px;margin-top:7px;"><div style="font-size:10px;font-weight:700;color:#1a73e8;text-transform:uppercase;margin-bottom:5px;">🔵 Reviews (${e.googleReviews})</div>`;
-        e.googleReviewDetails.forEach(g=>{grD+=`<div style="background:#fff;border-radius:6px;padding:6px 8px;margin-bottom:5px;border:1px solid #c5d8fc;"><div style="display:flex;justify-content:space-between;"><span style="font-weight:700;font-size:12px;">👤 ${g.name||'—'}</span><span>${'⭐'.repeat(g.stars||0)} ${g.stars||0}/5</span></div>${g.comment?`<div style="font-size:11px;color:var(--muted);font-style:italic;">"${g.comment}"</div>`:''}</div>`;});
+        grDetails.forEach(g=>{grD+=`<div style="background:#fff;border-radius:6px;padding:6px 8px;margin-bottom:5px;border:1px solid #c5d8fc;"><div style="display:flex;justify-content:space-between;"><span style="font-weight:700;font-size:12px;">👤 ${g.name||'—'}</span><span>${'⭐'.repeat(g.stars||0)} ${g.stars||0}/5</span></div>${g.comment?`<div style="font-size:11px;color:var(--muted);font-style:italic;">"${g.comment}"</div>`:''}</div>`;});
         grD+=`</div>`;
       }
       html+=`<div style="padding:11px 13px;border-bottom:1px solid var(--border);">
@@ -719,33 +724,7 @@ async function reloadHistory(mechName){
     if(list) list.innerHTML='<div class="empty-state"><div class="ei">⚠️</div>Internet check karo aur dobara try karo</div>';
   }
   // Load bills separately
-  const billSec=$('billHistorySection');
-  if(billSec){
-    billSec.innerHTML='<div class="empty-state"><div class="ei">⏳</div>Loading…</div>';
-    try{
-      const bSnap=await db.ref('sac_bills/'+bid).get();
-      if(!bSnap.exists()){billSec.innerHTML='<div class="empty-state"><div class="ei">📭</div>Koi bill nahi</div>';return;}
-      let bills=[];
-      bSnap.forEach(s=>{const v=s.val();if(!v.mechanic||v.mechanic===mechName) bills.push({_key:s.key,...v});});
-      bills=bills.filter(b=>b.mechanic===mechName).sort((a,b)=>b.createdTs-a.createdTs);
-      if(!bills.length){billSec.innerHTML='<div class="empty-state"><div class="ei">📭</div>Koi bill nahi</div>';return;}
-      let html='';
-      bills.forEach(b=>{
-        html+=`<div style="padding:11px 13px;border-bottom:1px solid var(--border);">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
-            <span style="font-weight:700;font-size:13px;">📄 ${b.invNum||'—'}</span>
-            <button onclick="deleteMechBill('${b._key}')" style="background:var(--redl);color:var(--red);border:1px solid #ffb3b3;border-radius:6px;padding:3px 9px;font-size:11px;font-weight:700;cursor:pointer;">🗑️</button>
-          </div>
-          <div style="font-size:11px;color:var(--muted);margin-bottom:5px;">📅 ${b.date||'—'} · 🧑 ${b.custName||'—'} · 🚗 ${b.vehNum||'—'}</div>
-          <div style="display:flex;gap:5px;flex-wrap:wrap;">
-            <span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--greenl);color:var(--green);border:1px solid #b7e4c7;">₹${fmt(b.payable||0)}</span>
-            ${b.isAMC?`<span style="font-size:11px;padding:2px 8px;border-radius:99px;background:#fff0e6;color:var(--accent);">🌟 AMC</span>`:`<span style="font-size:11px;padding:2px 8px;border-radius:99px;background:var(--bg);color:var(--muted);">📄 Normal</span>`}
-          </div>
-        </div>`;
-      });
-      billSec.innerHTML=html;
-    }catch(e){billSec.innerHTML='<div class="empty-state"><div class="ei">⚠️</div>Bill load error</div>';}
-  }
+  await loadBillHistory(mechName);
 }
 
 async function deleteMechBill(key){
@@ -916,25 +895,6 @@ function resetForm(){
   const hs=$('historySection');if(hs) hs.style.display='none';
   $('formSection').style.display='block';
   $('historyBtn').textContent='📋 History';
-  window.scrollTo({top:0,behavior:'smooth'});
-  if(currentMechName) refreshTargets(currentMechName);
-}
-
-function resetForm(){
-  amcCount=0;grReviews=[];grModalStar=0;selectedStar=0;
-  $('amcNum').textContent='0';$('grNum').textContent='0';
-  $('grEntriesList').innerHTML='';
-  $('amcEntries').innerHTML='';$('amcCustomerList').style.display='none';
-  document.querySelectorAll('.star-btn').forEach(b=>b.classList.remove('active'));
-  $('starLabel').textContent='Koi rating nahi di';
-  $('fAchieved').value='';$('achievedHint').textContent='';
-  $('submitBtn').disabled=false;$('submitBtn').innerHTML='✅ REPORT SUBMIT KARO';
-  setToday();
-  $('successSection').classList.remove('show');
-  const hs=$('historySection');if(hs) hs.style.display='none';
-  $('formSection').style.display='block';
-  $('historyBtn').textContent='📋 History';
-  const bb=$('billBtn');if(bb) bb.style.display='none';
   window.scrollTo({top:0,behavior:'smooth'});
   if(currentMechName) refreshTargets(currentMechName);
 }
@@ -1214,31 +1174,32 @@ function mfDownload(){
 async function loadBillHistory(mechName){
   const hSection=$('billHistorySection');
   if(!hSection) return;
+  hSection.innerHTML='<div class="empty-state"><div class="ei">⏳</div>Loading…</div>';
   try{
     const snap=await db.ref('sac_bills/'+bid).get();
     if(!snap.exists()){hSection.innerHTML='<div class="empty-state"><div class="ei">📭</div>Koi bill nahi</div>';return;}
     const bills=Object.entries(snap.val())
       .map(([k,v])=>({_key:k,...v}))
       .filter(b=>b.mechanic===mechName)
-      .sort((a,b)=>b.createdTs-a.createdTs);
+      .sort((a,b)=>(b.createdTs||0)-(a.createdTs||0));
     if(!bills.length){hSection.innerHTML='<div class="empty-state"><div class="ei">📭</div>Koi bill nahi</div>';return;}
     let html='';
     bills.forEach(b=>{
       html+=`<div style="padding:11px 13px;border-bottom:1px solid var(--border);">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
-          <span style="font-weight:700;font-size:13px;">📄 ${b.invNum}</span>
+          <span style="font-weight:700;font-size:13px;">📄 ${b.invNum||'—'}</span>
           <button onclick="deleteBill('${b._key}')" style="background:var(--redl);color:var(--red);border:1px solid #ffb3b3;border-radius:6px;padding:3px 9px;font-size:11px;font-weight:700;cursor:pointer;">🗑️ Delete</button>
         </div>
-        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">📅 ${b.date} · 👤 ${b.custName} · 📱 ${b.custMobile}</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">📅 ${b.date||'—'} · 👤 ${b.custName||'—'} · 📱 ${b.custMobile||'—'}</div>
         <div style="display:flex;gap:5px;flex-wrap:wrap;">
-          <span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--greenl);color:var(--green);border:1px solid #b7e4c7;">₹${fmt(b.payable)} Payable</span>
+          <span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--greenl);color:var(--green);border:1px solid #b7e4c7;">₹${fmt(b.payable||0)} Payable</span>
           ${b.isAMC?`<span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;background:#fff0e6;color:var(--accent);border:1px solid #ffc9a3;">🌟 AMC</span>`:''}
-          <span style="font-size:11px;padding:2px 8px;border-radius:99px;background:var(--bg);color:var(--muted);border:1px solid var(--border);">🚗 ${b.vehNum}</span>
+          <span style="font-size:11px;padding:2px 8px;border-radius:99px;background:var(--bg);color:var(--muted);border:1px solid var(--border);">🚗 ${b.vehNum||'—'}</span>
         </div>
       </div>`;
     });
     hSection.innerHTML=html;
-  }catch(e){hSection.innerHTML='<div class="empty-state"><div class="ei">⚠️</div>Load error</div>';}
+  }catch(e){hSection.innerHTML='<div class="empty-state"><div class="ei">⚠️</div>Bill load error — internet check karo</div>';}
 }
 
 async function deleteBill(key){

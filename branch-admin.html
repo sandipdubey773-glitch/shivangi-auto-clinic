@@ -195,6 +195,13 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
 .toast.ok{background:var(--green);}
 .toast.err{background:var(--red);}
 .spacer{height:26px;}
+/* AMC Sales List */
+.amc-sale-row{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:6px;align-items:center;padding:7px 9px;border-bottom:1px solid #c5dcf0;font-size:12px;}
+.amc-sale-row:last-child{border-bottom:none;}
+.amc-sale-name{font-weight:700;color:var(--dark);}
+.amc-sale-mobile{color:var(--muted);}
+.amc-sale-date{font-size:10px;color:var(--accent2);font-weight:600;}
+.amc-sale-mech{font-size:10px;color:var(--accent);font-weight:600;text-align:right;}
 @keyframes popIn{from{transform:scale(0.85);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
 </style>
@@ -240,6 +247,32 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
 <!-- REPORT -->
 <div class="view active" id="view-report">
   <div class="page-header"><h2>📊 Report</h2><p id="reportSub">Branch ki approved entries</p></div>
+
+  <!-- AMC SALES SECTION (top pe) -->
+  <div class="scard" id="amcSalesSection" style="border-left:4px solid var(--accent2);margin-bottom:11px;">
+    <h3 style="color:var(--accent2);">🌟 AMC Sales — Is Mahine</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">
+      <div style="background:linear-gradient(135deg,#e0f0ff,#f0f8ff);border-radius:10px;padding:11px;text-align:center;border:1.5px solid #a8d5f5;">
+        <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--accent2);font-weight:700;margin-bottom:3px;">Total AMC</div>
+        <div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--accent2);" id="brAmcTotalCount">—</div>
+        <div style="font-size:10px;color:var(--muted);">is mahine</div>
+      </div>
+      <div style="background:linear-gradient(135deg,#d8f3dc,#f0fff4);border-radius:10px;padding:11px;text-align:center;border:1.5px solid #b7e4c7;">
+        <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--green);font-weight:700;margin-bottom:3px;">AMC Benefit</div>
+        <div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--green);" id="brAmcBenefit">—</div>
+        <div style="font-size:10px;color:var(--muted);">customer ko mila</div>
+      </div>
+      <div style="background:linear-gradient(135deg,#fff0e6,#fff8f5);border-radius:10px;padding:11px;text-align:center;border:1.5px solid #ffc9a3;">
+        <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);font-weight:700;margin-bottom:3px;">Commission</div>
+        <div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--accent);" id="brAmcCommission">—</div>
+        <div style="font-size:10px;color:var(--muted);">mechanics ka</div>
+      </div>
+    </div>
+    <div id="brAmcSalesList">
+      <div style="text-align:center;padding:14px;color:var(--muted);font-size:12px;"><span style="font-size:22px;display:block;margin-bottom:5px;">⏳</span>Loading…</div>
+    </div>
+  </div>
+
   <div class="filter-bar">
     <h3>🔍 Date Range</h3>
     <div class="qf-row">
@@ -608,6 +641,52 @@ function renderReport(){
 
   updateMechDd();
   renderEntriesList(entries);
+  // Load AMC Sales section at top
+  loadBranchAmcSales();
+}
+
+/* ═══ AMC SALES SECTION — Is Mahine ki AMC List ═══ */
+function loadBranchAmcSales(){
+  try{
+    const ms=getMonthStart();
+    const allVals=Object.values(allEntries);
+    const monthEntries=allVals.filter(e=>e.date>=ms);
+    // Collect all AMC customers this month
+    let allAmcCusts=[];
+    let totalAmc=0;
+    monthEntries.forEach(e=>{
+      if(e.amcCount>0){
+        totalAmc+=e.amcCount;
+        const custs=toArr(e.amcCustomers);
+        custs.forEach(c=>{
+          if(c&&c.name) allAmcCusts.push({name:c.name,mobile:c.mobile||'—',date:e.date,vehicle:c.vehicle||'',mechanic:e.mechanic||'—'});
+        });
+      }
+    });
+    // AMC Benefit calculation: customer pays ₹1200 but gets ~₹2400 worth (12 free door visits + free service)
+    const amcBenefitPerUnit=1200;
+    const totalBenefit=totalAmc*amcBenefitPerUnit;
+    const totalCommission=totalAmc*125;
+    $('brAmcTotalCount').textContent=totalAmc;
+    $('brAmcBenefit').textContent='₹'+fmt(totalBenefit);
+    $('brAmcCommission').textContent='₹'+fmt(totalCommission);
+    const listEl=$('brAmcSalesList');
+    if(!allAmcCusts.length){
+      listEl.innerHTML='<div style="text-align:center;padding:14px;color:var(--muted);font-size:12px;"><span style="font-size:22px;display:block;margin-bottom:5px;">📭</span>Is mahine koi AMC sale nahi hua</div>';
+      return;
+    }
+    let html=`<div style="background:#e8f4fd;border:1.5px solid #a8d5f5;border-radius:9px;overflow:hidden;">
+      <div style="background:#0077b6;padding:7px 10px;display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:6px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.85);">
+        <span>Naam</span><span>Mobile</span><span>Date</span><span>Mechanic</span>
+      </div>`;
+    allAmcCusts.sort((a,b)=>b.date.localeCompare(a.date)).forEach(c=>{
+      const dt=new Date(...c.date.split('-').map((v,i)=>i===1?v-1:v));
+      const dl=dt.toLocaleDateString('en-IN',{day:'2-digit',month:'short'});
+      html+=`<div class="amc-sale-row"><span class="amc-sale-name">👤 ${c.name}${c.vehicle?` <span style="color:var(--accent);font-size:10px;">${c.vehicle}</span>`:''}</span><span class="amc-sale-mobile">📱 ${c.mobile}</span><span class="amc-sale-date">${dl}</span><span class="amc-sale-mech">${c.mechanic}</span></div>`;
+    });
+    html+=`</div>`;
+    listEl.innerHTML=html;
+  }catch(e){console.warn('AMC sales load error',e);}
 }
 
 // Working days left excluding Sundays

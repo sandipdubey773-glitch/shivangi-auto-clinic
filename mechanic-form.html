@@ -126,6 +126,12 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
 @keyframes popIn{from{transform:scale(0.85);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @keyframes shine{from{opacity:0.7}to{opacity:1}}
+/* AMC Sales List */
+.amc-sale-row{display:grid;grid-template-columns:1fr 1fr auto;gap:6px;align-items:center;padding:7px 9px;border-bottom:1px solid #c5dcf0;font-size:12px;}
+.amc-sale-row:last-child{border-bottom:none;}
+.amc-sale-name{font-weight:700;color:var(--dark);}
+.amc-sale-mobile{color:var(--muted);}
+.amc-sale-date{font-size:10px;color:var(--accent2);font-weight:600;text-align:right;}
 /* GR Customer Entries */
 .gr-entry{background:#fff;border:1.5px solid #c5d8fc;border-radius:10px;padding:11px 13px;margin-top:8px;animation:fadeUp 0.3s ease both;}
 .gr-entry-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;}
@@ -199,6 +205,26 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
           </div>
           <div class="mech-prog-bar"><div class="mech-prog-fill" id="mechProgFill" style="width:0%"></div></div>
           <div class="mech-prog-note">🔄 Har mahine 1 tarikh ko reset · Aaj: <span id="stripTodayDate">—</span></div>
+        </div>
+      </div>
+
+      <!-- AMC SALES SECTION -->
+      <div class="card" id="amcSalesCard" style="border-left:4px solid var(--accent2);">
+        <h3 style="color:var(--accent2);">🌟 AMC Sales — Is Mahine</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+          <div style="background:linear-gradient(135deg,#e0f0ff,#f0f8ff);border-radius:10px;padding:11px;text-align:center;border:1.5px solid #a8d5f5;">
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--accent2);font-weight:700;margin-bottom:3px;">Total AMC Count</div>
+            <div style="font-family:'Baloo 2',cursive;font-size:24px;font-weight:800;color:var(--accent2);" id="myAmcTotalCount">—</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:2px;">is mahine</div>
+          </div>
+          <div style="background:linear-gradient(135deg,#d8f3dc,#f0fff4);border-radius:10px;padding:11px;text-align:center;border:1.5px solid #b7e4c7;">
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--green);font-weight:700;margin-bottom:3px;">AMC Benefit</div>
+            <div style="font-family:'Baloo 2',cursive;font-size:24px;font-weight:800;color:var(--green);" id="myAmcBenefit">—</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:2px;">customer ko mila</div>
+          </div>
+        </div>
+        <div id="myAmcSalesList" style="margin-top:4px;">
+          <div style="text-align:center;padding:14px;color:var(--muted);font-size:12px;"><span style="font-size:22px;display:block;margin-bottom:5px;">⏳</span>Loading…</div>
         </div>
       </div>
 
@@ -583,10 +609,56 @@ function clearStrip(){
   $('mechProgName').textContent='—';
   $('mechProgPct').textContent='0%';
   $('mechProgFill').style.width='0%';
+  // Reset AMC sales section
+  $('myAmcTotalCount').textContent='—';
+  $('myAmcBenefit').textContent='—';
+  $('myAmcSalesList').innerHTML='<div style="text-align:center;padding:14px;color:var(--muted);font-size:12px;"><span style="font-size:22px;display:block;margin-bottom:5px;">👤</span>Pehle naam chunein</div>';
+}
+
+// Load AMC Sales for current mechanic — is mahine ki
+async function loadMyAmcSales(mechName, entries){
+  try{
+    const ms=getMonthStart();
+    const myEntries=entries.filter(e=>e.date>=ms&&e.mechanic===mechName);
+    // Collect all AMC customers from all entries
+    let allAmcCusts=[];
+    let totalAmc=0;
+    myEntries.forEach(e=>{
+      if(e.amcCount>0){
+        totalAmc+=e.amcCount;
+        const custs=toArr(e.amcCustomers);
+        custs.forEach(c=>{
+          if(c&&c.name) allAmcCusts.push({name:c.name,mobile:c.mobile||'—',date:e.date,vehicle:c.vehicle||''});
+        });
+      }
+    });
+    // AMC benefit = AMC price (₹1200) vs normal service (approx ₹300) = ₹900 per AMC * total
+    // Plus 12 month free service value: each service ~₹300, estimated 4 services/year = ₹1200 benefit
+    const amcBenefitPerUnit=1200; // Customer pays ₹1200 but gets ~₹2400 worth of service over year
+    const totalBenefit=totalAmc*amcBenefitPerUnit;
+    $('myAmcTotalCount').textContent=totalAmc;
+    $('myAmcBenefit').textContent='₹'+fmt(totalBenefit);
+    const listEl=$('myAmcSalesList');
+    if(!allAmcCusts.length){
+      listEl.innerHTML='<div style="text-align:center;padding:14px;color:var(--muted);font-size:12px;"><span style="font-size:22px;display:block;margin-bottom:5px;">📭</span>Is mahine koi AMC nahi hua</div>';
+      return;
+    }
+    let html=`<div style="background:#e8f4fd;border:1.5px solid #a8d5f5;border-radius:9px;overflow:hidden;">
+      <div style="background:#0077b6;padding:7px 10px;display:grid;grid-template-columns:1fr 1fr auto;gap:6px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.8);">
+        <span>Naam</span><span>Mobile</span><span>Date</span>
+      </div>`;
+    allAmcCusts.sort((a,b)=>b.date.localeCompare(a.date)).forEach(c=>{
+      const dt=new Date(...c.date.split('-').map((v,i)=>i===1?v-1:v));
+      const dl=dt.toLocaleDateString('en-IN',{day:'2-digit',month:'short'});
+      html+=`<div class="amc-sale-row"><span class="amc-sale-name">👤 ${c.name}${c.vehicle?` (${c.vehicle})`:''}</span><span class="amc-sale-mobile">📱 ${c.mobile}</span><span class="amc-sale-date">${dl}</span></div>`;
+    });
+    html+=`</div>`;
+    listEl.innerHTML=html;
+  }catch(e){console.warn('AMC sales load error',e);}
 }
 
 // KEY FUNCTION: Calculate individual mechanic's remaining target
-// ALL entries count (pending + approved + rejected) - mechanic ka kaam hua hai
+// Sirf LABOUR (achieved) count hoga target mein — AMC commission is SEPARATE BONUS
 async function refreshTargets(mechName){
   try{
     const ms=getMonthStart();
@@ -595,6 +667,7 @@ async function refreshTargets(mechName){
 
     // ALL entries this month - rejected bhi count hoga
     const myEntries=entries.filter(e=>e.date>=ms&&e.mechanic===mechName);
+    // IMPORTANT: Only LABOUR (achieved) counts toward target. AMC amount is BONUS — excluded from target calculation
     const myEarned=myEntries.reduce((s,e)=>s+(e.achieved||0),0);
     const myRemaining=Math.max(0,MONTHLY_TARGET-myEarned);
     const myPct=Math.min(100,Math.round((myEarned/MONTHLY_TARGET)*100));
@@ -615,6 +688,8 @@ async function refreshTargets(mechName){
     // Show history button and load history
     $('historyBtn').style.display='block';
     loadMechHistory(mechName, entries);
+    // Load AMC sales section
+    loadMyAmcSales(mechName, entries);
   }catch(e){console.warn(e);}
 }
 
@@ -748,11 +823,16 @@ function showForm(){
 function setToday(){$('fDate').value=TODAY_STR;}
 
 $('fAchieved') && document.addEventListener('input',function(e){
-  if(e.target.id==='fAchieved'){
+  if(e.target.id==='fAchieved'||e.target.id==='fTarget'){
+    // Sirf LABOUR (fAchieved) ko target se compare karo — AMC ka yahan koi role nahi
     const t=parseFloat($('fTarget').value)||Math.round(Math.max(0,MONTHLY_TARGET-(parseInt($('stripRemaining').textContent?.replace(/,/g,'')||'0')))/getDaysLeft());
     const a=parseFloat($('fAchieved').value);
     const h=$('achievedHint');
-    if(!isNaN(a)&&t>0){const p=Math.round((a/t)*100);h.textContent=p+'% of today\'s target '+(p>=100?'🎯':p>=80?'💪':'📉');h.className='field-hint '+(p>=80?'green':'red');}
+    if(!isNaN(a)&&t>0){
+      const p=Math.round((a/t)*100);
+      h.textContent='Labour: '+p+'% of today\'s target '+(p>=100?'🎯 Target pura!':p>=80?'💪 Almost!':'📉 Mehnat karo!');
+      h.className='field-hint '+(p>=80?'green':'red');
+    }
     else h.textContent='';
   }
 });
@@ -843,9 +923,16 @@ function validate(){
   const date=$('fDate').value;
   const name=($('fName')?.value||'').trim();
   const achieved=parseFloat($('fAchieved').value);
+  const target=parseFloat($('fTarget').value)||Math.round(Math.max(0,MONTHLY_TARGET)/getDaysLeft());
   if(!date){showToast('⚠️ Date chunein!','err');return false;}
   if(!name){showToast('⚠️ Apna naam chunein/likho!','err');return false;}
   if(isNaN(achieved)||achieved<0){showToast('⚠️ Kitna kamaya? Sahi number daalo!','err');return false;}
+  // Sirf LABOUR target se compare hoga — AMC is BONUS, target se nahi katega
+  if(!isNaN(achieved)&&!isNaN(target)&&target>0&&achieved>target){
+    const hint=$('achievedHint');
+    if(hint){hint.textContent='⚠️ Labour ₹'+fmt(achieved)+' target ₹'+fmt(target)+' se zyada hai! Sahi hai?';hint.className='field-hint red';}
+    // Warning sirf show karo, block nahi karo
+  }
   if(amcCount>0){const cs=getAmcCustomers();for(let i=0;i<cs.length;i++){if(!cs[i].name){showToast(`⚠️ Customer ${i+1} ka naam daalo!`,'err');return false;}if(!cs[i].mobile||cs[i].mobile.length<10){showToast(`⚠️ Customer ${i+1} ka valid mobile daalo!`,'err');return false;}}}
   return true;
 }
@@ -856,6 +943,7 @@ async function submitForm(){
   const name=($('fName')?.value||'').trim();
   const target=parseFloat($('fTarget').value)||Math.round(Math.max(0,MONTHLY_TARGET)/getDaysLeft());
   const achieved=parseFloat($('fAchieved').value)||0;
+  // IMPORTANT: Only LABOUR is compared to target — AMC commission is separate/bonus
   const pct=Math.round((achieved/target)*100);
   const entry={branchId:bid,branchName:branch.name||'',mechanic:name,date:$('fDate').value,target,achieved,pct,amcCount,amcCustomers:getAmcCustomers(),amcCommission:amcCount*125,starRating:selectedStar,googleReviews:grReviews.length,googleReviewDetails:grReviews,status:'pending',submittedAt:new Date().toISOString(),submittedTs:Date.now()};
   try{

@@ -311,6 +311,20 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
     <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Sabhi branches ki rejected entries delete karo.</p>
     <button class="save-btn red-btn" onclick="deleteAllRejected()">🗑️ All Rejected Entries Delete Karo</button>
   </div>
+  <!-- RESET ALL DATA POWER -->
+  <div class="scard" style="border:2px solid var(--red);background:linear-gradient(135deg,#fff5f5,#fff);">
+    <h3 style="color:var(--red);">⚠️ Nuclear Option — Reset Power</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">Yeh button click karne pe <strong style="color:var(--red);">SAB DATA DELETE</strong> ho jaayega — entries, bills, mechanics, sab kuch. Branches ka structure rahega lekin data zero ho jaayega.</p>
+    <div style="background:var(--redl);border:1.5px solid #ffb3b3;border-radius:9px;padding:10px 12px;margin-bottom:12px;">
+      <div style="font-size:11px;font-weight:700;color:var(--red);margin-bottom:4px;">⚠️ Yeh DELETE hoga:</div>
+      <ul style="font-size:11px;color:var(--red);padding-left:18px;line-height:1.8;">
+        <li>Sabhi entries (pending, approved, rejected)</li>
+        <li>Sabhi bills / invoices</li>
+        <li>Sabhi mechanics ka data</li>
+      </ul>
+    </div>
+    <button class="save-btn red-btn" onclick="confirmResetAllData()" style="font-size:14px;letter-spacing:1px;">🔴 RESET ALL DATA — Zero Karo</button>
+  </div>
   <div class="spacer"></div>
 </div>
 
@@ -736,6 +750,50 @@ async function deleteAllRejected(){
   Object.values(allEntries).filter(e=>e.status==='rejected').forEach(e=>{updates['sac_entries/'+e._bid+'/'+e._key]=null;count++;});
   if(!count){showToast('Koi rejected entry nahi!');return;}
   try{await db.ref().update(updates);showToast('🗑️ '+count+' entries delete hui','ok');}catch(e){showToast('❌ Error!','err');}
+}
+
+/* ═══ RESET ALL DATA — Nuclear Option ═══ */
+function confirmResetAllData(){
+  // Step 1: First confirmation
+  const step1=confirm('⚠️ KHABARDAR!\n\nKya aap SURE hain?\n\nYeh action se SAB DATA ZERO ho jaayega:\n• Sabhi Entries (pending, approved, rejected)\n• Sabhi Bills / Invoices\n• Sabhi Mechanics ka Data\n\n"OK" dabao aage badhne ke liye.');
+  if(!step1) return;
+  // Step 2: Second confirmation with PIN
+  const confirmText=prompt('FINAL CONFIRMATION:\n\nSab data delete hone wala hai!\n\nProceed karne ke liye "RESET" type karo (capital letters mein):');
+  if(confirmText!=='RESET'){
+    showToast('❌ Cancel — "RESET" type nahi kiya, data safe hai','err',3500);
+    return;
+  }
+  // Step 3: Execute reset
+  resetAllData();
+}
+
+async function resetAllData(){
+  showToast('🔄 Reset ho raha hai… Please wait…','',5000);
+  try{
+    const updates={};
+    // Delete all entries for each branch
+    Object.keys(allBranches).forEach(bid=>{
+      updates['sac_entries/'+bid]=null;
+      updates['sac_bills/'+bid]=null;
+      updates['sac_mechanics/'+bid]=null;
+    });
+    await db.ref().update(updates);
+    // Show success
+    showToast('✅ Sab data reset ho gaya! Fresh start!','ok',5000);
+    // Show a visible success message
+    const msg=document.createElement('div');
+    msg.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
+    msg.innerHTML=`<div style="background:#fff;border-radius:20px;padding:28px;text-align:center;max-width:320px;">
+      <div style="font-size:52px;margin-bottom:12px;">✅</div>
+      <div style="font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;color:var(--dark);margin-bottom:8px;">Reset Ho Gaya!</div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Sab entries, bills aur mechanics ka data zero ho gaya. Fresh start!</p>
+      <button onclick="this.closest('div[style]').remove()" style="width:100%;background:var(--dark);color:#fff;border:none;border-radius:10px;padding:13px;font-family:'Baloo 2',cursive;font-size:15px;font-weight:700;cursor:pointer;">✓ Theek Hai</button>
+    </div>`;
+    document.body.appendChild(msg);
+  }catch(e){
+    showToast('❌ Reset fail! Error: '+e.message,'err',5000);
+    console.error('Reset error:',e);
+  }
 }
 
 /* CSV */

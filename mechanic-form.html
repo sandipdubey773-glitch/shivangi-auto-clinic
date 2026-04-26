@@ -699,6 +699,8 @@ async function refreshTargets(mechName){
     const totalGR=allEntries2.reduce((s,e)=>s+(e.googleReviews||0),0);
     const remGR=Math.max(0,(branchSettings.reviewTarget||250)-totalGR);
 
+    const dailyTarget=Math.round(myRemaining/getDaysLeft());
+
     $('stripRemaining').textContent=fmt(myRemaining);
     $('stripMonthly').textContent=fmt(MONTHLY_TARGET);
     $('stripReview').textContent=remGR;
@@ -706,6 +708,7 @@ async function refreshTargets(mechName){
     $('mechProgPct').textContent=myPct+'%';
     $('mechProgFill').style.width=myPct+'%';
     $('mechProgFill').style.background=myPct>=80?'#52b788':myPct>=50?'var(--accent)':'var(--red)';
+    $('fTarget').value=dailyTarget;
 
     // Show history button and load history
     $('historyBtn').style.display='block';

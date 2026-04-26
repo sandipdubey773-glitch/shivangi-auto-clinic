@@ -223,6 +223,17 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
             <div style="font-size:10px;color:var(--muted);margin-top:2px;">customer ko mila</div>
           </div>
         </div>
+        <!-- AMC Target Progress Bar -->
+        <div id="myAmcTargetBar" style="background:linear-gradient(135deg,#1a1a2e,#0077b6);border-radius:10px;padding:10px 12px;margin-bottom:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <span style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:1px;">🎯 Is Mahine AMC</span>
+            <span style="font-family:'Baloo 2',cursive;font-size:14px;font-weight:800;color:#fff;" id="myAmcTargetText">— / —</span>
+          </div>
+          <div style="background:rgba(255,255,255,0.15);border-radius:99px;height:7px;overflow:hidden;margin-bottom:3px;">
+            <div id="myAmcTargetFill" style="height:100%;border-radius:99px;background:var(--accent2);width:0%;transition:width 0.9s;"></div>
+          </div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.45);text-align:right;"><span id="myAmcTargetPct">0%</span> of branch target (<span id="myAmcTargetVal">—</span>)</div>
+        </div>
         <div id="myAmcSalesList" style="margin-top:4px;">
           <div style="text-align:center;padding:14px;color:var(--muted);font-size:12px;"><span style="font-size:22px;display:block;margin-bottom:5px;">⏳</span>Loading…</div>
         </div>
@@ -435,7 +446,7 @@ const bid=urlParams.get('bid');
 
 let branch=null, mechanics=[], amcCount=0, grReviews=[], selectedStar=0, qrGenerated=false;
 let grModalStar=0;
-let branchSettings={reviewTarget:250};
+let branchSettings={reviewTarget:250,amcTarget:50};
 let currentMechName='';
 
 // Real today
@@ -612,6 +623,9 @@ function clearStrip(){
   // Reset AMC sales section
   $('myAmcTotalCount').textContent='—';
   $('myAmcBenefit').textContent='—';
+  $('myAmcTargetText').textContent='— / —';
+  $('myAmcTargetFill').style.width='0%';
+  $('myAmcTargetPct').textContent='0%';
   $('myAmcSalesList').innerHTML='<div style="text-align:center;padding:14px;color:var(--muted);font-size:12px;"><span style="font-size:22px;display:block;margin-bottom:5px;">👤</span>Pehle naam chunein</div>';
 }
 
@@ -638,6 +652,14 @@ async function loadMyAmcSales(mechName, entries){
     const totalBenefit=totalAmc*amcBenefitPerUnit;
     $('myAmcTotalCount').textContent=totalAmc;
     $('myAmcBenefit').textContent='₹'+fmt(totalBenefit);
+    // AMC Target progress bar
+    const amcTarget=branchSettings.amcTarget||50;
+    const amcPct=Math.min(100,Math.round((totalAmc/amcTarget)*100));
+    $('myAmcTargetText').textContent=totalAmc+' / '+amcTarget;
+    $('myAmcTargetFill').style.width=amcPct+'%';
+    $('myAmcTargetFill').style.background=amcPct>=100?'#52b788':'var(--accent2)';
+    $('myAmcTargetPct').textContent=amcPct+'%';
+    $('myAmcTargetVal').textContent=amcTarget;
     const listEl=$('myAmcSalesList');
     if(!allAmcCusts.length){
       listEl.innerHTML='<div style="text-align:center;padding:14px;color:var(--muted);font-size:12px;"><span style="font-size:22px;display:block;margin-bottom:5px;">📭</span>Is mahine koi AMC nahi hua</div>';

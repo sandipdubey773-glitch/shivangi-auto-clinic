@@ -268,6 +268,20 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
         <div style="font-size:10px;color:var(--muted);">mechanics ka</div>
       </div>
     </div>
+    <!-- AMC Target Progress Bar -->
+    <div id="brAmcTargetBar" style="background:linear-gradient(135deg,#1a1a2e,#0077b6);border-radius:10px;padding:11px 13px;margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <span style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:1px;">🎯 AMC Target Progress</span>
+        <span style="font-family:'Baloo 2',cursive;font-size:14px;font-weight:800;color:#fff;" id="brAmcTargetText">— / —</span>
+      </div>
+      <div style="background:rgba(255,255,255,0.15);border-radius:99px;height:8px;overflow:hidden;margin-bottom:4px;">
+        <div id="brAmcTargetFill" style="height:100%;border-radius:99px;background:var(--accent2);width:0%;transition:width 0.9s;"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,0.45);">
+        <span id="brAmcTargetPct">0% complete</span>
+        <span>Target: <span id="brAmcTargetVal">—</span></span>
+      </div>
+    </div>
     <div id="brAmcSalesList">
       <div style="text-align:center;padding:14px;color:var(--muted);font-size:12px;"><span style="font-size:22px;display:block;margin-bottom:5px;">⏳</span>Loading…</div>
     </div>
@@ -466,7 +480,7 @@ const MONTHLY_PER_MECH=120000;
 const urlParams=new URLSearchParams(window.location.search);
 const bid=urlParams.get('bid');
 
-let branch=null, branchSettings={reviewTarget:250};
+let branch=null, branchSettings={reviewTarget:250,amcTarget:50};
 let allEntries={}, mechanics={}, currentTab='report';
 let filterFrom=null, filterTo=null;
 
@@ -670,6 +684,14 @@ function loadBranchAmcSales(){
     $('brAmcTotalCount').textContent=totalAmc;
     $('brAmcBenefit').textContent='₹'+fmt(totalBenefit);
     $('brAmcCommission').textContent='₹'+fmt(totalCommission);
+    // AMC Target progress bar
+    const amcTarget=branchSettings.amcTarget||50;
+    const amcPct=Math.min(100,Math.round((totalAmc/amcTarget)*100));
+    $('brAmcTargetText').textContent=totalAmc+' / '+amcTarget;
+    $('brAmcTargetFill').style.width=amcPct+'%';
+    $('brAmcTargetFill').style.background=amcPct>=100?'#52b788':'var(--accent2)';
+    $('brAmcTargetPct').textContent=amcPct+'% complete';
+    $('brAmcTargetVal').textContent=amcTarget;
     const listEl=$('brAmcSalesList');
     if(!allAmcCusts.length){
       listEl.innerHTML='<div style="text-align:center;padding:14px;color:var(--muted);font-size:12px;"><span style="font-size:22px;display:block;margin-bottom:5px;">📭</span>Is mahine koi AMC sale nahi hua</div>';

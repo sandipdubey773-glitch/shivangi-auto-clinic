@@ -251,22 +251,20 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
   <!-- AMC SALES SECTION (top pe) -->
   <div class="scard" id="amcSalesSection" style="border-left:4px solid var(--accent2);margin-bottom:11px;">
     <h3 style="color:var(--accent2);">🌟 AMC Sales — Is Mahine</h3>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
       <div style="background:linear-gradient(135deg,#e0f0ff,#f0f8ff);border-radius:10px;padding:11px;text-align:center;border:1.5px solid #a8d5f5;">
         <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--accent2);font-weight:700;margin-bottom:3px;">Total AMC</div>
         <div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--accent2);" id="brAmcTotalCount">—</div>
         <div style="font-size:10px;color:var(--muted);">is mahine</div>
-      </div>
-      <div style="background:linear-gradient(135deg,#d8f3dc,#f0fff4);border-radius:10px;padding:11px;text-align:center;border:1.5px solid #b7e4c7;">
-        <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--green);font-weight:700;margin-bottom:3px;">AMC Benefit</div>
-        <div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--green);" id="brAmcBenefit">—</div>
-        <div style="font-size:10px;color:var(--muted);">customer ko mila</div>
       </div>
       <div style="background:linear-gradient(135deg,#fff0e6,#fff8f5);border-radius:10px;padding:11px;text-align:center;border:1.5px solid #ffc9a3;">
         <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);font-weight:700;margin-bottom:3px;">Commission</div>
         <div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--accent);" id="brAmcCommission">—</div>
         <div style="font-size:10px;color:var(--muted);">mechanics ka</div>
       </div>
+    </div>
+    <div style="margin-bottom:12px;">
+      <button onclick="exportAmcCSV()" style="width:100%;background:var(--accent2);color:#fff;border:none;border-radius:10px;padding:10px 14px;font-family:'Baloo 2',cursive;font-size:14px;font-weight:700;cursor:pointer;transition:transform 0.15s;" onmousedown="this.style.transform='scale(0.98)'" onmouseup="this.style.transform='scale(1)'">📥 CSV Download</button>
     </div>
     <!-- AMC Target Progress Bar -->
     <div id="brAmcTargetBar" style="background:linear-gradient(135deg,#1a1a2e,#0077b6);border-radius:10px;padding:11px 13px;margin-bottom:12px;">
@@ -677,12 +675,8 @@ function loadBranchAmcSales(){
         });
       }
     });
-    // AMC Benefit calculation: customer pays ₹1200 but gets ~₹2400 worth (12 free door visits + free service)
-    const amcBenefitPerUnit=1200;
-    const totalBenefit=totalAmc*amcBenefitPerUnit;
     const totalCommission=totalAmc*125;
     $('brAmcTotalCount').textContent=totalAmc;
-    $('brAmcBenefit').textContent='₹'+fmt(totalBenefit);
     $('brAmcCommission').textContent='₹'+fmt(totalCommission);
     // AMC Target progress bar
     const amcTarget=branchSettings.amcTarget||50;
@@ -709,6 +703,45 @@ function loadBranchAmcSales(){
     html+=`</div>`;
     listEl.innerHTML=html;
   }catch(e){console.warn('AMC sales load error',e);}
+}
+
+/* ═══ AMC CSV DOWNLOAD — Is Mahine ki AMC Customers ═══ */
+function exportAmcCSV(){
+  try{
+    const ms=getMonthStart();
+    const allVals=Object.values(allEntries);
+    const monthEntries=allVals.filter(e=>e.date>=ms);
+    let allAmcCusts=[];
+    monthEntries.forEach(e=>{
+      if(e.amcCount>0){
+        const custs=toArr(e.amcCustomers);
+        custs.forEach(c=>{
+          if(c&&c.name){
+            allAmcCusts.push({
+              naam:c.name||'—',
+              mobile:c.mobile||'—',
+              vehicleNo:c.vehicle||'—',
+              address:c.address||'—',
+              serviceDate:e.date||'—',
+              mechanic:e.mechanic||'—',
+              amcDate:e.date||'—'
+            });
+          }
+        });
+      }
+    });
+    if(!allAmcCusts.length){showToast('⚠️ Is mahine koi AMC nahi!','err');return;}
+    const now=new Date();
+    const monthName=now.toLocaleDateString('en-IN',{month:'long'});
+    const year=now.getFullYear();
+    const filename='AMC_Sales_'+monthName+'_'+year+'.csv';
+    const header=['Naam','Mobile','Vehicle No','Address','Service Date','Mechanic','AMC Date'];
+    const rows=[header];
+    allAmcCusts.forEach(c=>{
+      rows.push([c.naam,c.mobile,c.vehicleNo,c.address,c.serviceDate,c.mechanic,c.amcDate]);
+    });
+    dlCSV(rows,filename);
+  }catch(e){showToast('❌ CSV error!','err');console.warn('exportAmcCSV error',e);}
 }
 
 // Working days left excluding Sundays

@@ -237,6 +237,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
         <div id="myAmcSalesList" style="margin-top:4px;">
           <div style="text-align:center;padding:14px;color:var(--muted);font-size:12px;"><span style="font-size:22px;display:block;margin-bottom:5px;">⏳</span>Loading…</div>
         </div>
+        <button onclick="exportMechAmcCSV()" style="width:100%;margin-top:10px;background:var(--accent2);color:#fff;border:none;border-radius:10px;padding:10px;font-family:'Baloo 2',cursive;font-size:14px;font-weight:700;cursor:pointer;">📥 AMC CSV Download</button>
       </div>
 
       <div class="card">
@@ -352,7 +353,10 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
       </div>
       <!-- Entries List -->
       <div style="background:var(--card);border-radius:13px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.07);margin-bottom:12px;">
-        <div style="padding:10px 13px;border-bottom:1px solid var(--border);font-family:'Baloo 2',cursive;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">📄 Meri Sab Entries</div>
+        <div style="padding:10px 13px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-family:'Baloo 2',cursive;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">📄 Meri Sab Entries</div>
+          <button onclick="exportMechReportCSV()" style="background:#e8f4fd;color:#0077b6;border:1px solid #90caf9;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;">📥 Report CSV</button>
+        </div>
         <div id="historyList"><div class="empty-state"><div class="ei">⏳</div>Loading…</div></div>
       </div>
       <button class="btn-new" onclick="showForm()" style="width:100%;">+ Nayi Entry Karo</button>
@@ -360,6 +364,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans',sans-serif;m
       <div style="background:var(--card);border-radius:13px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.07);margin-top:14px;margin-bottom:12px;">
         <div style="padding:10px 13px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
           <div style="font-family:'Baloo 2',cursive;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">📄 Mere Bills</div>
+          <button onclick="exportMechBillsCSV()" style="background:#e8f4fd;color:#0077b6;border:1px solid #90caf9;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;">📥 Bills CSV</button>
         </div>
         <div id="billHistorySection"><div class="empty-state"><div class="ei">⏳</div>Loading…</div></div>
       </div>
@@ -735,6 +740,7 @@ function getDaysLeft(){return getWorkingDaysLeft();}
 function toArr(val){if(!val)return[];if(Array.isArray(val))return val;return Object.values(val);}
 
 function loadMechHistory(mechName, entries){
+  window._mechAllEntries=entries;
   const ms=getMonthStart();
   const myEntries=entries.filter(e=>e.mechanic===mechName).sort((a,b)=>b.date.localeCompare(a.date)||b.submittedTs-a.submittedTs);
   const myMonth=myEntries.filter(e=>e.date>=ms);
@@ -1316,6 +1322,60 @@ async function loadBillHistory(mechName){
     });
     hSection.innerHTML=html;
   }catch(e){hSection.innerHTML='<div class="empty-state"><div class="ei">⚠️</div>Bill load error — internet check karo</div>';}
+}
+
+function dlCSV(rows,filename){
+  const csv=rows.map(r=>r.map(c=>'"'+(String(c||'').replace(/"/g,'""'))+'"').join(',')).join('\n');
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,﻿'+encodeURIComponent(csv);a.download=filename;a.click();
+}
+
+function exportMechAmcCSV(){
+  try{
+    const ms=getMonthStart();
+    const snap_entries=window._mechAllEntries||[];
+    const myEntries=snap_entries.filter(e=>e.mechanic===currentMechName&&e.date>=ms&&(e.amcCount||0)>0);
+    if(!myEntries.length){showToast('⚠️ Koi AMC nahi is mahine','');return;}
+    const now=new Date();
+    const monthName=now.toLocaleString('en-IN',{month:'long'});
+    const rows=[['Date','Customer Naam','Mobile','Vehicle No','Vehicle Brand','Address','AMC Count']];
+    myEntries.forEach(e=>{
+      const customers=toArr(e.amcCustomers);
+      if(customers.length){
+        customers.forEach(c=>rows.push([e.date,c.naam||'—',c.mobile||'—',c.vehicleNo||'—',c.vehicleBrand||'—',c.address||'—',1]));
+      } else {
+        rows.push([e.date,'—','—','—','—','—',e.amcCount||1]);
+      }
+    });
+    dlCSV(rows,'AMC_Sales_'+monthName+'_'+now.getFullYear()+'.csv');
+    showToast('✅ AMC CSV download ho raha hai!','ok');
+  }catch(e){showToast('❌ Error!','err');console.warn(e);}
+}
+
+function exportMechReportCSV(){
+  try{
+    const snap_entries=window._mechAllEntries||[];
+    const myEntries=snap_entries.filter(e=>e.mechanic===currentMechName).sort((a,b)=>b.date.localeCompare(a.date));
+    if(!myEntries.length){showToast('⚠️ Koi entry nahi','');return;}
+    const rows=[['Date','Labour (₹)','AMC Count','Google Reviews','Stars','Status']];
+    myEntries.forEach(e=>rows.push([e.date,e.achieved||0,e.amcCount||0,e.googleReviews||0,e.starRating||0,e.status||'pending']));
+    const now=new Date();
+    dlCSV(rows,'Report_'+currentMechName+'_'+now.getFullYear()+'.csv');
+    showToast('✅ Report CSV download ho raha hai!','ok');
+  }catch(e){showToast('❌ Error!','err');console.warn(e);}
+}
+
+async function exportMechBillsCSV(){
+  try{
+    const snap=await db.ref('sac_bills/'+bid).get();
+    if(!snap.exists()){showToast('⚠️ Koi bill nahi','');return;}
+    const bills=Object.values(snap.val()).filter(b=>b.mechanic===currentMechName).sort((a,b)=>(b.createdTs||0)-(a.createdTs||0));
+    if(!bills.length){showToast('⚠️ Koi bill nahi','');return;}
+    const rows=[['Invoice No','Date','Customer Naam','Mobile','Vehicle No','Vehicle Type','AMC','Total Payable']];
+    bills.forEach(b=>rows.push([b.invNum||'—',b.date||'—',b.custName||'—',b.custMobile||'—',b.vehNum||'—',b.vehType||'—',b.isAMC?'Haan':'Nahi',b.payable||0]));
+    const now=new Date();
+    dlCSV(rows,'Bills_'+currentMechName+'_'+now.getFullYear()+'.csv');
+    showToast('✅ Bills CSV download ho raha hai!','ok');
+  }catch(e){showToast('❌ Error!','err');console.warn(e);}
 }
 
 async function viewBillFromHistory(key){

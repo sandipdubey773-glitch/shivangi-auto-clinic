@@ -1180,7 +1180,7 @@ function mfPreview(){
         <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f0ece6;font-size:12px;"><span>Subtotal</span><span>Rs.${fmt(sub)}</span></div>
         <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f0ece6;font-size:12px;color:#e85d04;font-weight:600;"><span>+ AMC</span><span>Rs.${fmt(amc)}</span></div>
         <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f0ece6;font-size:12px;"><span><strong>Total</strong></span><span><strong>Rs.${fmt(total)}</strong></span></div>
-        ${free>0?`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f0ece6;font-size:12px;color:#2d6a4f;font-weight:600;"><span>- AMC FREE Benefit</span><span>-Rs.0</span></div>`:''}
+        ${free>0?`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f0ece6;font-size:12px;color:#2d6a4f;font-weight:600;"><span>- AMC FREE Benefit</span><span>-Rs.${fmt(free)}</span></div>`:''}
         <div style="background:#1a1a2e;border-radius:7px;padding:10px;margin-top:7px;display:flex;justify-content:space-between;align-items:center;">
           <div><div style="font-size:12px;font-weight:700;color:#fff;">PAYABLE</div>${free>0?`<div style="font-size:9px;color:rgba(255,255,255,0.5);">Engine Oil FREE</div>`:''}</div>
           <div style="font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;color:#e85d04;">Rs.${fmt(pay)}/-</div>

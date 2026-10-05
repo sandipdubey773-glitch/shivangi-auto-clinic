@@ -1138,7 +1138,7 @@ function mfRenderSvc(){
 function mfRenderSummary(){
   const c=$('mfSummary');if(!c)return;
   let sub=0,free=0;
-  mfBillServices.forEach(s=>{const a=parseFloat(s.amt)||0,q=parseInt(s.qty)||1;if(s.isFree&&mfIsAMC)free+=a*q;else sub+=a*q;});
+  mfBillServices.forEach(s=>{const a=parseFloat(s.amt)||0,q=parseInt(s.qty)||1;sub+=a*q;if(s.isFree&&mfIsAMC)free+=a*q;});
   const amc=mfIsAMC?1200:0,total=sub+amc,pay=total-free;
   let h=`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:13px;"><span>Subtotal</span><span>₹${fmt(sub)}</span></div>`;
   if(mfIsAMC) h+=`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--accent);font-weight:600;"><span>+ AMC (12 Months)</span><span>₹${fmt(amc)}</span></div>`;
@@ -1151,7 +1151,7 @@ function mfPreview(){
   const cName=$('mfCustName')?.value||'';
   if(!cName.trim()){showToast('⚠️ Customer naam daalo!','err');return;}
   let sub=0,free=0;
-  const svcs=mfBillServices.map(s=>{const a=parseFloat(s.amt)||0,q=parseInt(s.qty)||1,t=a*q;if(s.isFree&&mfIsAMC)free+=t;else sub+=t;return{...s,amtN:a,qtyN:q,totN:t};});
+  const svcs=mfBillServices.map(s=>{const a=parseFloat(s.amt)||0,q=parseInt(s.qty)||1,t=a*q;sub+=t;if(s.isFree&&mfIsAMC)free+=t;return{...s,amtN:a,qtyN:q,totN:t};});
   const amc=mfIsAMC?1200:0,total=sub+amc,pay=total-free;
   const invNum='SAC-'+new Date().getFullYear()+'-'+String(mfInvCounter).padStart(4,'0');
   const dateVal=$('mfBillDate')?.value||TODAY_STR;
@@ -1264,7 +1264,7 @@ function mfDownload(){
   };
   // Calculate payable
   let sub=0,free=0;
-  mfBillServices.forEach(s=>{const a=parseFloat(s.amt)||0,q=parseInt(s.qty)||1;if(s.isFree&&mfIsAMC)free+=a*q;else sub+=a*q;});
+  mfBillServices.forEach(s=>{const a=parseFloat(s.amt)||0,q=parseInt(s.qty)||1;sub+=a*q;if(s.isFree&&mfIsAMC)free+=a*q;});
   billData.subtotal=sub;
   billData.amcAmount=mfIsAMC?1200:0;
   billData.freeAmount=free;

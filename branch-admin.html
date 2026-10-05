@@ -1150,7 +1150,7 @@ function bRenderSummary(){
   let sub=0,free=0;
   bServices.forEach(s=>{
     const a=parseFloat(s.amt)||0,q=parseInt(s.qty)||1;
-    if(s.isFree&&bIsAMC) free+=a*q; else sub+=a*q;
+    sub+=a*q; if(s.isFree&&bIsAMC) free+=a*q;
   });
   const amc=bIsAMC?1200:0;
   const total=sub+amc;
@@ -1169,7 +1169,7 @@ function bPreviewInvoice(){
   let sub=0,free=0;
   const svcData=bServices.map(s=>{
     const a=parseFloat(s.amt)||0,q=parseInt(s.qty)||1,t=a*q;
-    if(s.isFree&&bIsAMC) free+=t; else sub+=t;
+    sub+=t; if(s.isFree&&bIsAMC) free+=t;
     return{...s,amtN:a,qtyN:q,totN:t};
   });
   const amc=bIsAMC?1200:0,total=sub+amc,pay=total-free;
@@ -1279,7 +1279,7 @@ function bDownloadInv(){
   // Save to Firebase
   const mechVal=$('bMechName')?.value||'—';
   let sub=0,free=0;
-  bServices.forEach(s=>{const a=parseFloat(s.amt)||0,q=parseInt(s.qty)||1;if(s.isFree&&bIsAMC)free+=a*q;else sub+=a*q;});
+  bServices.forEach(s=>{const a=parseFloat(s.amt)||0,q=parseInt(s.qty)||1;sub+=a*q;if(s.isFree&&bIsAMC)free+=a*q;});
   const amc=bIsAMC?1200:0,pay=sub+amc-free;
   const billData={
     invNum,mechanic:mechVal,
